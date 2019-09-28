@@ -164,6 +164,7 @@ $(function(){
     $('#thedate').datepicker({
         dateFormat: 'yy-mm-dd',
         minDate: minDate,
+        maxDate: "+14",
         beforeShowDay: $.datepicker.Weekends
     });
     
@@ -319,7 +320,7 @@ $pdo->close();
 <h3 class="box-title" style="color:#36bbbe"><b><i class="fa fa-clock-o"></i> DATE AND TIME</b></h3>
 </div>
 <div class="box-body">
-
+<input type="hidden" id="date22" value="<?php echo $id_services; ?>">
 <div class="form-group">
 <label for="edit_name" class="col-sm-3 control-label">Date</label>
 <div class="col-sm-9">
@@ -333,6 +334,7 @@ $(function(){
     $('#thedate').datepicker({
         dateFormat: 'yy-mm-dd',
         minDate: minDate,
+        maxDate: "+14",
         beforeShowDay: $.datepicker.Weekends
     });
     
@@ -343,16 +345,20 @@ $(function(){
 </div>
 <script>
  $(document).ready(function(){  
-      $('#thedate').change(function(){  
+      $('#thedate').change(function(){
            var date = $(this).val();
+           var date2 = $('#date22').val();  
+      
            $.ajax({  
                 url:"date2.php",
                 method:"POST",  
-                data:{date:date},  
+                data:{date:date,date2:date2},  
                 success:function(data){  
                      $('#time').html(data);  
                 }  
-           });  
+           });
+          
+             
       });  
  });
 </script>

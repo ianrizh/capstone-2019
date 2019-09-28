@@ -9,8 +9,8 @@
 <input type="hidden" class="doctor_id" name="doctor_id">
 <div class="text-center">
 <p>Are you sure to change the status of this schedule?</p>
-<input type="text" style="border:0; background-color:white; text-align:center; font-size:18px; font-weight:bold" class="form-control time_reservation">
-<input type="text" style="border:0; background-color:white; text-align:center; font-size:18px; font-weight:bold" class="form-control date">
+<input type="text" style="border:0; background-color:white; text-align:center; font-size:18px; font-weight:bold" class="form-control time_reservation" readonly>
+<input type="text" style="border:0; background-color:white; text-align:center; font-size:18px; font-weight:bold" class="form-control date" readonly>
 </div>
 </div>
 <div class="modal-footer">

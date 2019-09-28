@@ -28,6 +28,8 @@
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- CK Editor -->
 <script src="../bower_components/ckeditor/ckeditor.js"></script>
+<!-- Number Format -->
+<script src="../bower_components/jquery-number/jquery.number.min.js"></script>
 <!-- Active Script -->
 <script>
 $(function(){
@@ -205,6 +207,9 @@ $('#addnew').on('change','#expdate',function(){
           total = parseFloat($('#order_total').val()),
           change = (cash - total).toFixed(2);
 
+      var a_product = [],
+          a_quantity = [];
+
       for(var i=0; i < arr_product.length; i++)
       { 
         arr_product_text[i] = $('option:selected',arr_product[i]).text();
@@ -215,6 +220,7 @@ $('#addnew').on('change','#expdate',function(){
           return false;
         }
         arr_product[i] = $(arr_product[i]).val();
+        a_product.push(arr_product[i]);
         
         if($(arr_quantity[i]).val() == "" || $(arr_quantity[i]).val() == 0)
         {
@@ -222,57 +228,102 @@ $('#addnew').on('change','#expdate',function(){
           return false;
         }
         arr_quantity[i] = $(arr_quantity[i]).val();
+        a_quantity.push(arr_quantity[i]);
         
         arr_price[i] = $(arr_price[i]).val();
         arr_amount[i] = $(arr_amount[i]).val();
       }
       
-      if(cash == "" || cash == 0)
-      {
-        alert("Please specify cash");
-        return false;
-      }
+      $.ajax({
+        url       : 'orders_validate_qty.php',
+        data      : {
+          a_product : a_product,
+          a_quantity : a_quantity
+        },
+        dataType  : 'JSON',
+        method    : 'POST',
+        beforeSend: function(){
+          $('#btn_viewsummary').prop('disabled',true).html('Validating...');
+        },
+        success   : function(response){
+          var list = '<ul>';
+          if(response.length > 0)
+          {
+            $(response).each(function(idx,val){
+              list += '<li>'+val+'</li>';
+            });
+            list += '</ul>';
+            $('#insufficiientproducts_container').html("\
+              <div class='alert alert-danger alert-dismissible'>\
+                <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>\
+                <h4><i class='icon fa fa-warning'></i> Error!</h4>\
+                The following products have insufficient stock:"
+                +list+
+                "</div>\
+            ");
+          }
+          else
+          {
+            $('#insufficiientproducts_container').empty();
+            if(cash == "" || cash == 0)
+            {
+              alert("Please specify cash");
+              return false;
+            }
 
-      if(cash < total)
-      {
-        alert("Insufficient Cash");
-        return false;
-      }
+            if(cash < total)
+            {
+              alert("Insufficient Cash");
+              return false;
+            }
 
-      var summary_tbody = $('tbody','#order_summary');
-      var summary_tr = "";
+            var summary_tbody = $('tbody','#order_summary');
+            var summary_tr = "";
 
-      for(var i=0; i < arr_product.length; i++)
-      {
-        summary_tr += '<tr data-productid="'+arr_product[i]+'" data-quantity="'+arr_quantity[i]+'" data-price="'+arr_price[i]+'" data-amount="'+arr_amount[i]+'">\
-          <td>'+arr_product_text[i]+'</td>\
-          <td>'+arr_quantity[i]+'</td>\
-          <td>'+arr_price[i]+'</td>\
-          <td>'+arr_amount[i]+'</td>\
-        </tr>';
-      }
+            for(var i=0; i < arr_product.length; i++)
+            {
+              summary_tr += '<tr data-productid="'+arr_product[i]+'" data-quantity="'+arr_quantity[i]+'" data-price="'+arr_price[i]+'" data-amount="'+arr_amount[i]+'">\
+                <td>'+arr_product_text[i]+'</td>\
+                <td><input type="text" class="summaryqty" value="'+arr_quantity[i]+'" readonly /></td>\
+                <td><input type="text" class="summaryprice" value="'+arr_price[i]+'" readonly /></td>\
+                <td><input type="text" class="summaryprice" value="'+arr_amount[i]+'" readonly /></td>\
+              </tr>';
+            }
 
-      $('#tbl_ordersummary > tbody').empty().append(summary_tr);
+            $('#tbl_ordersummary > tbody').empty().append(summary_tr);
 
-      var pay_summary = '\
-        <table class="pull-right" style="width:50%;margin-right:20px;">\
-          <tr>\
-            <td class="text-right"><strong>Total Amount</td>\
-            <td class="text-right" id="summary_total">'+total.toFixed(2)+'</td>\
-          </tr>\
-          <tr>\
-            <td class="text-right"><strong>Amount Paid</strong></td>\
-            <td class="text-right" id="summary_cash">'+cash.toFixed(2)+'</td>\
-          </tr>\
-          <tr>\
-            <td class="text-right"><strong>Change</strong></td>\
-            <td class="text-right" id="summary_change">'+change+'</td>\
-          </tr>\
-        </table>\
-      ';
-      $('#pay_summary').empty().append(pay_summary);
+            var pay_summary = '\
+              <table class="pull-right" style="width:50%;margin-right:20px;">\
+                <tr>\
+                  <td class="text-right"><strong>Total Amount</td>\
+                  <td class="text-right" id="summary_total"><input type="text" class="summaryprice" value="'+total.toFixed(2)+'" readonly /></td>\
+                </tr>\
+                <tr>\
+                  <td class="text-right"><strong>Amount Paid</strong></td>\
+                  <td class="text-right" id="summary_cash"><input type="text" class="summaryprice" value="'+cash.toFixed(2)+'" readonly /></td>\
+                </tr>\
+                <tr>\
+                  <td class="text-right"><strong>Change</strong></td>\
+                  <td class="text-right" id="summary_change"><input type="text" class="summaryprice" value="'+change+'" readonly /></td>\
+                </tr>\
+              </table>\
+            ';
+            $('#pay_summary').empty().append(pay_summary);
 
-      $('#order_summary').modal('show');
+            $('.summaryqty').number(true);
+            $('.summaryprice').number(true,2);
+            $('#order_summary input').attr('style','border:0px;width:100px;');
+            
+            $('#order_summary').modal('show');
+          }
+        },
+        error   : function(){
+          alert('An error has occured.');
+        },
+        complete: function(){
+          $('#btn_viewsummary').prop('disabled','').html('<i class="fa fa-check"></i> CHECK OUT');
+        }
+      });
     });
 
     $('#btn_hidesummary').click(function(){
@@ -292,7 +343,7 @@ $('#addnew').on('change','#expdate',function(){
   function compute_total(){
     var arr_amount = $('.order_amount'),
         total = $('#order_total'),
-        total_val = 000;
+        total_val = 0.00;
 
     arr_amount.each(function(){
       total_val += parseFloat($(this).val() || 0);
@@ -333,9 +384,9 @@ $('#addnew').on('change','#expdate',function(){
         a_price = [],
         a_amount = [];
 
-    var total = $('#summary_total').text(),
-        cash = $('#summary_cash').text(),
-        change = $('#summary_change').text();
+    var total = $('#summary_total input').val(),
+        cash = $('#summary_cash input').val(),
+        change = $('#summary_change input').val();
 
     $('tbody tr',$('#tbl_ordersummary')).each(function(){
       a_product.push($(this).data('productid'));
@@ -343,7 +394,7 @@ $('#addnew').on('change','#expdate',function(){
       a_price.push($(this).data('price'));
       a_amount.push($(this).data('amount'));
     });
-
+    
     $.ajax({
       url       : 'orders_add.php',
       data      : {
@@ -360,7 +411,7 @@ $('#addnew').on('change','#expdate',function(){
         $('#btn_confirmorder').prop('disabled',true).text('Saving...');
       },
       success   : function(){
-        alert('Transaction complete.');
+        $('#or').modal('show');
         $('#order_summary').modal('hide');
       },
       error   : function(){
@@ -368,6 +419,33 @@ $('#addnew').on('change','#expdate',function(){
       },
       complete: function(){
         $('#btn_confirmorder').prop('disabled',false).text('CONFIRM');
+      }
+    });
+  });
+  $('#paybill').click(function(){
+    var reservation_id = $('#reservation_id').val(),
+        total = parseFloat($('#total').val()),
+        amount_paid = parseFloat($('#amount_paid').val());
+        
+    if(amount_paid < total)
+    {
+      alert('Insufficient amount.');
+      return false;
+    }
+
+    $.ajax({
+      url : 'billing.php',
+      method : 'POST',
+      data : {
+        reservation_id : reservation_id,
+        total : total,
+        amount_paid : amount_paid
+      },
+      success : function(){
+        window.location.href = 'bill1.php?copy='+reservation_id;
+      },
+      error : function(){
+        alert('An error has occured.');
       }
     });
   });

@@ -49,7 +49,17 @@
 		</span>
 	</a>
 	<ul class="treeview-menu">
-		<li><a href="inventory_reports.php"><i class="fa fa-circle-o"></i> Inventory</a></li>
+		<li class="treeview"><a href="#"><i class="fa fa-circle-o"></i><span> Inventory</span>
+				<span class="pull-right-container">
+			<i class="fa fa-angle-left pull-right"></i>
+		</span>
+	</a>
+	<ul class="treeview-menu">
+		<li><a href="inventory_reports.php"><i class="fa fa-circle-o"></i> Per Batch</a></li>
+		<li><a href="inventory_reportsall.php"><i class="fa fa-circle-o"></i> All Products</a></li>
+	</ul>	
+
+		</li>
 		<li class="treeview">
 	<a href="#">
 		<i class="fa fa-circle-o"></i>
@@ -64,6 +74,7 @@
 	</ul>
 </li>
 		<li><a href="stocks.php"><i class="fa fa-circle-o"></i> <span> Expired Products</span></a></li>
+		<li><a href="wastage.php"><i class="fa fa-circle-o"></i> <span> Wastage</span></a></li>
 	</ul>
 </li>
 

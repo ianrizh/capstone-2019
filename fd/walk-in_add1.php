@@ -7,7 +7,8 @@ $user_pets_id = $_POST['user_pets_id'];
 $id_services = $_POST['id_services'];
 $time_reservation= $_POST['time_reservation'];
 $status = $_POST['status'];
-
+date_default_timezone_set('Asia/Manila');
+$thedate=date('Y-m-d');
 if($id_services == '0'){
 $theday=date('l',strtotime($thedate));
 if($theday == 'Sunday')
@@ -33,7 +34,7 @@ $starttime="13:30";
 $endtime="14:00";
 }
 elseif($time_reservation=="02:00 p.m - 02:30 p.m"){
-
+	
 $starttime="14:00";
 $endtime="14:30";
 }
@@ -64,7 +65,6 @@ $endtime="17:00";
 }
 }
 else{
-{
 if($time_reservation=="10:00 a.m - 10:30 a.m"){
 $starttime="10:00";
 $endtime="10:30";
@@ -151,7 +151,6 @@ $endtime="19:00";
 }
 }
 }
-}
 else{
 $theday=date('l',strtotime($thedate));
 if($theday == 'Tuesday')
@@ -225,29 +224,22 @@ $endtime= '19:00';
 }
 }
 $conn = $pdo->open();
-$stmt = $conn->prepare("SELECT *,COUNT(*) AS numrows  FROM reservation WHERE user_pets_id = user_pets_id and id_services = id_services and thedate=:thedate and  end_time > :starttime and start_time < :endtime ");
-$stmt->execute(['thedate'=>$thedate,'starttime'=>$starttime,'endtime'=>$endtime]);
+$stmt = $conn->prepare("SELECT *,COUNT(*) AS numrows  FROM reservation WHERE user_pets_id = :user_pets_id and id_services = :id_services and thedate=:thedate and  end_time > :starttime and start_time < :endtime OR user_pets_id = :user_pets_id  and thedate=:thedate and  end_time > :starttime and start_time < :endtime ");
+$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'starttime'=>$starttime,'endtime'=>$endtime]);
 $row = $stmt->fetch();
-
-if($row['numrows'] > 0){
+$stmt = $conn->prepare("SELECT *,COUNT(*) AS numrows2  FROM reservation WHERE user_pets_id = :user_pets_id  and thedate=:thedate and  end_time > :starttime and start_time < :endtime ");
+$stmt->execute(['user_pets_id'=>$user_pets_id,'thedate'=>$thedate,'starttime'=>$starttime,'endtime'=>$endtime]);
+$row2 = $stmt->fetch();
+if($row['numrows'] >= 2 || $row2['numrows2'] > 0 ){
 $_SESSION['error'] = 'The chosen date and time is already taken by other customer.';
 }
 else{
 try{
-if($id_services == '0'){
 date_default_timezone_set('Asia/Manila');
 $thedate=date('Y-m-d');
 $stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:status,:starttime,:endtime,:r_type)");
 $stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
 $_SESSION['success'] = 'Reservation successful';
-}
-else{
-date_default_timezone_set('Asia/Manila');
-$thedate=date('Y-m-d');
-$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:status,:starttime,:endtime,:r_type)");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
-$_SESSION['success'] = 'Reservation successful';
-}
 }
 catch(PDOException $e){
 $_SESSION['error'] = $e->getMessage();

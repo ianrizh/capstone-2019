@@ -113,9 +113,10 @@ $pdo->close();
 $st1 = $_POST['status'];
 if($st1=="Decline")
 {
+$decline_remarks = $_POST['decline_remarks'];
 try{
-$stmt = $conn->prepare("UPDATE reservation SET status='$st1' where reservation_id = $reservation_id");
-$stmt->execute(['status'=>$st]);
+$stmt = $conn->prepare("UPDATE reservation SET status='$st1', decline_remarks=:remark where reservation_id = $reservation_id");
+$stmt->execute(['remark'=>$decline_remarks]);
 $message = "
 <h2>WE'RE SORRY!</h2>
 <p>Hey ".$firstname."! Your reservation request for your pet ".$pet_name." has been declined. We look forward for your next appointment request.</p>

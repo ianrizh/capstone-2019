@@ -1,5 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
+
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -12,7 +13,7 @@
 <section class="content-header">
 
 
-<h1><div align="right">
+<h1><div class="container" align="right">
 
 <?php
 $s=fill_brand($conn);
@@ -20,7 +21,7 @@ $s=fill_brand($conn);
   echo '<font size="3"><label class="btn-print">Category</label>';
     			
                 echo "<select name='product' id='product' class='btn-print'><option value=''>All Product</option>$s";
-              echo '</select>';echo ''; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class = "btn btn-success btn-print" href = "#" onclick = "printContent('details')"><i class ="glyphicon glyphicon-print"></i> Print</a></div>
+              echo '</select>';echo ''; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class = "btn btn-success btn-print" href = "#" onclick = "printContent('details')"><i class ="glyphicon glyphicon-print"></i> Print</a></div>
  </h1>
 </section>
 
@@ -101,13 +102,12 @@ window.location.href='inventory_reports.php';
 
 
 			<div id="show_product">
-  <table width="100%"  border="3" cellpadding="0" cellspacing="0" style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:10px; width:auto;"  >
+  <table width="100%"  border="3" cellpadding="0" cellspacing="0" style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:10px;"  >
   
   <tr align="center"><td bgcolor="bluegreen"><font color="black"><font size="-1">Product ID </font></td>
           <td bgcolor="bluegreen"><font color="black"><font size="-1">Product Name</font></td>
           <td bgcolor="bluegreen"><font color="black"><font size="-1">Category</font></td>
 		  <td bgcolor="bluegreen"><font color="black"><font size="-1">Expiration Date</font></td>
-		  <td bgcolor="bluegreen"><font color="black"><font size="-1">Price</font></td>
 		  <td bgcolor="bluegreen"><font color="black"><font size="-1">Stock Left</font></td></tr>
 		  	<?php
 		  	$conn = $pdo->open();
@@ -120,23 +120,27 @@ window.location.href='inventory_reports.php';
           <?php $stmt=$conn->prepare("select * from category where id_category = :categ");
           $stmt->execute(['categ'=>$categ]);
           foreach($stmt as $categ)
-          {?>
+         {
+
+      ?>
 		  <td><font color="black"><font size="-1"><?php echo $categ['category']; ?></font></td>
 		  <td><font color="black"><font size="-1"></font></td>
-		  <td><font color="black"><font size="-1"><?php echo "<b>P</b>"; echo  $row['price']; ?></font></td>
-		  <td><font color="black"><font size="-1"><?php echo  $row['total_stocks']; ?></font></td>
+		  
+		  <td><font color="black"><font size="-1"><?php  echo  $row['total_stocks']	; ?></font></td>
 		</tr>
 		  <?php $stmt=$conn->prepare("select * from stocks_expired where id_products = :productid and expired_date >= CURRENT_DATE() or id_products = :productid and expired_date = 0000-00-00");
           $stmt->execute(['productid'=>$productid]);
           foreach($stmt as $exp)
-          { ?>
+          {
+
+          	?>
 		  	<tr align="center">
 		  <td><font color="black"><font size="-1"> </font></td>
           <td><font color="black"><font size="-1"></font></td>
 		  <td><font color="black"><font size="-1"><?php echo $categ['category']; ?></font></td>
 		  
 		  <td><font color="black"><font size="-1"><?php echo $exp['expired_date'] ?></font></td>
-		  <td><font color="black"><font size="-1"><?php echo "<b>P</b>"; echo  $row['price']; ?></font></td>
+		 
 		  <td><font color="black"><font size="-1"><?php echo  $exp['stocks']; ?></font></td>
           <?php } }
           ?>
@@ -146,5 +150,22 @@ window.location.href='inventory_reports.php';
 </div></div></div>
 </div></div></section>
 <?php include 'includes/scripts.php'; ?>
+<script>
+  $(document).ready(function(){
+    $("#product").change(function(){
+      var category= $(this).val();
+      $.ajax({
+        url:"categories.php",
+        method:"POST",
+        data:{category:category},
+        success:function(data){
+          $("#show_product").html(data);
+        }
+      });
+    });
+
+  });
+
+</script>
 
 </div></body></html >

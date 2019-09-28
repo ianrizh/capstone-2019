@@ -17,8 +17,8 @@ $email  = $row['email'];
 
 if(isset($_POST['activate'])){
 try{
-$stmt = $conn->prepare("UPDATE users SET status=:status WHERE id_cust=:id_cust");
-$stmt->execute(['status'=>1, 'id_cust'=>$id_cust]);
+$stmt = $conn->prepare("UPDATE users SET status=:status and password =:password WHERE id_cust=:id_cust");
+$stmt->execute(['status'=>1, 'password'=>'$2y$10$ZDNPt60nqMB0qey0PI8jGevEhGmWUqELBNLJ5GoUeRBfQUaOVSy/G', 'id_cust'=>$id_cust]);
 $message = "
 <h2>CONGRATULATIONS!</h2>
 <p>Hey ".$firstname."! Your account is now activated. We look forward to seeing you soon.</p>

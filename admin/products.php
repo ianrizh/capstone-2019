@@ -193,7 +193,7 @@ function getRow(id_products){
       $('#catselected').val(response.id_category).html(response.category);
       $('#edit_price').val(response.price);
 	  CKEDITOR.instances["editor2"].setData(response.details);
-      getCategory();
+     // getCategory();
     }
   });
 }

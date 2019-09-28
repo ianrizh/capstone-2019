@@ -75,3 +75,47 @@
       }
   	</style>
 </head>
+<?php
+  date_default_timezone_set('Asia/Manila');
+  $stmt = $conn->prepare("SELECT id_stocks_expired,id_products,expired_date,stocks,expired_flag FROM stocks_expired WHERE expired_flag = 0");
+  $stmt->execute();
+  foreach($stmt as $row => $col)
+  {
+    $date_today = strtotime(date('m/d/Y'));
+    $date_expired = strtotime($col['expired_date']);
+    $productid = $col['id_products'];
+    $stock = $col['stocks'];
+    //print_r('date_expired = '.$date_expired);
+    if($date_today >= $date_expired && $date_expired != '' && $date_expired != '0000-00-00')
+    {
+      $id_stocks_expired = $col['id_stocks_expired'];
+
+      $update = $conn->prepare("
+        UPDATE
+          products
+        SET
+          total_stocks = total_stocks - :stock
+        WHERE
+          id_products = :productid
+      ");
+    
+      $update->execute([
+        'stock' => $stock,
+        'productid' => $productid
+      ]);
+
+      $update = $conn->prepare("
+        UPDATE
+          stocks_expired
+        SET
+          expired_flag = 1
+        WHERE
+          id_stocks_expired = :id_stocks_expired
+      ");
+    
+      $update->execute([
+        'id_stocks_expired' => $id_stocks_expired,
+      ]);
+    }
+  }
+?>

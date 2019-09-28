@@ -133,7 +133,8 @@ $(function(){
     var minDate = new Date(date.getFullYear(), date.getMonth(), date.getDate()+8);
     $('#thedate').datepicker({
         dateFormat: 'yy-mm-dd',
-        minDate: minDate,
+       minDate: minDate,
+        maxDate: "+14",
         beforeShowDay: $.datepicker.Weekends
     });
     

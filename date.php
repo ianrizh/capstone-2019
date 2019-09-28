@@ -62,10 +62,10 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date'");
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $rows1);
-echo $time1 = $rows1['time_reservation'];
+ $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
@@ -83,6 +83,7 @@ echo'<option value="'.$time.'">'.$time.'</option>';
 }
 }
 }
+
 echo'
 </select>
 </div>
@@ -110,10 +111,10 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date'");
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $rows1);
-echo $time1 = $rows1['time_reservation'];
+ $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
@@ -158,10 +159,10 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date'");
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $rows1);
-echo $time1 = $rows1['time_reservation'];
+ $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
@@ -206,10 +207,10 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date'");
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $rows1);
-echo $time1 = $rows1['time_reservation'];
+ $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
@@ -254,10 +255,10 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date'");
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $rows1);
-echo $time1 = $rows1['time_reservation'];
+ $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
@@ -302,10 +303,10 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date'");
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $rows1);
-echo $time1 = $rows1['time_reservation'];
+ $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
@@ -350,10 +351,10 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date'");
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $rows1);
-echo $time1 = $rows1['time_reservation'];
+ $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();

@@ -10,7 +10,7 @@
 	    $total		= $_POST['total'];
 	    $cash		= $_POST['cash'];
 	    $change		= $_POST['change'];
-
+	    
 		$conn = $pdo->open();
 
 		try{ 
@@ -57,6 +57,9 @@
 					'quantity'=>$quantity,
 					'price'=>$price
 				]);
+
+				$stmt=$conn->prepare("UPDATE products SET total_stocks = total_stocks - :quantity WHERE id_products = :productid");
+				$stmt->execute(['quantity'=>$quantity, 'productid'=>$productid]);
 				
 				$stmt = $conn->prepare("
 					SELECT

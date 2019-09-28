@@ -73,7 +73,7 @@ unset($_SESSION['success']);
 							se.id_products = p.id_products
 
 						WHERE
-							se.expired_date <= CURRENT_DATE()
+							se.expired_flag = 1
 
 						ORDER BY 
 							se.id_products, se.batch_number

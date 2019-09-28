@@ -52,7 +52,8 @@ echo "
 <div class='box-body prod-body'>
 <img src='".$image."' width='100%' height='200px' class='thumbnail'>
 <b><a href='service.php?service=".$row['name']."' style='text-transform:uppercase; color:#36bbbe; font-size: 16px'>".$row['name']."</a></b><br>
-<b>&#8369; ".number_format($row['price'], 2)."</b>
+<b>&#8369; ".number_format($row['price'], 2)."</b>";
+echo"
 </div>
 <div class='box-footer'>";
 ?>

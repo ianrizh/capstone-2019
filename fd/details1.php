@@ -1,11 +1,7 @@
 <?php include 'includes/session.php';
 $conn = $pdo->open();
-if(isset($_GET['upi1'])){
-$user_pets_id = $_GET['upi1'];
-$stmt = $conn->prepare("SELECT * FROM user_pets WHERE user_pets_id='$user_pets_id'");
-$stmt->execute();
-foreach($stmt as $crow){
-$id_pet = $crow['id_pet'];
+if(isset($_GET['id_pet'])){
+$id_pet = $_GET['id_pet'];
 $stmt = $conn->prepare("SELECT * FROM pets WHERE id_pet='$id_pet'");
 $stmt->execute();
 foreach($stmt as $crows){
@@ -34,7 +30,6 @@ echo "
 </div>
 
 ";
-}
 }
 }
 ?>

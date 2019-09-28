@@ -14,6 +14,8 @@ $pet_gender = $_POST['pet_gender'];
 $id_services = $_POST['id_services'];
 $time_reservation= $_POST['time_reservation'];
 $status = $_POST['status'];
+date_default_timezone_set('Asia/Manila');
+$thedate=date('Y-m-d');
 
 if($id_services == '0'){
 $theday=date('l',strtotime($thedate));

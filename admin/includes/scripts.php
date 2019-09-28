@@ -226,5 +226,119 @@ $("#notification-latest1").hide();
       $('input',row).val('');
     }
   });
+  $('.order_product').change(function(){
+      var dropdown = $(this);
+      var thisrow = dropdown.closest('tr');
+      var value = dropdown.val();
+      var price = $('option[value="'+value+'"]',dropdown).data('price');
+      $('.order_price',thisrow).val(price);
+      dropdown.data('productid',$('option[value="'+value+'"]',dropdown).data('productid'))
+      //compute_amount(thisrow);
+      //compute_total();
+      // compute_change();
+    });
+$('#findings').on('click','#btn_confirmorder',function(){
+    var a_product = [],
+        a_productid = [],
+        a_quantity = [],
+        a_price = [];
 
+    var findings = $('#f').val(),
+        prescription = $('#p').val();
+		    s_price = $('#s_price').val();
+    		reservation_id = $('.reservation_id').val();
+    		status = $('.reservation_id').val();
+    		price = $('.reservation_id').val();
+
+    $('tbody tr',$('#tbl_stock')).each(function(){
+      a_product.push($('.order_product',$(this)).val());
+      a_productid.push($('.order_product',$(this)).data('productid'));
+      a_quantity.push($('.order_qty',$(this)).val());
+      a_price.push($('.order_price',$(this)).val());
+    });
+    
+    $.ajax({
+      url       : 'orders_validate_qty.php',
+      data      : {
+        a_product : a_productid,
+        a_quantity : a_quantity
+      },
+      dataType  : 'JSON',
+      method    : 'POST',
+      beforeSend: function(){
+        $('#btn_confirmorder').prop('disabled',true).html('Validating...');
+      },
+      success   : function(response){
+        var list = '<ul>';
+        if(response.length > 0)
+        {
+          $(response).each(function(idx,val){
+            list += '<li>'+val+'</li>';
+          });
+          list += '</ul>';
+          $('#insufficiientproducts_container').html("\
+            <div class='alert alert-danger alert-dismissible'>\
+              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>\
+              <h4><i class='icon fa fa-warning'></i> Error!</h4>\
+              The following products have insufficient stock:"
+              +list+
+              "</div>\
+          ");
+        }
+        else
+        {
+          $.ajax({
+            url       : 'fap.php',
+            data      : {
+              a_product : a_product,
+              a_productid: a_productid,
+              a_quantity : a_quantity,
+              a_price : a_price,
+              findings : findings,
+              prescription : prescription,
+              s_price : s_price,
+              reservation_id :reservation_id,
+              status : status,
+              price : price
+            },
+            method    : 'POST',
+            beforeSend: function(){
+              $('#btn_confirmorder').prop('disabled',true).text('Saving...');
+            },
+            success   : function(){
+              alert('Process Done.');
+              window.location.href = "reservations.php";
+            },
+            error   : function(){
+              alert('An error has occured.');
+            },
+            complete: function(){
+            $('#findings').modal('hide');
+              $('#btn_confirmorder').prop('disabled',false).text('CONFIRM');
+              //window.location = '../admin/reservations.php';
+            }
+          });
+        }
+      },
+      error     : function(){
+        alert('An error has occured.');
+      },
+      complete  : function(){
+        $('#btn_confirmorder').prop('disabled','').html('<i class="fa fa-check"></i> CHECK OUT');
+      }
+    });
+  });
+
+  $('#edit').on('change','#dropdown_confirmation',function(){
+    if($(this).val() == 'Confirm')
+    {
+      $('#declinecontainer').attr('style','display:none');
+      $('#declinecontainer textarea').attr('disabled','true');
+    }
+    else
+    {
+      $('#declinecontainer').attr('style','display:block');
+      $('#declinecontainer textarea').removeAttr('disabled');
+    }
+  });
 </script>

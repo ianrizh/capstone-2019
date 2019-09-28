@@ -4,7 +4,7 @@
 	function generateRow($from, $to, $conn){
 		$contents = '';
 	 	
-		$stmt = $conn->prepare("SELECT * from order_main WHERE order_date BETWEEN '$from' AND '$to' ORDER BY order_date DESC");
+		$stmt = $conn->prepare("SELECT * from order_main WHERE order_date BETWEEN '$from' AND '$to' ORDER BY order_id asc");
 		$stmt->execute();
 		$total = 0;
 		foreach($stmt as $row){
@@ -31,7 +31,7 @@
 		$contents .= '
 			<tr>
 				<td colspan="5" align="right"><b>Total</b></td>
-				<td align="right"><b>P '.number_format($row['total'], 2).'</b></td>
+				<td align="right"><b>P '.number_format($total, 2).'</b></td>
 			</tr>
 		';
 		return $contents;

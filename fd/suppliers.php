@@ -63,7 +63,7 @@ $stmt->execute();
 foreach($stmt as $duwa){
 $ic = $duwa['id_cust'];
 }}
-$stmt =$conn->prepare("select reservation_id, id_services, thedate, user_pets_id, time_reservation, status, total from reservation where status = 'Process Done' or status ='Paid' group by reservation_id");
+$stmt =$conn->prepare("select reservation_id, id_services, thedate, user_pets_id, time_reservation, status, total from reservation where status = 'Process Done' or status ='Paid' order by reservation_id asc");
 $stmt->execute();
 foreach($stmt as $row){
 $reservation_id = $row['reservation_id'];

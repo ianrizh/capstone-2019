@@ -6,7 +6,7 @@
 		
 		$conn = $pdo->open();
 
-		$stmt = $conn->prepare("SELECT *, stocks_expired.id_stocks_expired AS id_stocks_expired FROM stocks_expired LEFT JOIN products ON products.id_products=stocks_expired.id_stocks_expired WHERE stocks_expired.id_stocks_expired=:id_stocks_expired");
+		$stmt = $conn->prepare("SELECT *, stocks_expired.id_stocks_expired AS id_stocks_expired FROM stocks_expired LEFT JOIN products ON products.id_products=stocks_expired.id_products WHERE stocks_expired.id_stocks_expired=:id_stocks_expired");
 		$stmt->execute(['id_stocks_expired'=>$id_stocks_expired]);
 		$row = $stmt->fetch();
 		

@@ -89,6 +89,9 @@ echo "
 unset($_SESSION['success']);
 }
 ?>
+
+<div id="insufficiientproducts_container"></div>
+
 <!-- ORDERS -->
 <div id="tab_orders" class="tabcontent">
 <div class="box">
@@ -132,12 +135,12 @@ $pdo->close();
 </td>
 <td>
 <div class="form-group">
-<input type="number"  class="form-control text-right order_quantity" oninput="this.value=Math.abs(this.value)" />
+<input type="text" class="form-control text-right order_quantity" />
 </div>
 </td>
 <td>
 <div class="form-group">
-<input type="number" class="form-control text-right order_price" readonly/>
+<input type="text" class="form-control text-right order_price" readonly/>
 </div>
 </td>
 <td>
@@ -159,7 +162,7 @@ $pdo->close();
 </div>
 <div class="col-sm-3">
 <div class="form-group">
-<input type="number" class="form-control text-right" id="order_cash" oninput="this.value=Math.abs(this.value)" />
+<input type="text" class="form-control text-right" id="order_cash" />
 </div>
 </div>
 </div>
@@ -170,7 +173,7 @@ $pdo->close();
 </div>
 <div class="col-sm-3">
 <div class="form-group">
-<input type="number" class="form-control text-right" id="order_total" readonly/>
+<input type="text" class="form-control text-right" id="order_total" readonly/>
 </div>
 </div>
 </div>
@@ -599,6 +602,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -606,11 +614,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -648,6 +651,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -655,11 +663,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -697,6 +700,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -704,11 +712,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -746,6 +749,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -753,11 +761,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -795,6 +798,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -802,11 +810,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -844,6 +847,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -851,11 +859,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -893,6 +896,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -900,11 +908,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -1030,9 +1033,10 @@ $ic = $crow['id_cust'];
 $stmt = $conn->prepare("SELECT * FROM users WHERE id_cust='$ic'");
 $stmt->execute();
 foreach($stmt as $crows){
+$id_cust = $crows['id_cust'];
 $fullname = $crows['firstname'] ." ". $crows['lastname'];
 echo "
-<option value='$upi'>".$fullname."</option>
+<option value='$id_cust'>".$fullname."</option>
 ";
 }
 }
@@ -1054,7 +1058,7 @@ $pdo->close();
 	a.onreadystatechange=function(){
 		document.getElementById("details").innerHTML=this.responseText;
 	}
-	a.open('GET', "details.php?upi="+str,true);
+	a.open('GET', "details.php?id_cust="+str,true);
 	a.send();
  }
 </script>	
@@ -1067,7 +1071,7 @@ $pdo->close();
 	a.onreadystatechange=function(){
 		document.getElementById("details1").innerHTML=this.responseText;
 	}
-	a.open('GET', "details1.php?upi1="+str,true);
+	a.open('GET', "details1.php?id_pet="+str,true);
 	a.send();
  }
 </script>
@@ -1125,6 +1129,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -1132,11 +1141,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -1174,6 +1178,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -1181,11 +1190,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -1223,6 +1227,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -1230,11 +1239,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -1272,6 +1276,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -1279,11 +1288,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -1321,6 +1325,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -1328,11 +1337,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -1370,6 +1374,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -1377,11 +1386,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
@@ -1419,6 +1423,11 @@ $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
+$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
+$stmt->execute();
+foreach($stmt as $rows1);
+ $time1 = $rows1['time_reservation'];
+$date2 = $rows1['thedate'];
 $stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
 $stmt->execute();
 foreach($stmt as $rows);
@@ -1426,11 +1435,6 @@ $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
 $status = $rows['status'];
-$stmt = $conn->prepare("select * from reservation");
-$stmt->execute();
-foreach($stmt as $rows1);
-$time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
 if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }

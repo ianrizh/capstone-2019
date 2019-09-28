@@ -1,11 +1,7 @@
 <?php include 'includes/session.php';
 $conn = $pdo->open();
-if(isset($_GET['upi'])){
-$user_pets_id = $_GET['upi'];
-$stmt = $conn->prepare("SELECT * FROM user_pets WHERE user_pets_id='$user_pets_id'");
-$stmt->execute();
-foreach($stmt as $crow){
-$id_cust = $crow['id_cust'];
+if(isset($_GET['id_cust'])){
+$id_cust = $_GET['id_cust'];
 $stmt = $conn->prepare("SELECT * FROM users WHERE id_cust='$id_cust'");
 $stmt->execute();
 foreach($stmt as $crows){
@@ -40,22 +36,13 @@ echo "
 <?php 
 $conn = $pdo->open();
 try{
-$stmt = $conn->prepare("SELECT * FROM user_pets WHERE user_pets_id = '$user_pets_id'");
-$stmt->execute();
-foreach($stmt as $row){
-$upi1 = $row['user_pets_id'];
-$stmt = $conn->prepare("SELECT * FROM user_pets WHERE user_pets_id='$upi1'");
-$stmt->execute();
-foreach($stmt as $crow){
-$id_pet = $crow['id_pet'];
-$stmt = $conn->prepare("SELECT * FROM pets WHERE id_pet='$id_pet'");
+$stmt = $conn->prepare("SELECT * FROM pets WHERE id_cust='$id_cust'");
 $stmt->execute();
 foreach($stmt as $crows){
+$id_pet = $crows['id_pet'];
 echo "
-<option value='$upi1'>".$crows['pet_name']."</option>
+<option value='$id_pet'>".$crows['pet_name']."</option>
 ";
-}
-}
 }
 }
 catch(PDOException $e){
@@ -79,7 +66,7 @@ echo "
 	a.onreadystatechange=function(){
 		document.getElementById("details1").innerHTML=this.responseText;
 	}
-	a.open('GET', "details1.php?upi1="+str,true);
+	a.open('GET', "details1.php?id_pet="+str,true);
 	a.send();
  }
 </script>
@@ -87,7 +74,6 @@ echo "
 echo"
 </div>
 ";
-}
 }
 }
 ?>

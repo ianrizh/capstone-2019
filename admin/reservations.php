@@ -207,7 +207,6 @@ e.preventDefault();
 $('#findings').modal('show');
 var reservation_id = $(this).data('id');
 getRow(reservation_id);
-getRow2(reservation_id);
 });
 
 $('#select_category').change(function(){
@@ -248,7 +247,7 @@ function getRow(reservation_id){
     success: function(response){
       $('.reservation_id').val(response.reservation_id);
 	  $('.status').val(response.status);
-	  $('.total').val(response.total);
+	  $('.s_price').val(response.s_price);
     }
   });
 }

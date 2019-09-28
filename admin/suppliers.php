@@ -44,29 +44,34 @@
           <div class="box">
             <div class="box-header with-border">
               <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> New Supplier</a>
+			  <a href="deleted_supplier.php"><button class='btn btn-danger btn-sm btn-flat'><i class="fa fa-trash"></i> Deleted Supplier</button></a>
             </div>
             <div class="box-body">
               <table id="example1" class="table table-bordered">
                 <thead>
 				  <th width="15"></th>
-                  <th>NAME</th>
-                  <th>TOOLS</th>
+                  <th>CONTACT PERSON</th>
+				  <th>CONTACT NUMBER</th>
+                  <th>PRODUCT</th>
+				  <th>TOOLS</th>
                 </thead>
                 <tbody>
                   <?php
                     $conn = $pdo->open();
 
                     try{
-                      $stmt = $conn->prepare("SELECT * FROM category order by category asc");
+                      $stmt = $conn->prepare("SELECT * FROM suppliers where deleted_date = '0000-00-00'");
                       $stmt->execute();
                       foreach($stmt as $row){
                         echo "
                           <tr>
 						  	<td><input type='checkbox'></td>
-                            <td>".$row['category']."</td>
+                            <td>".$row['contact_person']."</td>
+							<td>".$row['contact_number']."</td>
+							<td>".$row['product']."</td>
                             <td>
-                              <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['id_category']."'><i class='fa fa-edit'></i> Edit</button>
-                              <button class='btn btn-danger btn-sm delete btn-flat' data-id='".$row['id_category']."'><i class='fa fa-trash'></i> Delete</button>
+                              <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['id_supplier']."'><i class='fa fa-edit'></i> Edit</button>
+                              <button class='btn btn-danger btn-sm delete btn-flat' data-id='".$row['id_supplier']."'><i class='fa fa-trash'></i> Delete</button>
                             </td>
                           </tr>
                         ";
@@ -96,46 +101,36 @@
 <?php include 'includes/scripts.php'; ?>
 <script>
 $(function(){
-
   $(document).on('click', '.edit', function(e){
     e.preventDefault();
     $('#edit').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
+    var id_supplier = $(this).data('id');
+    getRow(id_supplier);
   });
 
   $(document).on('click', '.delete', function(e){
     e.preventDefault();
     $('#delete').modal('show');
-    var id = $(this).data('id');
-    getRow(id);
-  });
-
-  $(document).on('click', '.photo', function(e){
-    e.preventDefault();
-    var id = $(this).data('id');
-    getRow(id);
-  });
-
-  $(document).on('click', '.status', function(e){
-    e.preventDefault();
-    var id = $(this).data('id');
-    getRow(id);
+    var id_supplier = $(this).data('id');
+    getRow(id_supplier);
   });
 
 });
 
-function getRow(id){
+function getRow(id_supplier){
   $.ajax({
     type: 'POST',
-    url: 'users_row.php',
-    data: {id:id},
+    url: 'suppliers_row.php',
+    data: {id_supplier:id_supplier},
     dataType: 'json',
     success: function(response){
-      $('.userid').val(response.id);
-	  $('#edit_company').val(response.company);
-      $('#edit_cperson').val(response.cperson);
-	  $('#edit_cnumber').val(response.cnumber);
+      $('.id_supplier').val(response.id_supplier);
+      $('#edit_contact_person').val(response.contact_person);
+	  $('.contact_person').val(response.contact_person);
+	  $('.product').val(response.product);
+	  $('#edit_contact_number').val(response.contact_number);
+	  $('#edit_product').val(response.product);
+      $('#catselected').val(response.product);
     }
   });
 }
