@@ -91,7 +91,7 @@
 
                     try{
                       $now = date('Y-m-d');
-                      $stmt = $conn->prepare("SELECT * FROM products $where and deleted_date ='0000-00-00' order by name asc");
+                      $stmt = $conn->prepare("SELECT * FROM products order by name asc");
                       $stmt->execute();
                       foreach($stmt as $row){
                         $image = (!empty($row['photo'])) ? '../images/'.$row['photo'] : '../images/noimage.jpg';
@@ -149,12 +149,41 @@ $(function(){
   });
   
   $('#select_category').change(function(){
-    var val = $(this).val();
-    if(val == 0){
-      window.location = 'products.php';
+    if ($('#select_category').find(":selected").val()=='0'){
+          getRow9();
+      }
+    else if ($('#select_category').find(":selected").val()=='1'){
+          getRow9('1');
+      }
+    else if ($('#select_category').find(":selected").val()=='2'){
+          getRow9('2');
+      }
+    else if ($('#select_category').find(":selected").val()=='3'){   
+            getRow9('3');
+      }
+    else if ($('#select_category').find(":selected").val()=='4'){             
+            getRow9('4');
+      }
+    else if ($('#select_category').find(":selected").val()=='5'){             
+          getRow9('5');
     }
-    else{
-      window.location = 'products.php?category='+val;
+    else if ($('#select_category').find(":selected").val()=='6'){             
+            getRow9('6');
+      }
+    else if ($('#select_category').find(":selected").val()=='7'){             
+            getRow9('7');
+      }
+    else if ($('#select_category').find(":selected").val()=='8'){             
+          getRow9('8');
+    }
+    else if ($('#select_category').find(":selected").val()=='9'){             
+            getRow9('9');
+    }
+    else if ($('#select_category').find(":selected").val()=='10'){             
+            getRow9('10');
+    }
+    else if ($('#select_category').find(":selected").val()=='15'){             
+            getRow9('15');
     }
   });
 
@@ -202,6 +231,19 @@ function getCategory(){
       $('#edit_category').append(response);
     }
   });
+}
+
+function getRow9(id_category=''){
+$.ajax({
+type: 'POST',
+url: 'products_query.php',
+data: {id_category:id_category},
+dataType: 'html',
+success: function(response){
+console.log(response);	
+$('#example1 tbody').empty().html(response);
+}
+});
 }
 </script>
 </body>
