@@ -215,6 +215,7 @@ $('#select_category').change(function(){
       getRow3();
 	}
 else if ($('#select_category').find(":selected").val()=='On Process'){
+		alert('sample ian branch');
 		  getRow3('On Process');
 	}
 else if ($('#select_category').find(":selected").val()=='Pending'){
