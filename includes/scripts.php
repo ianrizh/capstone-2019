@@ -29,8 +29,15 @@ $(function(){
 });
 </script>
 <!-- Custom Scripts -->
+
 <script>
 $(function(){
+  $('body').click(function(e){
+    if ( e.target.id != 'notification-icon'){
+      $("#notification-latest1").hide();
+    }
+  });
+  
   $('#navbar-search-input').focus(function(){
     $('#searchBtn').show();
   });
@@ -69,6 +76,18 @@ $(function(){
 
 });
 
+function myFunction1() {
+  $.ajax({
+    url: "view_notification.php",
+    type: "POST",
+    processData:false,
+    success: function(data){          
+      $("#notification-latest1").show();$("#notification-latest1").html(data);
+    },
+    error: function(){}           
+  });
+}
+
 function getCart(){
 	$.ajax({
 		type: 'POST',
@@ -80,4 +99,6 @@ function getCart(){
 		}
 	});
 }
+
+$('.declined_notif').modal('show'); // show notifications for declined reservation
 </script>
