@@ -17,7 +17,7 @@
 <br>
 <div id="declinecontainer" style="display:none">
 	<label>Reason: </label>
-	<textarea class="form-control" name="decline_remarks" required></textarea>
+	<textarea class="form-control" id="editor1" name="decline_remarks" required></textarea>
 </div>
 </div>
 <div class="modal-footer">
@@ -64,7 +64,7 @@
 
 <input type="hidden" class="reservation_id" id="reservation_id" name="reservation_id" />
 <input type="hidden" class="status" name="status" />
-<input type="hidden" class="s_price" id="s_price" name="s_price" />
+<input type="hidden" value="250.00" name="s_price" />
 <div id="insufficiientproducts_container"></div>
 <div class="form-group">
 <label>Findings</label>

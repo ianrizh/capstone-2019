@@ -231,6 +231,9 @@ else if ($('#select_category').find(":selected").val()=='Confirm'){
 else if ($('#select_category').find(":selected").val()=='Decline'){             
 		    getRow3('Decline');
   }
+else if ($('#select_category').find(":selected").val()=='Paid'){             
+		getRow3('Paid');
+}
   });
 
 });
