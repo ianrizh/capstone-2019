@@ -79,7 +79,7 @@ $conn = $pdo->open();
 
 try{
 $now = date('Y-m-d');
-$stmt = $conn->prepare("SELECT * FROM reservation where user_pets_id = :user_pets_id and status = 'Paid' and id_services = '0'");
+$stmt = $conn->prepare("SELECT * FROM reservation where user_pets_id = :user_pets_id and status = 'Paid'");
 $stmt->execute(['user_pets_id'=>$trnsctns]);
 foreach($stmt as $row){
 $reservation_id = $row['reservation_id'];

@@ -9,6 +9,7 @@ $time_reservation= $_POST['time_reservation'];
 $status = $_POST['status'];
 date_default_timezone_set('Asia/Manila');
 $thedate=date('Y-m-d');
+$s_price = $_POST['s_price'];
 if($id_services == '0'){
 $theday=date('l',strtotime($thedate));
 if($theday == 'Sunday')
@@ -237,8 +238,8 @@ else{
 try{
 date_default_timezone_set('Asia/Manila');
 $thedate=date('Y-m-d');
-$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:status,:starttime,:endtime,:r_type)");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
+$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,status,s_price,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:status,:s_price,:starttime,:endtime,:r_type)");
+$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'status'=>'Pending','s_price'=>$s_price,'starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
 $_SESSION['success'] = 'Reservation successful';
 }
 catch(PDOException $e){

@@ -10,20 +10,6 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 <!-- Content Header (Page header) -->
-<section class="content-header">
-
-
-<h1><div class="container" align="right">
-
-<?php
-$s=fill_brand($conn);
-		echo '';
-  echo '<font size="3"><label class="btn-print">Category</label>';
-    			
-                echo "<select name='product' id='product' class='btn-print'><option value=''>All Product</option>$s";
-              echo '</select>';echo ''; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class = "btn btn-success btn-print" href = "#" onclick = "printContent('details')"><i class ="glyphicon glyphicon-print"></i> Print</a></div>
- </h1>
-</section>
 
 <!-- Main content -->
 <section class="content">
@@ -52,10 +38,23 @@ unset($_SESSION['success']);
 <div class="row">
 <div class="col-xs-12">
 <div class="box">
-<!--<div class="box-header with-border">
-<a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat" id="addproduct"><i class="fa fa-plus"></i> New Product</a>
-</div>-->
-<div class="box-body"><br>
+<div class="box-header with-border">
+<a class = "btn btn-success btn-print btn-flat" href = "#" onclick = "printContent('details')"><i class ="glyphicon glyphicon-print"></i> Print</a>
+<div class="pull-right">
+<form class="form-inline">
+<div class="form-group">
+<?php
+$s=fill_brand($conn);
+  echo '<label>Category: </label>';
+  echo "<select name='product' id='product' class='form-control input-sm btn-print' style='margin-left:5px;'>
+  <option value=''>All Product</option>$s";
+  echo '</select>';?>
+  
+</div>
+</form>
+</div>
+</div>
+<div class="box-body">
 <script>
 function printContent(el)
 {
@@ -64,7 +63,7 @@ var printcontent=document.getElementById(el).innerHTML;
 document.body.innerHTML=printcontent;
 window.print();
 document.body.innerHTML=restorepage;
-window.location.href='inventory_reports.php';
+window.location.href='inventory_reportsall.php';
 }
 </script>
 
@@ -93,21 +92,21 @@ window.location.href='inventory_reports.php';
 		$pdo->close();
 	}
 ?>         
-<div class="column middle container table-wrapper-scroll-y" id="details">	<div align="center">
-<font color="black"><img src="../images/STELLAS LOGO.jpg" style="height:70px; width:170px;" /><br />
+<div class="box-body table-wrapper-scroll-y" id="details">	<div align="center">
+<font color="black"><img src="../images/STELLAS LOGO.jpg" style="height:70px; width:170px;" />
 <br>
  <p class="w3-small"><font size="4">			<strong>STELLA ANIMAL CLINIC</strong></p>
-  <h5><b> <font size="3">PRODUCT INVENTORY as of <?php date_default_timezone_set('Asia/Manila');
-	 echo date("M d, Y h:i a");?></b></h5>
+  <h5><b> <font size="3">PRODUCT INVENTORY of <?php date_default_timezone_set('Asia/Manila');
+	 echo date("Y");?></b></h5>
 
 
 			<div id="show_product">
-  <table width="100%"  border="3" cellpadding="0" cellspacing="0" style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:10px;"  >
+  <table class="table table-bordered" >
   
-  <tr align="center"><td bgcolor="bluegreen"><font color="black"><font size="-1">Product ID </font></td>
-          <td bgcolor="bluegreen"><font color="black"><font size="-1">Product Name</font></td>
-          <td bgcolor="bluegreen"><font color="black"><font size="-1">Category</font></td>
-		  <td bgcolor="bluegreen"><font color="black"><font size="-1">Stock Left</font></td></tr>
+  <tr align="center"><td bgcolor="bluegreen"><font color="black"><font size="-1"><b>PRODUCT ID</b></font></td>
+          <td bgcolor="bluegreen"><font color="black"><font size="-1"><b>PRODUCT NAME</b></font></td>
+          <td bgcolor="bluegreen"><font color="black"><font size="-1"><b>CATEGORY</b></font></td>
+		  <td bgcolor="bluegreen"><font color="black"><font size="-1"><b>STOCK LEFT</b></font></td></tr>
 		  	<?php
 		  	$conn = $pdo->open();
 		  	$stmt=$conn->prepare("select * from products where deleted_date= '0000-00-00'");
@@ -134,7 +133,7 @@ window.location.href='inventory_reports.php';
 		  	 ?>
 		  </tr>	
 		  <tr align="center">
-                        <th colspan="3"><font size="-1">Total</font></th>
+                        <th colspan="3" style="text-align: right"><font size="-1">TOTAL</font></th>
                         
 						
 						<th><div align="center"><font size="-1"><?php $s=number_format($grand); echo "$s"; ?></div></font></th>
@@ -143,7 +142,10 @@ window.location.href='inventory_reports.php';
                       </tr>
 </div></div></div>
 </div></div></section>
+
+
 <?php include 'includes/scripts.php'; ?>
+
 <script>
   $(document).ready(function(){
     $("#product").change(function(){

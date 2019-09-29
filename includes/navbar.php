@@ -1,23 +1,3 @@
-<script type="text/javascript">
-function myFunction1() {
-$.ajax({
-url: "view_notification.php",
-type: "POST",
-processData:false,
-success: function(data){					
-$("#notification-latest1").show();$("#notification-latest1").html(data);
-},
-error: function(){}           
-});
-}
-$(document).ready(function() {
-$('body').click(function(e){
-if ( e.target.id != 'notification-icon'){
-$("#notification-latest1").hide();
-}
-});
-});
-</script>
 <style>
 #notification-count{		
 	color: color;
@@ -215,7 +195,7 @@ if(isset($_SESSION['user'])){
 							</h4>
 						</div>
 						<div class="modal-footer">
-							<button class="btn btn-default" data-dismiss="modal" style="float:left">
+							<button class="btn btn-default" onclick="dismiss_popup()" data-dismiss="modal" style="float:left">
 								<span class="fa fa-close"></span> CONFIRM
 							</button>
 						</div>
@@ -223,18 +203,6 @@ if(isset($_SESSION['user'])){
 				</div>
 			</div>
 		';
-		$update = $conn->prepare("UPDATE reservation SET flag_seen=1 WHERE reservation_id = :id");
-		$update->execute(['id'=>$row['reservation_id']]);
-		/*
-		echo "
-			<br>
-			<div class='alert alert-danger alert-dismissible'>
-			<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-			<h4><i class='icon fa fa-warning'></i> Notice!</h4>
-			Your reservation request for your pet <strong>".$row['pet_name']."</strong> has been declined. Reason: <strong>".$row['decline_remarks']."</strong>
-			</div>
-		";
-		*/
 	}
 }
 ?>
