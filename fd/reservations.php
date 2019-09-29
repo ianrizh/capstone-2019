@@ -145,7 +145,7 @@ if($row3['status'] != 'Decline' && $row3['status'] != 'Confirm' && $row3['status
 echo "<button class='btn btn-success btn-sm edit1 btn-flat' data-id='".$row3['reservation_id']."'><i class='fa fa-edit'></i> Edit</button> ";
 }
 else{
-echo "<button class='btn btn-success btn-sm edit4 btn-flat' data-id='".$row3['reservation_id']."'><i class='fa fa-edit'></i> Edit</button> ";
+echo "<button class='btn btn-success btn-sm edit4 btn-flat decline-btn'  data-id='".$row3['reservation_id']."'><i class='fa fa-edit'></i> Edit</button> ";
 }
 ?>
 <?php echo "
@@ -282,6 +282,9 @@ else if ($('#select_category').find(":selected").val()=='Confirm'){
 else if ($('#select_category').find(":selected").val()=='Decline'){             
 		    getRow9('Decline');
   }
+else if ($('#select_category').find(":selected").val()=='Paid'){             
+      getRow9('Paid');
+}
   });
 
 });
