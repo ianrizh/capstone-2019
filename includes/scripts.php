@@ -101,4 +101,10 @@ function getCart(){
 }
 
 $('.declined_notif').modal('show'); // show notifications for declined reservation
+function dismiss_popup()
+{
+  $.ajax({
+    url: 'dismiss_decline_popup.php'
+  });
+}
 </script>
