@@ -170,21 +170,18 @@ echo "
 </td>
 </tr>
 <script>
-var x = 0;
-var y = 0;
-var z = 0;
-function calc(obj) {
-var d = obj.id.toString();
-if (d == '') {
-x = Number(obj.value);
-y = Number(document.getElementById('amount_paid').value);
-} else {
-x = Number(document.getElementById('total').value);
-y = Number(obj.value);
-}
-z = y - x;
-document.getElementById('_change').value = z;
-}
+	function calc(obj) {
+		var total = parseFloat(document.getElementById('total').value),
+			amount = parseFloat(obj.value) || 0;
+
+		if(total > amount) {
+			document.getElementById('_change').value = '0.00'
+			return false;
+		}
+
+		var change = (amount - total).toFixed(2);
+		document.getElementById('_change').value = change;
+	}
 </script>
 <tr>
 <td align="right" width="75%"><b style="color:#009900; font-size:16px;">AMOUNT PAID:</b></td>
