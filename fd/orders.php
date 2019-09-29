@@ -584,6 +584,7 @@ if($theday == 'Sunday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
 <div class="col-sm-8" id="clinic1" style="display:none">
@@ -633,6 +634,7 @@ elseif($theday == 'Monday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
 <div class="col-sm-8" id="clinic1" style="display:none">
@@ -682,6 +684,7 @@ elseif($theday == 'Tuesday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
 <div class="col-sm-8" id="clinic1" style="display:none">
@@ -731,6 +734,7 @@ elseif($theday == 'Wednesday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
 <div class="col-sm-8" id="clinic1" style="display:none">
@@ -780,6 +784,7 @@ elseif($theday == 'Thursday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
 <div class="col-sm-8" id="clinic1" style="display:none">
@@ -829,6 +834,7 @@ elseif($theday == 'Friday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
 <div class="col-sm-8" id="clinic1" style="display:none">
@@ -878,6 +884,7 @@ elseif($theday == 'Saturday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
 <div class="col-sm-8" id="clinic1" style="display:none">
@@ -1111,6 +1118,7 @@ if($theday == 'Sunday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
 <div class="col-sm-8" id="clinicb" style="display:none">
@@ -1160,6 +1168,7 @@ elseif($theday == 'Monday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
 <div class="col-sm-8" id="clinicb" style="display:none">
@@ -1209,6 +1218,7 @@ elseif($theday == 'Tuesday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
 <div class="col-sm-8" id="clinicb" style="display:none">
@@ -1258,6 +1268,7 @@ elseif($theday == 'Wednesday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
 <div class="col-sm-8" id="clinicb" style="display:none">
@@ -1307,6 +1318,7 @@ elseif($theday == 'Thursday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
 <div class="col-sm-8" id="clinicb" style="display:none">
@@ -1356,6 +1368,7 @@ elseif($theday == 'Friday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
 <div class="col-sm-8" id="clinicb" style="display:none">
@@ -1405,6 +1418,7 @@ elseif($theday == 'Saturday')
 {
 echo '
 <div id="time" class="form-group">
+<input type="hidden" name="s_price" value="250.00">
 <input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
 <label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
 <div class="col-sm-8" id="clinicb" style="display:none">

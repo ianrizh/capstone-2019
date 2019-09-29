@@ -49,10 +49,25 @@ echo "
 unset($_SESSION['success']);
 }
 ?>
+<div>
+<a class = "btn btn-success btn-print btn-flat" href = "#" onclick = "printContent('details')"><i class ="glyphicon glyphicon-print"></i> Print</a>
+</div>
+<br>
 <div class="row">
 <div class="col-xs-12">
 <div class="box">
-<div class="box-body" align="center">
+<script>
+function printContent(el)
+{
+var restorepage=document.body.innerHTML;
+var printcontent=document.getElementById(el).innerHTML;
+document.body.innerHTML=printcontent;
+window.print();
+document.body.innerHTML=restorepage;
+window.location.href='suppliers.php';
+}
+</script>
+<div class="box-body" align="center" id="details">
 <img src="../images/STELLAS LOGO.jpg" width="30%" style="margin-bottom:15px;"><br />
 <h4 class="modal-title"><b>OFFICIAL RECEIPT</b></h4>
 <h5 style="margin-top:5px;">Unit 25 Emeral Complex, P. Tuazon Blvd, Project 4, Quezon City, Metro Manila</h5>
@@ -183,10 +198,6 @@ echo "
 </td>
 </tr>
 </table>
-
-<div class="modal-footer">
-<button type="submit" class="btn btn-success btn-flat" name="print"><i class="fa fa-print"></i> Print</button>
-<button type="submit" class="btn btn-success btn-flat" name="pdf"><i class="fa fa-file-pdf-o"></i> View as PDF</button>
 </form>
 </div>
 </div>

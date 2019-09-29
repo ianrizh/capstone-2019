@@ -14,6 +14,7 @@ $pet_gender = $_POST['pet_gender'];
 $id_services = $_POST['id_services'];
 $time_reservation= $_POST['time_reservation'];
 $status = $_POST['status'];
+$s_price = $_POST['s_price'];
 date_default_timezone_set('Asia/Manila');
 $thedate=date('Y-m-d');
 
@@ -255,15 +256,15 @@ $user_pets_id = $conn->lastInsertId();
 if($id_services == '0'){
 date_default_timezone_set('Asia/Manila');
 $thedate=date('Y-m-d');
-$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:status,:starttime,:endtime,:r_type)");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'status'=>'Waiting','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
+$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,s_price,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:s_price,:status,:starttime,:endtime,:r_type)");
+$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'s_price'=>$s_price,'status'=>'Waiting','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
 $_SESSION['success'] = 'Reservation successful';
 }
 else{
 date_default_timezone_set('Asia/Manila');
 $thedate=date('Y-m-d');
-$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:status,:starttime,:endtime,:r_type)");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
+$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,s_price,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:s_price,:status,:starttime,:endtime,:r_type)");
+$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'s_price'=>$s_price,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
 $_SESSION['success'] = 'Reservation successful';
 }
 }
