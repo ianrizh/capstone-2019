@@ -107,21 +107,14 @@ $time = $row2['time_reservation'];
 $total = $row2['total'];
 $status = $row2['status'];
 $id_services = $row2['id_services'];
-					if($s_id == "0"){
-						$name = ' Veterinary Health Care';
-					}
-					else{
-						$name = $row5['name'];
-					}
-echo "
-<tr>";
-if(strstr($name, "Boarding") !== FALSE){
-echo "<td>BRDNG_0".$reservation_id."</td>";
+if($id_services == "0"){
+ $code = "VHC_0".$reservation_id;
 }
 else{
-echo "<td>GRMMNG_0".$reservation_id."</td>";
+ $code ="GMMNG_0".$reservation_id;
 }
-echo "</td>
+
+echo "<td>".$code."</td>
 <td>".date('M. d, Y', strtotime($thedate))." <br> ".$time."</td>
 <td>&#8369; ".number_format($total,2)."</td>
 <td>".$status."</td>

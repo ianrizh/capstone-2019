@@ -7,7 +7,6 @@ $user_pets_id = $_POST['user_pets_id'];
 $id_services = $_POST['id_services'];
 $thedate = $_POST['thedate'];
 $time_reservation= $_POST['time_reservation'];
-$s_price = 250;
 $status = $_POST['status'];
 $theday=date('l',strtotime($thedate));
 if($theday == 'Sunday')
@@ -162,8 +161,8 @@ $_SESSION['error'] = 'The chosen date and time is already taken by other custome
 }
 else{
 try{
-$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,s_price,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:s_price,:status,:starttime,:endtime,:r_type)");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'s_price'=>$s_price,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Online']);
+$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:status,:starttime,:endtime,:r_type)");
+$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Online']);
 $_SESSION['success'] = 'Reservation successful';
 }
 catch(PDOException $e){

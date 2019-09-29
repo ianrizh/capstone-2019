@@ -83,6 +83,7 @@ $pdo->close();
 <th>PET NAME</th>
 <th>SERVICE NAME</th>
 <th>DATE AND TIME</th>
+<th>TYPE</th>
 <th>STATUS</th>
 <th>TOOLS</th>
 </thead>
@@ -99,7 +100,7 @@ $reservation_id = $row3['reservation_id'];
 $date = $row3['thedate'];
 $time = $row3['time_reservation'];
 $s_id = $row3['id_services'];
-
+$r_type = $row3['r_type'];
 $user_pets_id = $row3['user_pets_id'];
 		$stmt = $conn->prepare("SELECT * FROM user_pets where user_pets_id = '$user_pets_id'");
 		$stmt->execute();
@@ -137,18 +138,21 @@ echo "
 <td>".$pet_name."</td>
 <td>".$name."</td>
 <td>".date('M. d, Y', strtotime($date))." <br>".$time."</td>
-
+<td>".$r_type."</td>
 <td>".$row3['status']."</td>
 <td> ";?>
 <?php
-if($row3['status'] != 'Decline' && $row3['status'] != 'Confirm' && $row3['status'] != 'On Process'){
+if($row3['status'] == 'Pending'){
 echo "<button class='btn btn-success btn-sm edit1 btn-flat' data-id='".$row3['reservation_id']."'><i class='fa fa-edit'></i> Edit</button> ";
 }
-else{
+elseif($row3['status'] == 'Confirm' || $row3['status'] == 'On Process'){
 echo "<button class='btn btn-success btn-sm edit4 btn-flat' data-id='".$row3['reservation_id']."'><i class='fa fa-edit'></i> Edit</button> ";
 }
+else{
+echo "<button class='btn btn-success btn-sm edit4 btn-flat' data-id='".$row3['reservation_id']."' disabled><i class='fa fa-edit'></i> Edit</button> ";
+}
 ?>
-<?php echo "
+<?php echo "<a href='history1.php?user=".$row3['user_pets_id']."' class='btn btn-info btn-sm btn-flat'><i class='fa fa-eye'></i> History</a>
 </td>
 </tr>
 ";
@@ -282,6 +286,9 @@ else if ($('#select_category').find(":selected").val()=='Confirm'){
 else if ($('#select_category').find(":selected").val()=='Decline'){             
 		    getRow9('Decline');
   }
+else if ($('#select_category').find(":selected").val()=='Paid'){             
+      getRow9('Paid');
+}
   });
 
 });
