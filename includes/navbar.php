@@ -174,7 +174,7 @@ if(isset($_SESSION['user'])){
 		LEFT JOIN pets p
             ON r.user_pets_id = p.id_pet
 		WHERE
-			user_pets_id IN ( SELECT id_pet FROM pets WHERE id_cust=:id)
+			user_pets_id IN (SELECT id_pet FROM pets WHERE id_cust=:id)
 			AND status='Decline'
 			AND flag_seen = 0
 	");

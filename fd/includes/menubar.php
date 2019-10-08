@@ -37,8 +37,8 @@ $stmt->execute();
 $row = $stmt -> fetch();
 $count = $row['numrows'];
 ?>
-<li><a href="users.php"><i class="fa fa-users"></i> Customers <span id="notification-count"><?php if($count>0) { echo $count; } else { echo 0; } ?></span></a></li>
-<li><a href="products.php"><i class="fa fa-product-hunt"></i> Products</a></li>
+<li><a href="users.php"><i class="fa fa-users"></i> <span> Customers <span id="notification-count"><?php if($count>0) { echo $count; } else { echo 0; } ?></span></span></a></li>
+<li><a href="products.php"><i class="fa fa-product-hunt"></i> <span> Products</span></a></li>
 
 <li class="header">TRANSACTIONS</li>
 <?php
@@ -48,8 +48,8 @@ $stmt->execute();
 $row = $stmt -> fetch();
 $count = $row['numrows'];
 ?>
-<li><a href="reservations.php"><i class="fa fa-calendar"></i> Confirmation <span id="notification-count"><?php if($count>0) { echo $count; } else { echo 0; } ?></span></a></li>
-<li><a href="orders.php"><i class="fa fa-male"></i> Walk In</a></li>
+<li><a href="reservations.php"><i class="fa fa-calendar"></i> <span> Confirmation <span id="notification-count"><?php if($count>0) { echo $count; } else { echo 0; } ?></span></span></a></li>
+<li><a href="orders.php"><i class="fa fa-male"></i> <span> Walk In</span></a></li>
 <?php
 $count = 0;
 $stmt=$conn->prepare("SELECT *, COUNT(*) AS numrows FROM reservation WHERE status = 'Process Done'");
@@ -57,7 +57,7 @@ $stmt->execute();
 $row = $stmt -> fetch();
 $count = $row['numrows'];
 ?>
-<li><a href="suppliers.php"><i class="fa fa-money"></i> Payment <span id="notification-count"><?php if($count>0) { echo $count; } else { echo 0; } ?></span></a></li>
+<li><a href="suppliers.php"><i class="fa fa-money"></i> <span> Payment <span id="notification-count"><?php if($count>0) { echo $count; } else { echo 0; } ?></span></span></a></li>
 </ul>
 </section>
 <!-- /.sidebar -->

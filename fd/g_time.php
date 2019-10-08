@@ -15,7 +15,7 @@ echo '
 <div id="time" class="form-group">
 <input type="hidden" name="s_price" value="'.$price.'">
 <label for="edit_name" class="col-sm-3 control-label">TIME</label>
-<div class="col-sm-8">
+<div class="col-sm-9">
 <select class="form-control" id="time" name="time_reservation" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
@@ -68,7 +68,7 @@ echo '
 <div id="time" class="form-group">
 <input type="hidden" name="s_price" value="'.$price.'">
 <label for="edit_name" class="col-sm-3 control-label">TIME</label>
-<div class="col-sm-8">
+<div class="col-sm-9">
 <select class="form-control" id="time" name="time_reservation" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
@@ -121,7 +121,7 @@ echo '
 <div id="time" class="form-group">
 <input type="hidden" name="s_price" value="'.$price.'">
 <label for="edit_name" class="col-sm-3 control-label">TIME</label>
-<div class="col-sm-8">
+<div class="col-sm-9">
 <select class="form-control" id="time" name="time_reservation" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
@@ -174,7 +174,7 @@ echo '
 <div id="time" class="form-group">
 <input type="hidden" name="s_price" value="'.$price.'">
 <label for="edit_name" class="col-sm-3 control-label">TIME</label>
-<div class="col-sm-8">
+<div class="col-sm-9">
 <select class="form-control" id="time" name="time_reservation" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
@@ -227,7 +227,7 @@ echo '
 <div id="time" class="form-group">
 <input type="hidden" name="s_price" value="'.$price.'">
 <label for="edit_name" class="col-sm-3 control-label">TIME</label>
-<div class="col-sm-8">
+<div class="col-sm-9">
 <select class="form-control" id="time" name="time_reservation" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
@@ -280,7 +280,7 @@ echo '
 <div id="time" class="form-group">
 <input type="hidden" name="s_price" value="'.$price.'">
 <label for="edit_name" class="col-sm-3 control-label">TIME</label>
-<div class="col-sm-8">
+<div class="col-sm-9">
 <select class="form-control" id="time" name="time_reservation" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
@@ -333,7 +333,7 @@ echo '
 <div id="time" class="form-group">
 <input type="hidden" name="s_price" value="'.$price.'">
 <label for="edit_name" class="col-sm-3 control-label">TIME</label>
-<div class="col-sm-8">
+<div class="col-sm-9">
 <select class="form-control" id="time" name="time_reservation" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");

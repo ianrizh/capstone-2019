@@ -44,6 +44,7 @@ $stmt->execute(['serid' => $serid]);
 foreach ($stmt as $row) {
 $image = (!empty($row['photo'])) ? 'images/'.$row['photo'] : 'images/noimage.jpg';
 $inc = ($inc == 3) ? 1 : $inc + 1;
+$id_services=$row['id_services'];
 $name = $row['name'];
 if($inc == 1) echo "<div class='row'>";
 echo "
@@ -63,8 +64,15 @@ echo "
 <a href='#appointment' class='btn btn-success btn-md btn-flat' data-toggle='modal' style='width:100%'><i class='fa fa-calendar'></i> Make Appointment</a>";
 }
 else{
-echo "
+ 
+  $stmt=$conn->prepare("SELECT *,COUNT(*) as numrows from reservation where id_services = '$id_services' and status !='Decline'");
+  $stmt->execute();
+  $row1=$stmt->fetch();
+  
+    echo "
 <a href='appointment.php?service=".$row['id_services']."' class='btn btn-success btn-md btn-flat' style='width:100%'><i class='fa fa-calendar'></i> Create Appointment</a>";
+ 
+
 }
 ?>
 <?php 

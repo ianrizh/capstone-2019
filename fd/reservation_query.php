@@ -60,17 +60,14 @@ foreach($stmt as $row3){
     <td>".$row3['status']."</td>
     <td> ";?>
     <?php
-    if($row3['status'] == 'Pending'){
+    if($row3['status'] != 'Decline' && $row3['status'] != 'Confirm' && $row3['status'] != 'On Process'){
     echo "<button class='btn btn-success btn-sm edit1 btn-flat' data-id='".$row3['reservation_id']."'><i class='fa fa-edit'></i> Edit</button> ";
     }
-    elseif($row3['status'] == 'Confirm' || $row3['status'] == 'On Process'){
+    else{
     echo "<button class='btn btn-success btn-sm edit4 btn-flat' data-id='".$row3['reservation_id']."'><i class='fa fa-edit'></i> Edit</button> ";
     }
-    else{
-    echo "<button class='btn btn-success btn-sm edit4 btn-flat' data-id='".$row3['reservation_id']."' disabled><i class='fa fa-edit'></i> Edit</button> ";
-    }
     ?>
-    <?php echo "<a href='history1.php?user=".$row3['user_pets_id']."' class='btn btn-info btn-sm btn-flat'><i class='fa fa-eye'></i> History</a>
+    <?php echo "
     </td>
     </tr>
     ";

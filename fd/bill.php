@@ -1,8 +1,6 @@
 <?php include 'includes/session.php';
 $bill = $_GET['bill'];
-
 $conn = $pdo->open();
-
 try{
 $stmt = $conn->prepare("SELECT * FROM reservation WHERE reservation_id = :bill");
 $stmt->execute(['bill' => $bill]);
@@ -12,7 +10,6 @@ $pymnt = $rcpt['reservation_id'];
 catch(PDOException $e){
 echo "There is some problem in connection: " . $e->getMessage();
 }
-
 $pdo->close();
 ?>
 <?php include 'includes/header.php'; ?>
@@ -135,11 +132,11 @@ $stmt->execute(['bill' => $bill]);
 foreach($stmt as $p){
 $reservation_id = $p['reservation_id'];
 $total = $p['total'];
-$stmt = $conn->prepare("select * from findings_prescription where reservation_id = '$reservation_id'");
-$stmt->execute();
-foreach($stmt as $l){
-$fp_id = $l['fp_id'];
-$stmt = $conn->prepare("select * from products_used where fp_id = '$fp_id'");
+// $stmt = $conn->prepare("select * from findings_prescription where reservation_id = '$reservation_id'");
+// $stmt->execute();
+// foreach($stmt as $l){
+// $fp_id = $l['fp_id'];
+$stmt = $conn->prepare("select * from products_used where reservation_id = '$reservation_id'");
 $stmt->execute();
 foreach($stmt as $w){
 $pu_id = $w['pu_id'];
@@ -155,7 +152,7 @@ echo "
 <td>&#8369; ".number_format($amount,2)."</td>
 </tr> ";
 }
-}
+// }
 }
 ?>
 </tbody>
@@ -173,12 +170,10 @@ echo "
 	function calc(obj) {
 		var total = parseFloat(document.getElementById('total').value),
 			amount = parseFloat(obj.value) || 0;
-
 		if(total > amount) {
 			document.getElementById('_change').value = '0.00'
 			return false;
 		}
-
 		var change = (amount - total).toFixed(2);
 		document.getElementById('_change').value = change;
 	}

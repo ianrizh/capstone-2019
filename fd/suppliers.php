@@ -47,67 +47,123 @@ unset($_SESSION['success']);
 <thead>
 <th>DATE</th>
 <th>CUSTOMER</th>
+<th>SERVICE TYPE</th>
 <th>STATUS</th>
 <th>TOTAL</th>
 <th>TOOLS</th>
 </thead>
 <tbody>
 <?php 
-$conn = $pdo->open();
-$stmt=$conn->prepare("select * from reservation where status = 'Process Done' or status = 'Paid'");
-$stmt->execute();
-foreach($stmt as $isa){
-$upi = $isa['user_pets_id'];
-$stmt=$conn->prepare("select * from user_pets where user_pets_id = '$upi'");
-$stmt->execute();
-foreach($stmt as $duwa){
-$ic = $duwa['id_cust'];
-}}
-$stmt =$conn->prepare("select reservation_id, id_services, thedate, user_pets_id, time_reservation, status, total from reservation where status = 'Process Done' or status ='Paid' order by reservation_id asc");
-$stmt->execute();
-foreach($stmt as $row){
-$reservation_id = $row['reservation_id'];
-$thedate = $row['thedate'];
-$time_reservation = $row['time_reservation'];
-$user_pets_id = $row['user_pets_id'];
-$status = $row['status'];
-$total = $row['total'];
-$stmt =$conn->prepare("select * from user_pets where user_pets_id = '$user_pets_id'");
-$stmt->execute();
-foreach($stmt as $row1){
-$id_cust = $row1['id_cust'];
-$stmt =$conn->prepare("select * from users where id_cust = '$id_cust'");
-$stmt->execute();
-foreach($stmt as $row2){
-$fullname = $row2['firstname'] ." ". $row2['lastname'];
-$count = 0;
-$stmt1=$conn->prepare("SELECT *, COUNT(*) AS numrows FROM reservation where user_pets_id = '$user_pets_id' and status = 'Process Done'");
-$stmt1->execute();
-$a = $stmt1 -> fetch();
-$count = $a['numrows'];
-echo"
-<tr>
-<td>".date('M. d, Y', strtotime($thedate))."</td>
-<td>".$fullname."</td>
-<td>".$status."</td>
-<td>&#8369; ".number_format($total,2)."</td>";
-if($status == 'Paid'){
-echo "<td><a href='bill1.php?copy=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-file'></i> Receipt</a></td>";
-}
-else{
+	$conn = $pdo->open();
+	$stmt=$conn->prepare("select * from reservation where status = 'Process Done' or status = 'Paid'");
+	$stmt->execute();
 
-echo "<td><a href='bill.php?bill=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-money'></i> Bill</a></td>";
+	foreach($stmt as $isa){
+		$upi = $isa['user_pets_id'];
+		$stmt=$conn->prepare("select * from user_pets where user_pets_id = '$upi'");
+		$stmt->execute();
 
-/*else{
-echo "<td><a href='view.php?view=".$user_pets_id."' class='btn btn-info btn-sm btn-flat'><i class='fa fa-eye'></i> View</a></td>";
-}*/
-}
-echo "
-</tr>
-";
-}
-}
-}
+		foreach($stmt as $duwa){
+			$ic = $duwa['id_cust'];
+		}
+	}
+
+	$stmt =$conn->prepare("select reservation_id, id_services, thedate, user_pets_id, time_reservation, status, total from reservation where status = 'Process Done' or status ='Paid' order by reservation_id asc");
+	$stmt->execute();
+
+	foreach($stmt as $row){
+		$id_services = $row['id_services'];
+		$reservation_id = $row['reservation_id'];
+		$thedate = $row['thedate'];
+		$time_reservation = $row['time_reservation'];
+		$user_pets_id = $row['user_pets_id'];
+		$status = $row['status'];
+		$total = $row['total'];
+
+		$stmt =$conn->prepare("select * from user_pets where user_pets_id = '$user_pets_id'");
+		$stmt->execute();
+
+		foreach($stmt as $row1){
+			$id_cust = $row1['id_cust'];
+			$stmt =$conn->prepare("select * from users where id_cust = '$id_cust'");
+			$stmt->execute();
+
+			foreach($stmt as $row2){
+				$fullname = $row2['firstname'] ." ". $row2['lastname'];
+				$count = 0;
+
+				$stmt1=$conn->prepare("SELECT *, COUNT(*) AS numrows FROM reservation where user_pets_id = '$user_pets_id' and status = 'Process Done'");
+				$stmt1->execute();
+				$a = $stmt1 -> fetch();
+
+				$count = $a['numrows'];
+				$stmt = $conn->prepare("SELECT * FROM services where deleted_date = '0000-00-00' and id_services = '$id_services'");
+				$stmt->execute();
+
+				foreach($stmt as $row5){
+					$name = $row5['name'];
+				}
+
+				echo"
+					<tr>
+						<td>".date('M. d, Y', strtotime($thedate))."</td>
+						<td>".$fullname."</td>";
+
+				if($id_services == "0"){
+					echo "<td>Veterinary Health Care</td>";
+				}
+				elseif(strstr($name, "Boarding") !== FALSE){
+					echo "<td>Boarding</td>";
+				}
+				else{
+					echo "<td>Grooming</td>";
+				}
+
+				echo "
+						<td>".$status."</td>
+						<td>&#8369; ".number_format($total,2)."</td>";
+				if($id_services == "0"){
+				if($status == 'Paid'){
+					// if(strstr($name, "Boarding") !== FALSE){
+					// 	echo "<td><a href='bill3.php?copy=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-file'></i> Receipt</a></td>";
+					// }
+					// else{
+						echo "<td><a href='bill1.php?copy=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-file'></i> Receipt</a><a href='prescription.php?copy=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-search'></i> Prescription</a></td>";
+					// }
+				}
+				else{
+					// if(strstr($name, "Boarding") !== FALSE){
+					// 	echo "<td><a href='bill4.php?bill=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-money'></i> Bill</a></td>";
+					// }
+					// else{
+						echo "<td><a href='bill.php?bill=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-money'></i> Bill</a><a href='prescription.php?copy=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-search'></i> Prescription</a></td>";
+					// }
+				}}
+				else{
+					if($status == 'Paid'){
+					// if(strstr($name, "Boarding") !== FALSE){
+					// 	echo "<td><a href='bill3.php?copy=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-file'></i> Receipt</a></td>";
+					// }
+					// else{
+						echo "<td><a href='bill1.php?copy=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-file'></i> Receipt</a></td>";
+					// }
+				}
+				else{
+					// if(strstr($name, "Boarding") !== FALSE){
+					// 	echo "<td><a href='bill4.php?bill=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-money'></i> Bill</a></td>";
+					// }
+					// else{
+						echo "<td><a href='bill.php?bill=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-money'></i> Bill</a></td>";
+					// }
+				}
+				}
+
+				
+				echo "
+					</tr>";
+			}
+		}
+	}
 ?>
 </tbody>
 </table>

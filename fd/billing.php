@@ -17,7 +17,7 @@ $pay_date=date('Y-m-d');
 $stmt = $conn->prepare("UPDATE reservation SET status='Paid', amount_paid=:amount_paid, _change=:_change, pay_date='$pay_date' WHERE reservation_id=:reservation_id");
 $stmt->execute(['amount_paid'=>$amount_paid, '_change'=>$_change, 'reservation_id'=>$reservation_id]);
 
-$stmt = $conn->prepare("SELECT pu.productid,pu.qty FROM findings_prescription fp LEFT JOIN products_used pu ON fp.fp_id=pu.fp_id WHERE fp.reservation_id = :reservation_id");
+$stmt = $conn->prepare("SELECT productid,qty FROM products_used WHERE reservation_id = :reservation_id");
 $stmt->execute(['reservation_id'=>$reservation_id]);
 $a_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

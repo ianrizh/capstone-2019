@@ -55,8 +55,8 @@
 		</span>
 	</a>
 	<ul class="treeview-menu">
-		<li><a href="inventory_reports.php"><i class="fa fa-circle-o"></i> Per Batch</a></li>
 		<li><a href="inventory_reportsall.php"><i class="fa fa-circle-o"></i> All Products</a></li>
+		<li><a href="inventory_reports.php"><i class="fa fa-circle-o"></i> Per Batch</a></li>
 	</ul>	
 
 		</li>
@@ -75,6 +75,7 @@
 </li>
 		<li><a href="stocks.php"><i class="fa fa-circle-o"></i> <span> Expired Products</span></a></li>
 		<li><a href="wastage.php"><i class="fa fa-circle-o"></i> <span> Wastage</span></a></li>
+		<li><a href="adjustment.php"><i class="fa fa-circle-o"></i> <span> Inventory Adjustment</span></a></li>
 	</ul>
 </li>
 
@@ -86,12 +87,13 @@ $stmt->execute();
 $row = $stmt -> fetch();
 $count = $row['numrows'];
 ?>
-<li><a href="users.php"><i class="fa fa-users"></i> Customers <span id="notification-count"><?php if($count>0) { echo $count; } else { echo 0; } ?></span></a></li>
+<!--<li><a href="users.php"><i class="fa fa-users"></i> Customers <span id="notification-count"><?php if($count>0) { echo $count; } else { echo 0; } ?></span></a></li>-->
+<li><a href="users.php"><i class="fa fa-users"></i> <span> Customers <span id="notification-count"><?php if($count>0) { echo $count; } else { echo 0; } ?></span></span></a></li>
 <li><a href="suppliers.php"><i class="fa fa-phone"></i> <span> Suppliers</span></a></li>
 <li><a href="schedule.php"><i class="fa fa-clock-o"></i> <span> Schedule</span></a></li>
-<li><a href="services.php"><i class="fa fa-paw"></i> Services</a></li>
+<li><a href="services.php"><i class="fa fa-paw"></i> <span> Services</span></a></li>
 <li class="header">TRANSACTIONS</li>
-<li><a href="reservations.php"><i class="fa fa-calendar"></i> Reservations</a></li>
+<li><a href="reservations.php"><i class="fa fa-calendar"></i> <span> Reservations</span></a></li>
 </ul>
 </section>
 <!-- /.sidebar -->

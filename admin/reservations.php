@@ -90,8 +90,6 @@ $pdo->close();
 </thead>
 <tbody>
 <?php
-
-
 $conn = $pdo->open();
 
 try{
@@ -154,7 +152,7 @@ echo "<button class='btn btn-primary btn-sm findings btn-flat' data-id='".$row['
 }
 else {
 echo "<button class='btn btn-primary btn-sm findings btn-flat' data-id='".$row['reservation_id']."' disabled><i class='fa fa-clipboard'></i> Findings</button> "; }?>
-<?php echo "<a href='history1.php?user=".$row['user_pets_id']."' class='btn btn-info btn-sm btn-flat'><i class='fa fa-eye'></i> History</a>
+<?php echo "
 </td>
 </tr>
 ";
@@ -231,9 +229,6 @@ else if ($('#select_category').find(":selected").val()=='Confirm'){
 else if ($('#select_category').find(":selected").val()=='Decline'){             
 		    getRow3('Decline');
   }
-else if ($('#select_category').find(":selected").val()=='Paid'){             
-		getRow3('Paid');
-}
   });
 
 });

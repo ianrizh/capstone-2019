@@ -59,12 +59,16 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_date=$gro['time_id'];	
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_date'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and id_services = '$id_services' and time_reservation = '$time'");
+$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $sss);
 $numrows=$sss['numrows'];
@@ -73,18 +77,36 @@ $stmt->execute();
 foreach($stmt as $rows1);
  $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
+$stmt = $conn->prepare("select * from doctor where time_id = '$time_id' and status ='Not Available' or time_id=0 and status ='Not Available'");
 $stmt->execute();
 foreach($stmt as $rows);
 $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
+$incharge=$rows['in_charge'];
 $status = $rows['status'];
-if($date == $date2 && $time1 == $time && $numrows>=2 || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
+if($grooming_date == ""){
+
+	$as=$numrows+$incharge;	
+if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
+
 else{
 echo'<option value="'.$time.'">'.$time.'</option>';
+}
+}
+else if($grooming_date == 0)
+{}
+else{
+
+	if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
+echo'<option value="'.$time.'" hidden>'.$time.'</option>';
+}
+
+else{
+echo'<option value="'.$time.'">'.$time.'</option>';	
+}
 }
 }
 }
@@ -112,12 +134,16 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_date=$gro['time_id'];	
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_date'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and id_services = '$id_services' and time_reservation = '$time'");
+$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $sss);
 $numrows=$sss['numrows'];
@@ -126,18 +152,37 @@ $stmt->execute();
 foreach($stmt as $rows1);
  $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
+$stmt = $conn->prepare("select * from doctor where time_id = '$time_id' and status ='Not Available' or time_id = 0 and status ='Not Available'");
 $stmt->execute();
 foreach($stmt as $rows);
 $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
+$incharge=$rows['in_charge'];
 $status = $rows['status'];
-if($date == $date2 && $time1 == $time && $numrows>=2 || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
+
+if($grooming_date == ""){
+
+	$as=$numrows+$incharge;	
+if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
+
 else{
 echo'<option value="'.$time.'">'.$time.'</option>';
+}
+}
+else if($grooming_date == 0)
+{}
+else{
+
+	if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
+echo'<option value="'.$time.'" hidden>'.$time.'</option>';
+}
+
+else{
+echo'<option value="'.$time.'">'.$time.'</option>';	
+}
 }
 }
 }
@@ -164,12 +209,16 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_date=$gro['time_id'];	
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_date'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and id_services = '$id_services' and time_reservation = '$time'");
+$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $sss);
 $numrows=$sss['numrows'];
@@ -178,18 +227,37 @@ $stmt->execute();
 foreach($stmt as $rows1);
  $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
+$stmt = $conn->prepare("select * from doctor where time_id = '$time_id' and status ='Not Available' or time_id=0 and status ='Not Available'");
 $stmt->execute();
 foreach($stmt as $rows);
 $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
+$incharge=$rows['in_charge'];
 $status = $rows['status'];
-if($date == $date2 && $time1 == $time && $numrows>=2 || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
+
+if($grooming_date == ""){
+
+	$as=$numrows+$incharge;	
+if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
+
 else{
 echo'<option value="'.$time.'">'.$time.'</option>';
+}
+}
+else if($grooming_date == 0)
+{}
+else{
+
+	if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
+echo'<option value="'.$time.'" hidden>'.$time.'</option>';
+}
+
+else{
+echo'<option value="'.$time.'">'.$time.'</option>';	
+}
 }
 }
 }
@@ -216,12 +284,16 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_date=$gro['time_id'];	
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_date'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and id_services = '$id_services' and time_reservation = '$time'");
+$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $sss);
 $numrows=$sss['numrows'];
@@ -230,18 +302,37 @@ $stmt->execute();
 foreach($stmt as $rows1);
  $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
+$stmt = $conn->prepare("select * from doctor where time_id = '$time_id' and status ='Not Available' or time_id=0 and status ='Not Available'");
 $stmt->execute();
 foreach($stmt as $rows);
 $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
+$incharge=$rows['in_charge'];
 $status = $rows['status'];
-if($date == $date2 && $time1 == $time && $numrows>=2 || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
+
+if($grooming_date == ""){
+
+	$as=$numrows+$incharge;	
+if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
+
 else{
 echo'<option value="'.$time.'">'.$time.'</option>';
+}
+}
+else if($grooming_date == 0)
+{}
+else{
+
+	if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
+echo'<option value="'.$time.'" hidden>'.$time.'</option>';
+}
+
+else{
+echo'<option value="'.$time.'">'.$time.'</option>';	
+}
 }
 }
 }
@@ -268,12 +359,16 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_date=$gro['time_id'];	
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_date'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and id_services = '$id_services' and time_reservation = '$time'");
+$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $sss);
 $numrows=$sss['numrows'];
@@ -282,18 +377,37 @@ $stmt->execute();
 foreach($stmt as $rows1);
  $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
+$stmt = $conn->prepare("select * from doctor where time_id = '$time_id' and status ='Not Available'  or time_id=0 and status ='Not Available'");
 $stmt->execute();
 foreach($stmt as $rows);
 $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
+$incharge=$rows['in_charge'];
 $status = $rows['status'];
-if($date == $date2 && $time1 == $time && $numrows>=2 || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
+
+if($grooming_date == ""){
+
+	$as=$numrows+$incharge;	
+if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
+
 else{
 echo'<option value="'.$time.'">'.$time.'</option>';
+}
+}
+else if($grooming_date == 0)
+{}
+else{
+
+	if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
+echo'<option value="'.$time.'" hidden>'.$time.'</option>';
+}
+
+else{
+echo'<option value="'.$time.'">'.$time.'</option>';	
+}
 }
 }
 }
@@ -320,12 +434,16 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_date=$gro['time_id'];	
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_date'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and id_services = '$id_services' and time_reservation = '$time'");
+$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $sss);
 $numrows=$sss['numrows'];
@@ -334,18 +452,36 @@ $stmt->execute();
 foreach($stmt as $rows1);
  $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
+$stmt = $conn->prepare("select * from doctor where time_id = '$time_id' and status ='Not Available' or time_id=0 and status ='Not Available'");
 $stmt->execute();
 foreach($stmt as $rows);
 $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
+$incharge=$rows['in_charge'];
 $status = $rows['status'];
-if($date == $date2 && $time1 == $time && $numrows>=2 || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
+if($grooming_date == ""){
+
+	$as=$numrows+$incharge;	
+if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
+
 else{
 echo'<option value="'.$time.'">'.$time.'</option>';
+}
+}
+else if($grooming_date == 0)
+{}
+else{
+
+	if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
+echo'<option value="'.$time.'" hidden>'.$time.'</option>';
+}
+
+else{
+echo'<option value="'.$time.'">'.$time.'</option>';	
+}
 }
 }
 }
@@ -372,12 +508,16 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_date=$gro['time_id'];	
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_date'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
-$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and id_services = '$id_services' and time_reservation = '$time'");
+$stmt = $conn->prepare("select *, Count(*)as numrows from reservation where thedate='$date' and time_reservation = '$time'");
 $stmt->execute();
 foreach($stmt as $sss);
 $numrows=$sss['numrows'];
@@ -386,18 +526,37 @@ $stmt->execute();
 foreach($stmt as $rows1);
  $time1 = $rows1['time_reservation'];
 $date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
+$stmt = $conn->prepare("select * from doctor where time_id = '$time_id' and status ='Not Available' or time_id=0 and status ='Not Available'");
 $stmt->execute();
 foreach($stmt as $rows);
 $doctor_id = $rows['doctor_id'];
 $time_id1 = $rows['time_id'];
 $date1 = $rows['date'];
+$incharge=$rows['in_charge'];
 $status = $rows['status'];
-if($date == $date2 && $time1 == $time && $numrows>=2 || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
+
+if($grooming_date == ""){
+
+	$as=$numrows+$incharge;	
+if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
 echo'<option value="'.$time.'" hidden>'.$time.'</option>';
 }
+
 else{
 echo'<option value="'.$time.'">'.$time.'</option>';
+}
+}
+else if($grooming_date == 0)
+{}
+else{
+
+	if($date == $date2 && $time1 == $time && $as >=2  || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available' && $incharge == 0 ){
+echo'<option value="'.$time.'" hidden>'.$time.'</option>';
+}
+
+else{
+echo'<option value="'.$time.'">'.$time.'</option>';	
+}
 }
 }
 }

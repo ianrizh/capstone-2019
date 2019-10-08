@@ -156,7 +156,7 @@ $stmt = $conn->prepare("select * from findings_prescription where reservation_id
 $stmt->execute();
 foreach($stmt as $l){
 $fp_id = $l['fp_id'];
-$stmt = $conn->prepare("select * from products_used where fp_id = '$fp_id'");
+$stmt = $conn->prepare("select * from products_used where reservation_id = '$reservation_id'");
 $stmt->execute();
 foreach($stmt as $w){
 $pu_id = $w['pu_id'];

@@ -27,8 +27,6 @@ echo '
 <div class="col-sm-9">
 <h1 class="page-header" style="text-transform:uppercase; font-weight:bold; color:#efb74e">'.$service['name'].'</h1>';?>
 <i class='fa fa-paw'></i> Stella's Animal Clinic requires that all vaccinations are current. Proof of vaccination must be provided before your pet(s) will be accepted for boarding.<br>
-<i class='fa fa-paw'></i> Boarding fees will begin on the first night your pet(s) is/are admitted.<br>
-<i class='fa fa-paw'></i> If pick-up is beyond boarding hours, an additional fee equivalent to half of one night boarding fee will be applied.<br>
 <i class='fa fa-paw'></i> <b>FINANCIAL POLICY:</b> Payment is due as services are rendered. Please feel free to ask for an estimate prior to providing services. If at any time you are not satisfied with our service, please let us know. We Will be happy to answer your questions.
 <br>
 <br>

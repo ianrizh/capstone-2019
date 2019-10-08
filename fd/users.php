@@ -48,7 +48,8 @@
                   <th>PHOTO</th>
                   <th>NAME</th>
                   <th>EMAIL ADDRESS</th>
-				  <th>STATUS</th>
+				          <th>STATUS</th>
+                  <th>TOOLS</th>
                 </thead>
                 <tbody>
                   <?php
@@ -71,7 +72,9 @@
 							<td>
                               ".$status."
                               ".$active."
+                              
                             </td>
+                            <td><a href='history1.php?user=".$row['id_cust']."' class='btn btn-info btn-sm btn-flat'><i class='fa fa-eye'></i> History</a></td>
                           </tr>
                         ";
                       }

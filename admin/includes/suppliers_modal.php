@@ -19,7 +19,7 @@
 <label for="cnumber" class="col-sm-3 control-label">CONTACT NUMBER</label>
 
 <div class="col-sm-9">
-<input type="text" class="form-control" id="contact_number" name="contact_number" autocomplete="off" maxlength="11" min="8" required>
+<input type="text" class="form-control" id="contact_number" name="contact_number" autocomplete="off" maxlength="11" min="8" required>	
 </div>
 </div>
 <div class="form-group">

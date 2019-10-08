@@ -42,11 +42,11 @@ unset($_SESSION['success']);
 <p class="login-box-msg" style="font-size:20px; font-weight:bold;">REGISTER TO <br>STELLA'S ANIMAL CLINIC</p>
 <form action="register.php" method="POST">
 <div class="form-group has-feedback">
-<input type="text" class="form-control" name="firstname" placeholder="First Name" autofocus autocomplete="off" maxlength="50" min="2" required>
+<input type="text" class="form-control" name="firstname" placeholder="First Name" autofocus autocomplete="off" pattern="[A-Z][a-z]*" maxlength="50" min="2" required>
 <span class="glyphicon glyphicon-user form-control-feedback"></span>
 </div>
 <div class="form-group has-feedback">
-<input type="text" class="form-control" name="lastname" placeholder="Last Name" autocomplete="off" maxlength="50" min="2" required>
+<input type="text" class="form-control" name="lastname" placeholder="Last Name" autocomplete="off" maxlength="50" pattern="[A-Z][a-z]*" min="2" required>
 <span class="glyphicon glyphicon-user form-control-feedback"></span>
 </div>
 <div class="form-group has-feedback">
@@ -65,7 +65,7 @@ unset($_SESSION['success']);
 if(!isset($_SESSION['captcha'])){
 echo '
 <di class="form-group" style="width:100%;">
-<div class="g-recaptcha" data-sitekey="6LdZ3boUAAAAANx0YCiEIWbI1j3lCMTnh2Js8ZH_"></div>
+<div class="g-recaptcha" data-sitekey="6LevO1IUAAAAAFX5PpmtEoCxwae-I8cCQrbhTfM6"></div>
 </di>
 ';
 }

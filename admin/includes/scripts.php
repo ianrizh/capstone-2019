@@ -226,6 +226,14 @@ $("#notification-latest1").hide();
       $('input',row).val('');
     }
   });
+
+  $('#fp_products_toggle').click(function(){
+    if(document.getElementById('fp_products_toggle').checked)
+      $('#fp_products').attr('style','display:block');
+    else
+      $('#fp_products').attr('style','display:none');
+  });
+
   $('.order_product').change(function(){
       var dropdown = $(this);
       var thisrow = dropdown.closest('tr');
@@ -237,7 +245,7 @@ $("#notification-latest1").hide();
       //compute_total();
       // compute_change();
     });
-$('#findings').on('click','#btn_confirmorder',function(){
+  $('#findings').on('click','#btn_confirmorder',function(){
     var a_product = [],
         a_productid = [],
         a_quantity = [],
@@ -250,12 +258,14 @@ $('#findings').on('click','#btn_confirmorder',function(){
     		status = $('.reservation_id').val();
     		price = $('.reservation_id').val();
 
-    $('tbody tr',$('#tbl_stock')).each(function(){
-      a_product.push($('.order_product',$(this)).val());
-      a_productid.push($('.order_product',$(this)).data('productid'));
-      a_quantity.push($('.order_qty',$(this)).val());
-      a_price.push($('.order_price',$(this)).val());
-    });
+    if(document.getElementById('fp_products_toggle').checked) {
+      $('tbody tr',$('#tbl_stock')).each(function(){
+        a_product.push($('.order_product',$(this)).val());
+        a_productid.push($('.order_product',$(this)).data('productid'));
+        a_quantity.push($('.order_qty',$(this)).val());
+        a_price.push($('.order_price',$(this)).val());
+      });
+    }
     
     $.ajax({
       url       : 'orders_validate_qty.php',
@@ -307,7 +317,6 @@ $('#findings').on('click','#btn_confirmorder',function(){
             },
             success   : function(){
               alert('Process Done.');
-              window.location.href = "reservations.php";
             },
             error   : function(){
               alert('An error has occured.');
@@ -315,7 +324,7 @@ $('#findings').on('click','#btn_confirmorder',function(){
             complete: function(){
             $('#findings').modal('hide');
               $('#btn_confirmorder').prop('disabled',false).text('CONFIRM');
-              //window.location = '../admin/reservations.php';
+              window.location = '../admin/reservations.php';
             }
           });
         }

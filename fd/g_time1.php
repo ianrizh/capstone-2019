@@ -14,9 +14,9 @@ if($theday == 'Sunday')
 echo '
 <div id="time" class="form-group">
 <input type="hidden" name="s_price" value="'.$price.'">
-<label for="edit_name" class="col-sm-3 control-label">TIME</label>
+<label for="edit_name" class="col-sm-3 control-label" id="gtime">TIME</label>
 <div class="col-sm-8">
-<select class="form-control" id="time" name="time_reservation" required>
+<select class="form-control" id="gtime1" name="time_reservation" style="margin-top:0px;" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
 $stmt->execute();
@@ -65,11 +65,11 @@ echo'
 elseif($theday == 'Monday')
 {
 echo '
-<div id="hidden" class="form-group">
-<input type="text" name="s_price" value="'.$price.'">
-<label for="edit_name" class="col-sm-3 control-label">TIME</label>
+<div id="time" class="form-group">
+<input type="hidden" name="s_price" value="'.$price.'">
+<label for="edit_name" class="col-sm-3 control-label" id="gtime">TIME</label>
 <div class="col-sm-8">
-<select class="form-control" id="time" name="time_reservation" required>
+<select class="form-control" id="gtime1" name="time_reservation" style="margin-top:0px;" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
 $stmt->execute();
@@ -118,11 +118,11 @@ echo'
 elseif($theday == 'Tuesday')
 {
 echo '
-<div id="hidden" class="form-group">
-<input type="text" name="s_price" value="'.$price.'">
-<label for="edit_name" class="col-sm-3 control-label">TIME</label>
+<div id="time" class="form-group">
+<input type="hidden" name="s_price" value="'.$price.'">
+<label for="edit_name" class="col-sm-3 control-label" id="gtime">TIME</label>
 <div class="col-sm-8">
-<select class="form-control" id="time" name="time_reservation" required>
+<select class="form-control" id="gtime1" name="time_reservation" style="margin-top:0px;" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
 $stmt->execute();
@@ -171,11 +171,11 @@ echo'
 elseif($theday == 'Wednesday')
 {
 echo '
-<div id="hidden" class="form-group">
-<input type="text" name="s_price" value="'.$price.'">
-<label for="edit_name" class="col-sm-3 control-label">TIME</label>
+<div id="time" class="form-group">
+<input type="hidden" name="s_price" value="'.$price.'">
+<label for="edit_name" class="col-sm-3 control-label" id="gtime">TIME</label>
 <div class="col-sm-8">
-<select class="form-control" id="time" name="time_reservation" required>
+<select class="form-control" id="gtime1" name="time_reservation" style="margin-top:0px;" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
 $stmt->execute();
@@ -226,9 +226,9 @@ elseif($theday == 'Thursday')
 echo '
 <div id="time" class="form-group">
 <input type="hidden" name="s_price" value="'.$price.'">
-<label for="edit_name" class="col-sm-3 control-label">TIME</label>
+<label for="edit_name" class="col-sm-3 control-label" id="gtime">TIME</label>
 <div class="col-sm-8">
-<select class="form-control" id="time" name="time_reservation" required>
+<select class="form-control" id="gtime1" name="time_reservation" style="margin-top:0px;" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
 $stmt->execute();
@@ -279,9 +279,9 @@ elseif($theday == 'Friday')
 echo '
 <div id="time" class="form-group">
 <input type="hidden" name="s_price" value="'.$price.'">
-<label for="edit_name" class="col-sm-3 control-label">TIME</label>
+<label for="edit_name" class="col-sm-3 control-label" id="gtime">TIME</label>
 <div class="col-sm-8">
-<select class="form-control" id="time" name="time_reservation" required>
+<select class="form-control" id="gtime1" name="time_reservation" style="margin-top:0px;" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
 $stmt->execute();
@@ -332,9 +332,9 @@ elseif($theday == 'Saturday')
 echo '
 <div id="time" class="form-group">
 <input type="hidden" name="s_price" value="'.$price.'">
-<label for="edit_name" class="col-sm-3 control-label">TIME</label>
+<label for="edit_name" class="col-sm-3 control-label" id="gtime">TIME</label>
 <div class="col-sm-8">
-<select class="form-control" id="time" name="time_reservation" required>
+<select class="form-control" id="gtime1" name="time_reservation" style="margin-top:0px;" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Services'");
 $stmt->execute();

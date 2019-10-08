@@ -1,7 +1,7 @@
 <?php include 'includes/session.php';
 $conn = $pdo->open();
 $output='';
-
+$date= $_POST["date"];
 if(isset($_POST["date"]))
 {
 if($_POST["date"] != '')
@@ -37,7 +37,12 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_id=$gro['time_id'];
+
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_id'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
@@ -45,6 +50,15 @@ $time = $row['time_reservation'];
 echo'
 <option value="'.$time_id.'">'.$time.'</option>';
 }
+}
+if($grooming_id == "")
+{
+echo'
+<option value="0">Whole Day</option>';
+}
+else if($grooming_id != 0){echo'
+<option value="0">Whole Day</option>';}
+else{
 }
 }
 echo'
@@ -75,7 +89,12 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_id=$gro['time_id'];
+
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_id'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
@@ -83,6 +102,14 @@ $time = $row['time_reservation'];
 echo'
 <option value="'.$time_id.'">'.$time.'</option>';
 }
+}
+if($grooming_id == "")
+{
+echo'
+<option value="0">Whole Day</option>';
+}else if($grooming_id != 0){echo'
+<option value="0">Whole Day</option>';}
+else{
 }
 }
 echo'
@@ -113,7 +140,12 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_id=$gro['time_id'];
+
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_id'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
@@ -121,6 +153,15 @@ $time = $row['time_reservation'];
 echo'
 <option value="'.$time_id.'">'.$time.'</option>';
 }
+}
+if($grooming_id == "")
+{
+echo'
+<option value="0">Whole Day</option>';
+}
+else if($grooming_id != 0){echo'
+<option value="0">Whole Day</option>';}
+else{
 }
 }
 echo'
@@ -147,12 +188,16 @@ $stmt = $conn->prepare("select * from type where type = 'Services'");
 $stmt->execute();
 foreach($stmt as $r){
 $id_type = $r['id_type'];
-
 $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and day = 'Wednesday'");
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_id=$gro['time_id'];
+
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_id'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
@@ -160,6 +205,15 @@ $time = $row['time_reservation'];
 echo'
 <option value="'.$time_id.'">'.$time.'</option>';
 }
+}
+if($grooming_id == "")
+{
+echo'
+<option value="0">Whole Day</option>';
+}
+else if($grooming_id != 0){echo'
+<option value="0">Whole Day</option>';}
+else{
 }
 }
 echo'
@@ -190,13 +244,28 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_id=$gro['time_id'];
+
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_id'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
 $time = $row['time_reservation'];
 echo'
-<option value="'.$time_id.'">'.$time.'</option>';}
+<option value="'.$time_id.'">'.$time.'</option>';
+}
+}
+if($grooming_id == "")
+{
+echo'
+<option value="0">Whole Day</option>';
+}
+else if($grooming_id != 0){echo'
+<option value="0">Whole Day</option>';}
+else{
 }
 }
 echo'
@@ -227,7 +296,12 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_id=$gro['time_id'];
+
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_id'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
@@ -235,6 +309,15 @@ $time = $row['time_reservation'];
 echo'
 <option value="'.$time_id.'">'.$time.'</option>';
 }
+}
+if($grooming_id == "")
+{
+echo'
+<option value="0">Whole Day</option>';
+}
+else if($grooming_id != 0){echo'
+<option value="0">Whole Day</option>';}
+else{
 }
 }
 echo'
@@ -265,7 +348,12 @@ $stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and da
 $stmt->execute();
 foreach($stmt as $ro){
 $schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
+$stmt=$conn->prepare("select * from doctor where date ='$date' and in_charge = 0 and status = 'Not Available'");
+$stmt->execute();
+foreach($stmt as $gro);
+$grooming_id=$gro['time_id'];
+
+$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'  and time_id != '$grooming_id'");
 $stmt->execute();
 foreach($stmt as $row){
 $time_id = $row['time_id'];
@@ -273,6 +361,15 @@ $time = $row['time_reservation'];
 echo'
 <option value="'.$time_id.'">'.$time.'</option>';
 }
+}
+if($grooming_id == "")
+{
+echo'
+<option value="0">Whole Day</option>';
+}
+else if($grooming_id != 0){echo'
+<option value="0">Whole Day</option>';}
+else{
 }
 }
 echo'

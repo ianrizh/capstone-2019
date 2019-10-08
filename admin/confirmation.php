@@ -18,7 +18,7 @@ $time_reservation = $row['time_reservation'];
 	$stmt->execute();
 	foreach($stmt as $row2){
 				}
-				if($service_id == "0"){
+				if($id_services == "0"){
 					$name = ' Veterinary Health Care';
 				}
 				else{

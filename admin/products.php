@@ -3,7 +3,7 @@
   $where = '';
   if(isset($_GET['category'])){
     $id_category = $_GET['category'];
-    $where = 'WHERE deleted_date ="0000-00-00" and id_category ='.$id_category;
+    $where = 'WHERE deleted_date = "0000-00-00" and id_category ='.$id_category;
   }
 
 ?>
@@ -51,7 +51,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header with-border">
-              <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> New Category</a>
+              <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> New Product</a>
 			  <a href="deleted_product.php"><button class='btn btn-danger btn-sm btn-flat'><i class="fa fa-trash"></i> Deleted Products</button></a>
               <div class="pull-right">
                 <form class="form-inline">
@@ -94,7 +94,7 @@
 
                     try{
                       $now = date('Y-m-d');
-                      $stmt = $conn->prepare("SELECT * FROM products $where order by name asc");
+                      $stmt = $conn->prepare("SELECT * FROM products $where  order by name asc");
                       $stmt->execute();
                       foreach($stmt as $row){
                         $image = (!empty($row['photo'])) ? '../images/'.$row['photo'] : '../images/noimage.jpg';

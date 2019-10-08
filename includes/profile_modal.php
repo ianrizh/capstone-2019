@@ -3,8 +3,6 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title"><b>Transaction Full Details</b></h4>
             </div>
             <div class="modal-body">
@@ -14,14 +12,14 @@
               </p>
               <table class="table table-bordered">
                 <thead>
-                  <th>Product Name</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Subtotal</th>
+                  <th>PRODUCT NAME</th>
+                  <th>PRICE</th>
+                  <th>QUANTITY</th>
+                  <th>SUBTOTAL</th>
                 </thead>
                 <tbody id="detail">
                   <tr>
-                    <td colspan="3" align="right"><b>Total</b></td>
+                    <td colspan="3" align="right"><b>TOTAL</b></td>
                     <td><span id="total"></span></td>
                   </tr>
                 </tbody>
@@ -33,6 +31,10 @@
         </div>
     </div>
 </div>
+
+
+<!-- Transaction History -->
+
 
 <!-- Edit Profile -->
 <div class="modal fade" id="edit">
@@ -47,14 +49,14 @@
                     <label for="firstname" class="col-sm-3 control-label">First Name</label>
 
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="firstname" name="firstname" value="<?php echo $user['firstname']; ?>">
+                      <input type="text" class="form-control" id="firstname" name="firstname" value="<?php echo $user['firstname']; ?>" pattern="[A-Z][a-z]*">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="lastname" class="col-sm-3 control-label">Last Name</label>
 
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="lastname" name="lastname" value="<?php echo $user['lastname']; ?>">
+                      <input type="text" class="form-control" id="lastname" name="lastname" value="<?php echo $user['lastname']; ?>" pattern="[A-Z][a-z]*">
                     </div>
                 </div>
                 <div class="form-group">
@@ -68,7 +70,7 @@
                     <label for="contact" class="col-sm-3 control-label">Contact Number</label>
 
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="contact" name="contact" value="<?php echo $user['contact']; ?>">
+                      <input type="tel" class="form-control" id="contact" name="contact" pattern="[0-9]{11}" maximum="11" value="<?php echo $user['contact']; ?>">
                     </div>
                 </div>
                 <div class="form-group">

@@ -4,21 +4,16 @@ use PHPMailer\PHPMailer\Exception;
 include 'includes/session.php';
 
 if(isset($_POST['id_cust'])){
-$id_cust = $_POST['id_cust'];
-
-$conn = $pdo->open();
+		$id_cust = $_POST['id_cust'];
 $stmt = $conn->prepare("SELECT * FROM users where id_cust = $id_cust");
 $stmt->execute();
 foreach($stmt as $row){
 $firstname  = $row['firstname'];
 $email  = $row['email'];
 }
-
-
-if(isset($_POST['activate'])){
-try{
-$stmt = $conn->prepare("UPDATE users SET status=:status, password =:password WHERE id_cust=:id_cust");
-$stmt->execute(['status'=>1, 'password'=>'$2y$10$ZDNPt60nqMB0qey0PI8jGevEhGmWUqELBNLJ5GoUeRBfQUaOVSy/G', 'id_cust'=>$id_cust]);
+		try{
+			$stmt = $conn->prepare("UPDATE users SET status=:status, password=:password WHERE id_cust=:id_cust");
+			$stmt->execute(['status'=>'1', 'password'=>'$2y$10$ZDNPt60nqMB0qey0PI8jGevEhGmWUqELBNLJ5GoUeRBfQUaOVSy/G', 'id_cust'=>$id_cust]);
 $message = "
 <h2>CONGRATULATIONS!</h2>
 <p>Hey ".$firstname."! Your account is now activated. We look forward to seeing you soon.</p>
@@ -71,7 +66,6 @@ catch(PDOException $e){
 $_SESSION['error'] = $e->getMessage();
 }
 $pdo->close();
-}
 }
 else{
 $_SESSION['error'] = 'Fill up form first';

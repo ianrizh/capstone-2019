@@ -33,16 +33,16 @@ $pdo->close();
 </div>
 </div>
 
-<div id="details">
+<div id="wastage1">
 </div>
 <script>
  function onSelect(id){
  	var str = $('#product option[value='+id+']').text();
  	var a = new XMLHttpRequest
 	a.onreadystatechange=function(){
-		document.getElementById("details").innerHTML=this.responseText;
+		document.getElementById("wastage1").innerHTML=this.responseText;
 	}
-	a.open('GET', "details.php?name="+str,true);
+	a.open('GET', "wastage_details.php?name="+str,true);
 	a.send();
  }
 </script>
@@ -51,9 +51,9 @@ $pdo->close();
  function onSelect1(str){
  	var a = new XMLHttpRequest
 	a.onreadystatechange=function(){
-		document.getElementById("details1").innerHTML=this.responseText;
+		document.getElementById("wastage2").innerHTML=this.responseText;
 	}
-	a.open('GET', "details1.php?id_stocks_expired="+str,true);
+	a.open('GET', "wastage_details1.php?id_stocks_expired="+str,true);
 	a.send();
  }
 </script>

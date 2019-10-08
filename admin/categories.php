@@ -4,7 +4,7 @@
 $output = '';
 if(isset($_POST["category"])){
 	$categ1=$_POST["category"];
-echo '<table width="100%"  border="3" cellpadding="0" cellspacing="0" style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:10px;"  >
+echo '<table class="table table-bordered" >
   
   <tr align="center"><td bgcolor="bluegreen"><font color="black"><font size="-1">Product ID </font></td>
           <td bgcolor="bluegreen"><font color="black"><font size="-1">Product Name</font></td>

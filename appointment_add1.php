@@ -1,106 +1,52 @@
-
 <?php
-include 'includes/session.php';
+	include 'includes/session.php';
 
-if(isset($_POST['add'])){
-$user_pets_id = $_POST['user_pets_id'];
-$id_services = $_POST['id_services'];
-$thedate = $_POST['thedate'];
-$time_reservation= $_POST['time_reservation'];
-$status = $_POST['status'];
+	if(isset($_POST['add'])){
+		$type_id			= 3; //Grooming
+		$user_pets_id		= $_POST['user_pets_id'];
+		$id_services		= $_POST['id_services'];
+		$thedate			= $_POST['thedate'];
+		$time_reservation	= $_POST['time_reservation'];
+		$status				= $_POST['status'];
+		$theday				= date('l',strtotime($thedate));
+		
+		$time = explode(' - ', $time_reservation);
+		$starttime 	= date("G:i", strtotime($time[0]));
+		$endtime 	= date("G:i", strtotime($time[1]));
 
-$theday=date('l',strtotime($thedate));
-if($theday == 'Tuesday')
-{
+		$conn = $pdo->open();
 
-if($time_reservation=="09:00 a.m - 10:30 a.m"){
-$starttime="09:00";
-$endtime="10:30";
-}
-elseif($time_reservation=="10:30 a.m - 12:00 p.m"){
+		$stmt = $conn->prepare("SELECT *,COUNT(*) AS numrows  FROM reservation WHERE user_pets_id = :user_pets_id and id_services = :id_services and thedate=:thedate and  end_time > :starttime and start_time < :endtime OR user_pets_id = :user_pets_id  and thedate=:thedate and  end_time > :starttime and start_time < :endtime ");
+		$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'starttime'=>$starttime,'endtime'=>$endtime]);
+		$row = $stmt->fetch();
 
-$starttime="10:30";
-$endtime="12:00";
-}
-elseif($time_reservation=="12:00 p.m - 01:30 p.m"){
+		$stmt = $conn->prepare("SELECT *,COUNT(*) AS numrows2  FROM reservation WHERE user_pets_id = :user_pets_id  and thedate=:thedate and  end_time > :starttime and start_time < :endtime or user_pets_id = :user_pets_id  and thedate=:thedate");
+		$stmt->execute(['user_pets_id'=>$user_pets_id,'thedate'=>$thedate,'starttime'=>$starttime,'endtime'=>$endtime]);
+		$row2 = $stmt->fetch();
 
-$starttime="12:00";
-$endtime="13:30";
-}
-elseif($time_reservation=="01:30 p.m - 03:00 p.m"){
+		$stmt=$conn->prepare("select * from doctor where date =:thedate  and status = 'Not Available'");
+		$stmt->execute(['thedate'=>$thedate]);
+		$row3=$stmt->fetch();
 
-$starttime="13:30";
-$endtime="15:00";
-}
-elseif($time_reservation=="03:00 p.m - 04:30 p.m"){
+		$s=$row3['in_charge'];
+		if($row['numrows'] >= 2) {
+			$_SESSION['error'] = 'The chosen date and time is already taken by other customer.';
+		}
+		else if($row2['numrows2'] > 0) {
+			$_SESSION['error'] = 'Cannot process the same pet.';	
+		}
+		else {
+			try {
+				$stmt = $conn->prepare("INSERT INTO reservation (type_id,user_pets_id,id_services,thedate,time_reservation,status,start_time,end_time,r_type) VALUES (:type_id,:user_pets_id,:id_services,:thedate,:time_reservation,:status,:starttime,:endtime,:r_type)");
+				$stmt->execute(['type_id'=>$type_id,'user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Online']);
+				$_SESSION['success'] = 'Reservation successful';
+			}
+			catch(PDOException $e){
+				$_SESSION['error'] = $e->getMessage();
+			}
+		}
 
-$starttime="15:00";
-$endtime="16:30";
-}
-elseif($time_reservation=="04:30 p.m - 05:00 p.m"){
-
-$starttime="16:30";
-$endtime="17:00";
-}
-elseif($time_reservation=="05:00 p.m - 06:30 p.m"){
-
-$starttime="17:00";
-$endtime="18:30";
-}}
-else
-{
-if($time_reservation=="10:00 a.m - 11:30 a.m"){
-$starttime="10:00";
-$endtime="11:30";
-}
-elseif($time_reservation=="11:30 a.m - 01:00 p.m"){
-
-$starttime="11:30";
-$endtime="13:00";
-}
-elseif($time_reservation=="01:00 p.m - 02:30 p.m"){
-
-$starttime="13:00";
-$endtime="14:30";
-}
-elseif($time_reservation=="02:30 p.m - 04:00 p.m"){
-
-$starttime="14:30";
-$endtime="16:00";
-}
-elseif($time_reservation=="04:00 p.m - 05:30 p.m"){
-
-$starttime="16:00";
-$endtime="17:30";
-}
-elseif($time_reservation=="05:30 p.m - 07:00 p.m"){
-
-$starttime= '17:30';
-$endtime= '19:00';
-}
-}
-$conn = $pdo->open();
-$stmt = $conn->prepare("SELECT *,COUNT(*) AS numrows  FROM reservation WHERE user_pets_id = :user_pets_id and id_services = :id_services and thedate=:thedate and  end_time > :starttime and start_time < :endtime OR user_pets_id = :user_pets_id  and thedate=:thedate and  end_time > :starttime and start_time < :endtime ");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'starttime'=>$starttime,'endtime'=>$endtime]);
-$row = $stmt->fetch();
-$stmt = $conn->prepare("SELECT *,COUNT(*) AS numrows2  FROM reservation WHERE user_pets_id = :user_pets_id  and thedate=:thedate and  end_time > :starttime and start_time < :endtime ");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'thedate'=>$thedate,'starttime'=>$starttime,'endtime'=>$endtime]);
-$row2 = $stmt->fetch();
-
-if($row['numrows'] >= 2 || $row2['numrows2'] > 0 ){
-$_SESSION['error'] = 'The chosen date and time is already taken by other customer.';
-}
-else{
-try{
-$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:status,:starttime,:endtime,:r_type)");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Online']);
-$_SESSION['success'] = 'Reservation successful';
-}
-catch(PDOException $e){
-$_SESSION['error'] = $e->getMessage();
-}
-}
-$pdo->close();
-header('location: appointment.php?service='.$id_services.'');
-}
+		$pdo->close();
+		header('location: appointment.php?service='.$id_services.'');
+	}
 ?>

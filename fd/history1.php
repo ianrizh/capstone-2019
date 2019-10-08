@@ -5,10 +5,10 @@ $past = $_GET['user'];
 $conn = $pdo->open();
 
 try{
-$stmt = $conn->prepare("SELECT * FROM reservation WHERE user_pets_id = :past");
+$stmt = $conn->prepare("select * from users where id_cust = :past");
 $stmt->execute(['past' => $past]);
 $rcpt = $stmt->fetch();
-$trnsctns = $rcpt['user_pets_id'];
+$trnsctns = $rcpt['id_cust'];
 }
 catch(PDOException $e){
 echo "There is some problem in connection: " . $e->getMessage();
@@ -61,7 +61,7 @@ unset($_SESSION['success']);
 <div class="col-xs-12">
 <div class="box">
 <div class="box-body">
-<a href='reservations.php' class='btn btn-primary btn-sm btn-flat'><i class='fa fa-arrow-left'></i> Back</a>
+<a href='users.php' class='btn btn-primary btn-sm btn-flat'><i class='fa fa-arrow-left'></i> Back</a>
 <br><br>
 <table id="example1" class="table table-bordered">
 <thead>
@@ -72,6 +72,7 @@ unset($_SESSION['success']);
 <th>TOTAL</th>
 <th>STATUS</th>
 <th>PAY DATE</th>
+<th>Tools</th>
 </thead>
 <tbody>
 <?php
@@ -79,8 +80,12 @@ $conn = $pdo->open();
 
 try{
 $now = date('Y-m-d');
-$stmt = $conn->prepare("SELECT * FROM reservation where user_pets_id = :user_pets_id and status = 'Paid' and id_services != '0'");
-$stmt->execute(['user_pets_id'=>$trnsctns]);
+$stmt = $conn->prepare("SELECT * FROM user_pets where id_cust = :id_cust");
+$stmt->execute(['id_cust'=>$trnsctns]);
+foreach($stmt as $u){
+	$user_pets_id = $u['user_pets_id'];
+$stmt = $conn->prepare("SELECT * FROM reservation where user_pets_id = '$user_pets_id' and status = 'Paid'");
+$stmt->execute();
 foreach($stmt as $row){
 $reservation_id = $row['reservation_id'];
 $date = $row['thedate'];
@@ -115,6 +120,9 @@ $total = $row['total'];
 if($s_id == "0"){
  $code = "VHC_0".$reservation_id;
 }
+elseif (strstr($name, "Boarding") !== FALSE) {
+	$code ="BRDNG_0".$reservation_id;
+}
 else{
  $code ="GMMNG_0".$reservation_id;
 }
@@ -125,9 +133,15 @@ echo "<td>".$code."</td>
 <td>".date('M. d, Y', strtotime($date))." <br>".$time."</td>
 <td>&#8369; ".number_format($total,2)."</td>
 <td>".$row['status']."</td>
-<td>".date('M. d, Y', strtotime($pay_date))."</td>
+<td>".date('M. d, Y', strtotime($pay_date))."</td>";
+if($s_id == "0"){
+echo "<td><a href='findings.php?copy=".$reservation_id."' class='btn btn-success btn-sm btn-flat'><i class='fa fa-search'></i> Findings</a></td>";}else{
+	echo "<td></td>";
+}
+echo"
 </tr>
 ";
+}
 }
 }
 }
@@ -149,7 +163,6 @@ $pdo->close();
 
 </div>
 <?php include 'includes/footer.php'; ?>
-<?php include 'includes/reservations_new.php'; ?>
 </div>
 <!-- ./wrapper -->
 

@@ -10,39 +10,46 @@ $email = $crows['email'];
 
 echo "
 <div id='details' class='form-group'>
-<label for='edit_name' class='col-sm-3 control-label'>CONTACT NUMBER</label>
+<label for='edit_name' class='col-sm-3 control-label' id='cntct'>CONTACT NUMBER</label>
 <div class='col-sm-8'>
-<input class='form-control' type='text' value='".$contact."' readonly>
+<input class='form-control' type='text' value='".$contact."' readonly id='cntct1'>
 </div>
 </div>
 <div id='details' class='form-group'>
-<label for='edit_name' class='col-sm-3 control-label'>EMAIL ADDRESS</label>
+<label for='edit_name' class='col-sm-3 control-label' id='cntct2'>EMAIL ADDRESS</label>
 <div class='col-sm-8'>
-<input class='form-control' type='text' value='".$email."' readonly>
+<input class='form-control' type='text' value='".$email."' readonly id='cntct3'>
 </div>
 </div>
+";
 
-<div class='box-header with-border' style='margin-left:-10px;'>
-<h3 class='box-title' style='color:#36bbbe'><b><i class='fa fa-paw'></i> PET'S INFO</b></h3>
+echo '
+<div class="box-header">
+<h3 class="box-title" style="color:#36bbbe;""><b><i class="fa fa-paw"></i> PET DETAILS</b></h3>
 </div>
-<div class='box-body'>
+';
+echo "
 <div id='details' class='form-group'>
-<label for='edit_name' class='col-sm-3 control-label'>PET NAME</label>
-<div class='col-sm-8'> ";
-?>
-
-<select class="form-control" id="user_pets_id" name="user_pets_id" onChange="onSelect(this.value)" required>
-<option value="" disabled selected required>---Select---</option>
-<?php 
+<label for='edit_name' class='col-sm-3 control-label' id='cntct'>PET NAME</label>
+<div class='col-sm-8'>
+<select class='form-control select2' onChange='onSelect3(this.value)' style='width: 100%' required>
+<option value='' disabled selected required>---Select---</option>"; 
 $conn = $pdo->open();
 try{
-$stmt = $conn->prepare("SELECT * FROM pets WHERE id_cust='$id_cust'");
+$stmt = $conn->prepare("SELECT * FROM user_pets where id_cust = '$id_cust'");
+$stmt->execute();
+foreach($stmt as $crow){
+$ip = $crow['id_pet'];
+$ic = $crow['id_cust'];
+$stmt = $conn->prepare("SELECT * FROM pets WHERE id_pet='$ip' and id_cust = '$ic'");
 $stmt->execute();
 foreach($stmt as $crows){
 $id_pet = $crows['id_pet'];
+$pet_name = $crows['pet_name'];
 echo "
-<option value='$id_pet'>".$crows['pet_name']."</option>
+<option value='$id_pet'>".$pet_name."</option>
 ";
+}
 }
 }
 catch(PDOException $e){
@@ -51,17 +58,12 @@ echo "There is some problem in connection: " . $e->getMessage();
 $pdo->close();
 ?>
 </select>
-
-<?php
-echo "
 </div>
 </div>
-<div id='details1'>
+<div id="details1">
 </div>
-";
-?>
 <script>
- function onSelect(str){
+ function onSelect3(str){
  	var a = new XMLHttpRequest
 	a.onreadystatechange=function(){
 		document.getElementById("details1").innerHTML=this.responseText;
@@ -71,9 +73,6 @@ echo "
  }
 </script>
 <?php
-echo"
-</div>
-";
 }
 }
 ?>

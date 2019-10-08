@@ -34,7 +34,7 @@
 <div class="modal-body">
 <form class="form-horizontal" method="POST" action="fap1.php">
 <input type="hidden" class="reservation_id" name="reservation_id" />
-<input type="hidden" class="price" name="price"/>
+<input type="hidden" class="price" name="sprice" value="250.00" />
 <input type="hidden" class="status" name="status" />
 <p><b>Findings</b></p>
 <div class="form-group">

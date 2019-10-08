@@ -1,3 +1,4 @@
+
 <div class="modal fade" id="order_summary" data-backdrop="false">
 <div class="modal-dialog">
 <div class="modal-content">
@@ -40,9 +41,22 @@ $date=date('Y-m-d');
 </div>
 
 <div class="modal fade" id="or" data-backdrop="false">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header" align="center">
+<div class="modal-dialog" ><style type="text/css">
+@media print {
+          .btn-print {
+            display:none !important;
+      }
+      .main-footer  {
+      display:none !important;
+      }
+      .box.box-primary {
+        border-top:none !important;
+      }
+  }
+  </style>
+<div class="modal-content" >
+<div class="modal-header"  align="center" >
+  
 <img src="../images/STELLAS LOGO.jpg" width="30%" style="margin-bottom:15px;"><br />
 <h4 class="modal-title"><b>OFFICIAL RECEIPT</b></h4>
 <h5 style="margin-top:5px;">Unit 25 Emeral Complex, P. Tuazon Blvd, Project 4, Quezon City, Metro Manila</h5>
@@ -73,7 +87,7 @@ $date=date('Y-m-d');
 </div>
 </div>
 <div class="modal-footer">
-<button type="submit" class="btn btn-success btn-flat" name="print"><i class="fa fa-print"></i> Print</button>
+<a class = "btn btn-success btn-print btn-flat" href = "#" onclick = "printContent('or')"><i class ="glyphicon glyphicon-print"></i> Print</a>
 </div>
 </div>
 </div>

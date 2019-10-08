@@ -49,8 +49,9 @@
         		</div>
       		</div>
     	</form>
-      <br><br><br><br><br>
+      <br><br><br><br>
       <a href="signup.php" class="text-center">Register a new account</a><br>
+      <a href="password_forgot.php" class="text-center">Forgot Password</a><br>
   	</div>
 </div>
 <?php include 'includes/footer.php' ?>

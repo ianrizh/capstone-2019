@@ -78,7 +78,9 @@
 <textarea class="form-control" id="p" name="prescription" autocomplete="off" required></textarea>
 </div>
 </div>
-<div class="container-fluid">
+<br><br><br>
+<input type="checkbox" id="fp_products_toggle" /> <strong>Add product(s) used</strong>
+<div class="container-fluid" id="fp_products" style="display:none">
 	<table class="table" id="tbl_stock" style="margin:0">
 	  <thead>
 		<tr>
@@ -92,8 +94,8 @@
 		<tr>
 		  <td>
 			<div class="form-group">
-			  <select class="form-control order_product" style="width:100%" autocomplete="off" required>
-				<option value="" disabled selected required>---Select---</option>
+			  <select class="form-control order_product" style="width:100%" autocomplete="off">
+				<option value="" disabled selected>---Select---</option>
 				<?php 
 				$conn = $pdo->open();
 				
@@ -122,11 +124,11 @@
 		  </td>
 		  <td>
 			<div class="form-group">
-			  <input type="number"  class="form-control text-right order_qty" oninput="this.value=Math.abs(this.value)" />
+			  <input type="number" class="form-control text-right order_qty" oninput="this.value=Math.abs(this.value)" />
 			</div>
 		  </td>
 		  <td>
-			<button class="btn btn-danger btn_deleterow">X</button>
+			<button type="button" class="btn btn-danger btn_deleterow">X</button>
 		  </td>
 		</tr>
 	  </tbody>

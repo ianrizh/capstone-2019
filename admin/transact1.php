@@ -20,19 +20,12 @@
 	$stmt->execute();
 	foreach($stmt as $row2){
 		$fp_id = $row2['fp_id'];
-	$stmt = $conn->prepare("SELECT *, COUNT(*) AS numrows from products_used where fp_id='$fp_id'");
-	$stmt->execute();
-    $urow =  $stmt->fetch();
-    if($urow['numrows'] == FALSE){
-    	$counts = "None";
-    }
-    else{
-    	$counts = $urow['numrows'];
-    }
+	
     $stmt = $conn->prepare("select * from products_used where fp_id='$fp_id'");
 	$stmt->execute();
 	foreach($stmt as $row3){
 		$amount = $row3['amount'];
+		$qty = $row3['qty'];
 	$stmt = $conn->prepare("SELECT * FROM services where deleted_date = '0000-00-00' and id_services = '$id_services'");
 	$stmt->execute();
 	foreach($stmt as $row1){
@@ -42,7 +35,6 @@
 		if($id_services == '0'){
 			$transaction_id = "VHC_0".$reservation_id;
 			$name = "Veterinary Health Care";
-			$price = "250.00";
 		}
 		elseif(strstr($name, "Boarding") !== FALSE){
 			$transaction_id = "BRDNG_0".$reservation_id;
@@ -56,13 +48,12 @@
 		}
 		$output['transaction'] = $transaction_id;
 		$output['pay_date'] = date('M d, Y', strtotime($row['pay_date']));
-		$subtotal = $price + $amount;
+		$subtotal = $amount;
 		
 		$output['list'] .= "
 			<tr class='prepend_items'>
 				<td>".$name."</td>
-				<td>&#8369; ".number_format($price, 2)."</td>
-				<td>".$counts."</td>
+				<td>".$qty."</td>
 				<td>&#8369; ".number_format($amount, 2)."</td>
 				<td>&#8369; ".number_format($subtotal, 2)."</td>
 			</tr>

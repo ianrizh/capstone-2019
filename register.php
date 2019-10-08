@@ -11,8 +11,6 @@
 		$password = $_POST['password'];
 		$repassword = $_POST['repassword'];
 
-		$_SESSION['firstname'] = $firstname;
-		$_SESSION['lastname'] = $lastname;
 		$_SESSION['email'] = $email;
 
 		if(!isset($_SESSION['captcha'])){
@@ -62,7 +60,7 @@
 						<h2>PLEASE VERIFY YOUR EMAIL ADDRESS</h2>
 						<p>Thanks for choosing Stella's Animal Clinic for your pet needs.</p>
 						<p>You're only one step from being able to login on our website! Simply click on the link below to confirm your account.</p>
-						<a href='http://localhost/xampp/Mock3/CAPSTONE_FIFTH_YEAR_/activate1.php?activate_code=".$activate_code."&user=".$userid."'>Activate Account</a>
+						<a href='http://localhost/xampp/CAPSTONE_FIFTH_YEAR/activate1.php?activate_code=".$activate_code."&user=".$userid."'>Activate Account</a>
 						<p>Best wishes,</p>
 						<p><b>STELLA'S ANIMAL CLINIC</b></p>
 					";
@@ -101,8 +99,6 @@
 
 				        $mail->send();
 
-				        unset($_SESSION['firstname']);
-				        unset($_SESSION['lastname']);
 				        unset($_SESSION['email']);
 
 				        $_SESSION['success'] = 'Account created. Check your email to activate.';

@@ -46,14 +46,13 @@ unset($_SESSION['success']);
 <div class="box-header with-border">
 <button type="button" class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#clinic"><i class="fa fa-plus"></i> Clinic</button>
 <button type="button" class="btn btn-primary btn-sm btn-flat" data-toggle="modal" data-target="#services"><i class="fa fa-plus"></i> Services</button>
-</div>
 <div class="box-body">
 <table id="example1" class="table table-bordered">
 <thead>
 <th>TYPE</th>
 <th>DATE</th>
 <th>TIME</th>
-<th>STATUS</th>
+<th>AVAILABILITY</th>
 <th>TOOLS</th>
 </thead>
 <tbody>
@@ -68,9 +67,35 @@ $doctor_id = $row['doctor_id'];
 $time_id = $row['time_id'];
 $date = $row['date'];
 $status = $row['status'];
+$in_charge = $row['in_charge'];
+if($time_id== 0){
+ $time_reservation="Whole Day";
+ $type="Services";
+ if($type=='Services'){
+
+if($in_charge==0)
+  {$stats="Both Groomer are Not Available";}
+else
+{$stats="One Groomer is Available";}}
+else{
+  $stats="The Doctor is Not Availble";
+
+}
+ echo "
+<tr>
+<td>".$type."</td>
+<td>".date('M. d, Y', strtotime($date))."</td>
+<td>".$time_reservation."</td>
+<td>".$stats."</td>
+<td>
+<button class='btn btn-success btn-sm edit btn-flat' data-id='".$doctor_id."'><i class='fa fa-edit'></i> Available</button>
+</td>
+</tr>
+";
+}else{
 $stmt=$conn->prepare("select * from time where time_id = '$time_id'");
 $stmt->execute();
-foreach($stmt as $rows){
+foreach($stmt as $rows);
 $time_reservation = $rows['time_reservation'];
 $schedule_id = $rows['schedule_id'];
 $stmt=$conn->prepare("select * from schedule where schedule_id = '$schedule_id'");
@@ -81,12 +106,27 @@ $stmt=$conn->prepare("select * from type where id_type = '$id_type'");
 $stmt->execute();
 foreach($stmt as $row1){
 $type = $row1['type'];
+if($time_id==0)
+{
+  $time_reservation="Whole Day";
+}
+if($time_id == 0){$type="Services";}
+if($type=='Services'){
+
+if($in_charge==0)
+  {$stats="Both Groomer are Not Available";}
+else
+{$stats="One Groomer is Available";}}
+else{
+  $stats="The Doctor is Not Availble";
+}
+
 echo "
 <tr>
 <td>".$type."</td>
 <td>".date('M. d, Y', strtotime($date))."</td>
 <td>".$time_reservation."</td>
-<td>".$status."</td>
+<td>".$stats."</td>
 <td>
 <button class='btn btn-success btn-sm edit btn-flat' data-id='".$doctor_id."'><i class='fa fa-edit'></i> Available</button>
 </td>
@@ -121,7 +161,7 @@ $pdo->close();
 <h4 class="modal-title"><b>CLINIC</b></h4>
 </div>
 <div class="modal-body">
-<form id="form" action="schedule_add.php" class="form-horizontal" method="post">
+<form id="form" action="schedule_add1.php" class="form-horizontal" method="post">
 <div class="form-group">
 <label for="edit_name" class="col-sm-3 control-label">Date</label>
 <div class="col-sm-9">	
@@ -146,6 +186,8 @@ $(function(){
 <input class="form-control" id="thedate" name="date" type="text" required/>
 </div>
 </div>
+
+<input type="hidden" name="in_charge" value="Doctor" readonly>
 <script>
  $(document).ready(function(){  
       $('#thedate').change(function(){  
@@ -190,6 +232,18 @@ $(function(){
 </div>
 <div class="modal-body">
 <form id="form1" action="schedule_add.php" class="form-horizontal" method="post">
+<div class="form-group">
+<label for="email" class="col-sm-3 control-label">Groomer(s)</label>
+
+<div class="col-sm-9">
+<select id="pet_gender" name="in_charge" class="form-control" required>
+<option value="" disabled selected required>---Select---</option>
+<option value="1">One Groomer </option>
+<option value="0">Both Groomer Not Available</option>
+</select>
+</div>
+</div>
+
 <div class="form-group">
 <label for="edit_name" class="col-sm-3 control-label">Date</label>
 <div class="col-sm-9">

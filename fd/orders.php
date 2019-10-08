@@ -57,13 +57,22 @@ to {opacity: 1;}
 }
 </style>
 
-
+<script>
+function printContent(el)
+{
+var restorepage=document.body.innerHTML;
+var printcontent=document.getElementById(el).innerHTML;
+document.body.innerHTML=printcontent;
+window.print();
+document.body.innerHTML=restorepage;
+window.location.href='orders.php';
+}
+</script>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 <div class="tab">
 <button class="tablinks" onClick="openTab(event, 'tab_orders')" id="defaultOpen">ORDERS</button>
-<button class="tablinks" onClick="openTab(event, 'tab_services')">NEW CUSTOMER</button>
-<button class="tablinks" onClick="openTab(event, 'tab_services1')">OLD CUSTOMER</button>
+<button class="tablinks" onClick="openTab(event, 'tab_services')">SERVICES</button>
 </div>
 
 <div class="content">
@@ -89,6 +98,7 @@ echo "
 unset($_SESSION['success']);
 }
 ?>
+
 
 <div id="insufficiientproducts_container"></div>
 
@@ -154,7 +164,7 @@ $pdo->close();
 </tr>
 </tbody>
 </table>
-<button class="btn btn-primary" id="btn_addorder" style="margin-left:8px"><i class="fa fa-plus"></i> ADD ORDER</button>
+<button class="btn btn-primary btn-sm btn-flat" id="btn_addorder" style="margin-left:8px"><i class="fa fa-plus"></i> ADD ORDER</button>
 <div class="row">
 <div class="col-sm-6"></div>
 <div class="col-sm-3" style="text-align:right">
@@ -177,77 +187,113 @@ $pdo->close();
 </div>
 </div>
 </div>
-<!--div class="row">
-<div class="col-sm-6"></div>
-<div class="col-sm-3">
-<label>CHANGE</label>
-</div>
-<div class="col-sm-3">
-<div class="form-group">
-<input type="number" class="form-control text-right" id="order_change" readonly/>
-</div>
-</div>
-</div-->
 <div class="row" style="text-align:right;margin:20px 1px 0px 0px;">
 <button type="button" id="btn_viewsummary" class="btn btn-success btn-flat"><i class="fa fa-check"></i> CHECK OUT</button>
 </div>
 </div>
 </div>
 </div>
-
+<!-- ORDERS -->
 
 <!-- SERVICES -->
 <div id="tab_services" class="tabcontent">
 <div class="box">
-<div class="box-header with-border">
-<h3 class="box-title" style="color:#36bbbe"><b><i class="fa fa-user"></i> CUSTOMER'S INFO</b></h3>
-</div>
 <div class="box-body">	
-<form class="form-horizontal" method="POST" action="walk-in_add.php">
+<form class="form-horizontal">
 <div class="form-group">
-<label for="name" class="col-sm-3 control-label">FIRST NAME</label>
-
+<label for="name" class="col-sm-3 control-label">CUSTOMER TYPE</label>
 <div class="col-sm-8">
-<input type="text" class="form-control" id="firstname" name="firstname" autofocus autocomplete="off" required>
+<select id="type" class="form-control" required onChange="java_script_:show(this.options[this.selectedIndex].value)" required>
+<option value="" disabled selected required>---Select---</option>
+<option value="New">New Customer</option>
+<option value="Old">Old Customer</option>
+</select>
 </div>
 </div>
-<div class="form-group">
-<label for="name" class="col-sm-3 control-label">LAST NAME</label>
 
-<div class="col-sm-8">
-<input type="text" class="form-control" id="lastname" name="lastname" autocomplete="off" required>
+<!-- NEW CUSTOMER -->
+<form class="form-horizontal">
+<div class='box-header' id="new1" style="display: none">
+<h3 class='box-title' style='color:#36bbbe;'><b><i class='fa fa-user'></i> CUSTOMER DETAILS</b></h3>
 </div>
-</div>
-<div class="form-group">
-<label for="name" class="col-sm-3 control-label">CONTACT NUMBER</label>
-
-<div class="col-sm-8">
-<input type="text" class="form-control" id="contact" name="contact" autocomplete="off" required>
-</div>
+<div class='box-header' id="old1" style="display: none">
+<h3 class='box-title' style='color:#36bbbe;'><b><i class='fa fa-user'></i> CUSTOMER DETAILS</b></h3>
 </div>
 <div class="form-group">
-<label for="name" class="col-sm-3 control-label">EMAIL ADDRESS</label>
-
-<div class="col-sm-8">
-<input type="text" class="form-control" id="email" name="email" autocomplete="off" required>
+<label for="name" class="col-sm-3 control-label" id="new2" style="display: none">FIRST NAME</label>
+<label for="name" class="col-sm-3 control-label" id="old2" style="display: none">CUSTOMER NAME</label>
+<div class="col-sm-8" id="new3" style="display: none">
+<input type="text" class="form-control" name="firstname" autofocus required>
+</div>
+<div class="col-sm-8" id="old3" style="display: none">
+<select class="form-control select2" onChange="onSelect1(this.value)" style="width: 100%" required>
+<option value="" disabled selected required>---Select---</option>
+<?php 
+$conn = $pdo->open();
+try{
+$stmt = $conn->prepare("SELECT * FROM users where type = '0'");
+$stmt->execute();
+foreach($stmt as $crows){
+$id_cust = $crows['id_cust'];
+$fullname = $crows['firstname'] ." ". $crows['lastname'];
+echo "
+<option value='$id_cust'>".$fullname."</option>
+";
+}
+}
+catch(PDOException $e){
+echo "There is some problem in connection: " . $e->getMessage();
+}
+$pdo->close();
+?>
+</select>
 </div>
 </div>
-<div class="box-header with-border" style="margin-left:-10px;">
-<h3 class="box-title" style="color:#36bbbe"><b><i class="fa fa-paw"></i> PET'S INFO</b></h3>
+<div id="details">
 </div>
-<div class="box-body">	
-<form class="form-horizontal" method="POST" action="walkin_add.php">
+<script>
+ function onSelect1(str){
+ 	var a = new XMLHttpRequest
+	a.onreadystatechange=function(){
+		document.getElementById("details").innerHTML=this.responseText;
+	}
+	a.open('GET', "details.php?id_cust="+str,true);
+	a.send();
+ }
+</script>	
 <div class="form-group">
-<label for="name" class="col-sm-3 control-label">PET NAME</label>
-
-<div class="col-sm-8">
-<input type="text" class="form-control" id="pet_name" name="pet_name" autofocus autocomplete="off" required>
+<label for="name" class="col-sm-3 control-label" id="new4" style="display: none">LAST NAME</label>
+<div class="col-sm-8" id="new5" style="display: none">
+<input type="text" class="form-control" name="lastname" required>
 </div>
 </div>
 <div class="form-group">
-<label for="lastname" class="col-sm-3 control-label">PET TYPE</label>
+<label for="name" class="col-sm-3 control-label" id="new6" style="display: none">CONTACT NUMBER</label>
+<div class="col-sm-8" id="new7" style="display: none">
+<input type="text" class="form-control" name="contact" required>
+</div>
+</div>
+<div class="form-group">
+<label for="name" class="col-sm-3 control-label" id="new8" style="display: none">EMAIL ADDRESS</label>
+<div class="col-sm-8" id="new9" style="display: none">
+<input type="email" class="form-control" name="email" required>
+</div>
+</div>
 
-<div class="col-sm-8">
+
+<div class='box-header' id="new10" style="display: none">
+<h3 class='box-title' style='color:#36bbbe;'><b><i class='fa fa-paw'></i> PET DETAILS</b></h3>
+</div>
+<div class="form-group">
+<label for="name" class="col-sm-3 control-label" id="new11" style="display: none">PET NAME</label>
+<div class="col-sm-8" id="new12" style="display: none">
+<input type="text" class="form-control" name="pet_name" required>
+</div>
+</div>
+<div class="form-group">
+<label for="lastname" class="col-sm-3 control-label" id="new13" style="display: none">Type</label>
+
+<div class="col-sm-8" id="new14" style="display: none">
 <script src="https://code.jquery.com/jquery-1.11.0.min.js" integrity="sha256-spTpc4lvj4dOkKjrGokIrHkJgNA0xMS98Pw9N7ir9oI=" crossorigin="anonymous"></script>
 <style>
 #pet_breed option{
@@ -268,9 +314,9 @@ display:block;
 </div>
 </div>
 <div class="form-group">
-<label for="home" class="col-sm-3 control-label">PET BREED</label>
+<label for="home" class="col-sm-3 control-label" id="new15" style="display: none">Breed</label>
 
-<div class="col-sm-8">
+<div class="col-sm-8" id="new16" style="display: none">
 <select id="pet_breed" name="pet_breed" class="form-control" disabled="disabled" required>
 <option value="" disabled selected required>---Select---</option>
 <option rel="Cat" value="Abyssinian">Abyssinian</option>
@@ -537,9 +583,9 @@ $pet_breed.prop("disabled",false);
 </div>
 </div>
 <div class="form-group">
-<label for="email" class="col-sm-3 control-label">PET GENDER</label>
+<label for="email" class="col-sm-3 control-label" id="new17" style="display: none">Gender</label>
 
-<div class="col-sm-8">
+<div class="col-sm-8" id="new18" style="display: none">
 <select id="pet_gender" name="pet_gender" class="form-control" required>
 <option value="" disabled selected required>---Select---</option>
 <option value="Female">Female</option>
@@ -548,15 +594,23 @@ $pet_breed.prop("disabled",false);
 </div>
 </div>
 
-<div class="box-header with-border" style="margin-left:-20px;">
-<h3 class="box-title" style="color:#36bbbe;"><b><i class="fa fa-calendar"></i> TRANSACTION DETAILS</b></h3>
+<div class='box-header' id="new19" style="display: none">
+<h3 class='box-title' style='color:#36bbbe;'><b><i class='fa fa-calendar'></i> TRANSACTION DETAILS</b></h3>
 </div>
-<div class="box-body">	
 <div class="form-group">
-<label for="email" class="col-sm-3 control-label">SERVICE TYPE</label>
-
-<div class="col-sm-8">
-<select id="type" name="type" class="form-control" required onChange="java_script_:show(this.options[this.selectedIndex].value)">
+<label for="name" class="col-sm-3 control-label" id="new20" style="display: none">DATE</label>
+<div class="col-sm-8" id="new21" style="display: none">
+<?php
+date_default_timezone_set('Asia/Manila');
+$date=date('Y-m-d');
+?>
+<input type="text" class="form-control" name="thedate" value="<?php echo date('M. d, Y', strtotime($date)); ?>" readonly>
+</div>
+</div>
+<div class="form-group">
+<label for="name" class="col-sm-3 control-label" id="new22" style="display: none">SERVICE TYPE</label>
+<div class="col-sm-8" id="new23" style="display: none">
+<select id="type" class="form-control" required onChange="java_script_:show1(this.options[this.selectedIndex].value)"  required>
 <option value="" disabled selected required>---Select---</option>
 <option value="Clinic">Veterinary Health Care</option>
 <option value="Boarding">Boarding</option>
@@ -565,17 +619,6 @@ $pet_breed.prop("disabled",false);
 </div>
 </div>
 
-<div class="form-group">
-<label for="edit_name" class="col-sm-3 control-label">DATE</label>
-<div class="col-sm-8">
-<?php
-date_default_timezone_set('Asia/Manila');
-$date=date('Y-m-d');
-?>
-<input class="form-control" id="thedate" name="thedate" value="<?php echo "".date('M. d, Y', strtotime($date)).""; ?>" type="text" readonly/>
-</div>
-</div>
-
 <?php
 date_default_timezone_set('Asia/Manila');
 $date=date('Y-m-d');
@@ -584,11 +627,10 @@ if($theday == 'Sunday')
 {
 echo '
 <div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
-<div class="col-sm-8" id="clinic1" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
+<input type="hidden" value="0" name="id_services" readonly>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic1" style="display:none">TIME</label>
+<div class="col-sm-8" id="clinic2" style="display:none">
+<select class="form-control" id="time" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -634,11 +676,10 @@ elseif($theday == 'Monday')
 {
 echo '
 <div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
-<div class="col-sm-8" id="clinic1" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
+<input type="hidden" value="0" name="id_services" readonly>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic1" style="display:none">TIME</label>
+<div class="col-sm-8" id="clinic2" style="display:none">
+<select class="form-control" id="time" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -684,11 +725,10 @@ elseif($theday == 'Tuesday')
 {
 echo '
 <div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
-<div class="col-sm-8" id="clinic1" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
+<input type="hidden" value="0" name="id_services" readonly>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic1" style="display:none">TIME</label>
+<div class="col-sm-8" id="clinic2" style="display:none">
+<select class="form-control" id="time" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -734,11 +774,10 @@ elseif($theday == 'Wednesday')
 {
 echo '
 <div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
-<div class="col-sm-8" id="clinic1" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
+<input type="hidden" value="0" name="id_services" readonly>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic1" style="display:none">TIME</label>
+<div class="col-sm-8" id="clinic2" style="display:none">
+<select class="form-control" id="time" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -784,11 +823,10 @@ elseif($theday == 'Thursday')
 {
 echo '
 <div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
-<div class="col-sm-8" id="clinic1" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
+<input type="hidden" value="0" name="id_services" readonly>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic1" style="display:none">TIME</label>
+<div class="col-sm-8" id="clinic2" style="display:none">
+<select class="form-control" id="time" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -834,11 +872,10 @@ elseif($theday == 'Friday')
 {
 echo '
 <div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
-<div class="col-sm-8" id="clinic1" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
+<input type="hidden" value="0" name="id_services" readonly>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic1" style="display:none">TIME</label>
+<div class="col-sm-8" id="clinic2" style="display:none">
+<select class="form-control" id="time" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -884,11 +921,10 @@ elseif($theday == 'Saturday')
 {
 echo '
 <div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinic2" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic" style="display:none">TIME</label>
-<div class="col-sm-8" id="clinic1" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
+<input type="hidden" value="0" name="id_services" readonly>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic1" style="display:none">TIME</label>
+<div class="col-sm-8" id="clinic2" style="display:none">
+<select class="form-control" id="time" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -931,545 +967,10 @@ echo'
 ';
 }
 ?>
-
 <div class="form-group">
-<label for="edit_name" class="col-sm-3 control-label" id="grooming2" style="display:none; margin-top:-15px;">GROOMING SERVICES</label>
-<div class="col-sm-8" id="grooming1" style="display:none; margin-top:-13px;">
-<select class="form-control" name="id_services" onChange="onSelect2(this.value)">
-<option value="" disabled selected required>---Select---</option>
-<?php 
-$conn = $pdo->open();
-try{
-$stmt = $conn->prepare("select * from category where category = 'Grooming'");
-$stmt->execute();
-foreach($stmt as $row1){
-$id_category = $row1['id_category'];
-$stmt = $conn->prepare("SELECT * FROM services WHERE id_category = '$id_category' and deleted_date = '0000-00-00'");
-$stmt->execute();
-foreach($stmt as $row){
-$id_services = $row['id_services'];
-$name = $row['name'];
-echo "
-<option value='$id_services'>".$name."</option>
-";
-}
-}
-}
-catch(PDOException $e){
-echo "There is some problem in connection: " . $e->getMessage();
-}
-$pdo->close();
-?>
-</select>
-</div>
-</div>
-<div id="g_time">
-</div>
-<script>
- function onSelect2(str){
- 	var a = new XMLHttpRequest
-	a.onreadystatechange=function(){
-		document.getElementById("g_time").innerHTML=this.responseText;
-	}
-	a.open('GET', "g_time.php?id_services="+str,true);
-	a.send();
- }
-</script>
-
-<script>
-function show(aval) {
-if (aval == "Clinic") {
-clinic.style.display='inline-block';
-clinic1.style.display='inline-block';
-clinic2.style.display='inline-block';
-grooming1.style.display='none';
-grooming2.style.display='none';
-Form.fileURL.focus();
-} 
-else if (aval == "Boarding") {
-clinic.style.display='none';
-clinic1.style.display='none';
-clinic2.style.display='none';
-grooming1.style.display='none';
-grooming2.style.display='none';
-Form.fileURL.focus();
-} 
-else if (aval == "Grooming") {
-clinic.style.display='none';
-clinic1.style.display='none';
-clinic2.style.display='none';
-grooming1.style.display='inline-block';
-grooming2.style.display='inline-block';
-Form.fileURL.focus();
-} 
-}
-</script>
-
-</div>
-</div>
-<button type="submit" class="btn btn-success btn-flat" name="add" style="width:100%"><i class="fa fa-send"></i> Submit</button>
-</form>
-</div>
-</div>
-</div>
-
-
-<div id="tab_services1" class="tabcontent">
-<div class="box">
-<div class="box-header with-border">
-<h3 class="box-title" style="color:#36bbbe"><b><i class="fa fa-user"></i> CUSTOMER'S INFO</b></h3>
-</div>
-<form id="form1" action="walk-in_add1.php" class="form-horizontal" method="post">
-<div class="box-body">
-<div class="form-group">
-<label for="edit_name" class="col-sm-3 control-label">CUSTOMER NAME</label>
-<div class="col-sm-8">
-<select class="form-control" onChange="onSelect1(this.value)" required>
-<option value="" disabled selected required>---Select---</option>
-<?php 
-$conn = $pdo->open();
-try{
-$stmt = $conn->prepare("SELECT * FROM reservation WHERE r_type='Walkin' group by user_pets_id");
-$stmt->execute();
-foreach($stmt as $row){
-$upi = $row['user_pets_id'];
-$stmt = $conn->prepare("SELECT * FROM user_pets WHERE user_pets_id='$upi'");
-$stmt->execute();
-foreach($stmt as $crow){
-$ic = $crow['id_cust'];
-$stmt = $conn->prepare("SELECT * FROM users WHERE id_cust='$ic'");
-$stmt->execute();
-foreach($stmt as $crows){
-$id_cust = $crows['id_cust'];
-$fullname = $crows['firstname'] ." ". $crows['lastname'];
-echo "
-<option value='$id_cust'>".$fullname."</option>
-";
-}
-}
-}
-}
-catch(PDOException $e){
-echo "There is some problem in connection: " . $e->getMessage();
-}
-$pdo->close();
-?>
-</select>
-</div>
-</div>
-<div id="details">
-</div>
-<script>
- function onSelect1(str){
- 	var a = new XMLHttpRequest
-	a.onreadystatechange=function(){
-		document.getElementById("details").innerHTML=this.responseText;
-	}
-	a.open('GET', "details.php?id_cust="+str,true);
-	a.send();
- }
-</script>	
-</div>
-
-
-<script>
- function onSelect(str){
- 	var a = new XMLHttpRequest
-	a.onreadystatechange=function(){
-		document.getElementById("details1").innerHTML=this.responseText;
-	}
-	a.open('GET', "details1.php?id_pet="+str,true);
-	a.send();
- }
-</script>
-
-<div class='box-header with-border'>
-<h3 class='box-title' style='color:#36bbbe'><b><i class='fa fa-calendar'></i> TRANSACTION DETAILS</b></h3>
-</div>
-<div class="box-body">
-<div class="form-group">
-<label for="email" class="col-sm-3 control-label">SERVICE TYPE</label>
-
-<div class="col-sm-8">
-<select id="type" name="type" class="form-control" required onChange="java_script_:show1(this.options[this.selectedIndex].value)">
-<option value="" disabled selected required>---Select---</option>
-<option value="Clinic1">Veterinary Health Care</option>
-<option value="Boarding1">Boarding</option>
-<option value="Grooming1">Grooming</option>
-</select>
-</div>
-</div>
-<div class="form-group">
-<label for="edit_name" class="col-sm-3 control-label">DATE</label>
-<div class="col-sm-8">
-<?php
-date_default_timezone_set('Asia/Manila');
-$date=date('Y-m-d');
-?>
-<input class="form-control" id="thedate" name="thedate" value="<?php echo "".date('M. d, Y', strtotime($date)).""; ?>" type="text" readonly/>
-</div>
-</div>
-
-<?php
-date_default_timezone_set('Asia/Manila');
-$date=date('Y-m-d');
-$theday=date('l',strtotime($date));
-if($theday == 'Sunday')
-{
-echo '
-<div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
-<div class="col-sm-8" id="clinicb" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
-<option value="" disabled selected required>---Select---</option>';
-$stmt = $conn->prepare("select * from type where type = 'Clinic'");
-$stmt->execute();
-foreach($stmt as $r){
-$id_type = $r['id_type'];
-$stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and day = 'Sunday'");
-$stmt->execute();
-foreach($stmt as $ro){
-$schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
-$stmt->execute();
-foreach($stmt as $row){
-$time_id = $row['time_id'];
-$time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
-$stmt->execute();
-foreach($stmt as $rows1);
- $time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
-$stmt->execute();
-foreach($stmt as $rows);
-$doctor_id = $rows['doctor_id'];
-$time_id1 = $rows['time_id'];
-$date1 = $rows['date'];
-$status = $rows['status'];
-if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
-echo'<option value="'.$time.'" hidden>'.$time.'</option>';
-}
-else{
-echo'<option value="'.$time.'">'.$time.'</option>';
-}
-}
-}
-}
-echo'
-</select>
-</div>
-</div>
-';
-}	
-elseif($theday == 'Monday')
-{
-echo '
-<div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
-<div class="col-sm-8" id="clinicb" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
-<option value="" disabled selected required>---Select---</option>';
-$stmt = $conn->prepare("select * from type where type = 'Clinic'");
-$stmt->execute();
-foreach($stmt as $r){
-$id_type = $r['id_type'];
-$stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and day = 'Monday'");
-$stmt->execute();
-foreach($stmt as $ro){
-$schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
-$stmt->execute();
-foreach($stmt as $row){
-$time_id = $row['time_id'];
-$time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
-$stmt->execute();
-foreach($stmt as $rows1);
- $time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
-$stmt->execute();
-foreach($stmt as $rows);
-$doctor_id = $rows['doctor_id'];
-$time_id1 = $rows['time_id'];
-$date1 = $rows['date'];
-$status = $rows['status'];
-if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
-echo'<option value="'.$time.'" hidden>'.$time.'</option>';
-}
-else{
-echo'<option value="'.$time.'">'.$time.'</option>';
-}
-}
-}
-}
-echo'
-</select>
-</div>
-</div>
-';
-}
-elseif($theday == 'Tuesday')
-{
-echo '
-<div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
-<div class="col-sm-8" id="clinicb" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
-<option value="" disabled selected required>---Select---</option>';
-$stmt = $conn->prepare("select * from type where type = 'Clinic'");
-$stmt->execute();
-foreach($stmt as $r){
-$id_type = $r['id_type'];
-$stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and day = 'Tuesday'");
-$stmt->execute();
-foreach($stmt as $ro){
-$schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
-$stmt->execute();
-foreach($stmt as $row){
-$time_id = $row['time_id'];
-$time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
-$stmt->execute();
-foreach($stmt as $rows1);
- $time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
-$stmt->execute();
-foreach($stmt as $rows);
-$doctor_id = $rows['doctor_id'];
-$time_id1 = $rows['time_id'];
-$date1 = $rows['date'];
-$status = $rows['status'];
-if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
-echo'<option value="'.$time.'" hidden>'.$time.'</option>';
-}
-else{
-echo'<option value="'.$time.'">'.$time.'</option>';
-}
-}
-}
-}
-echo'
-</select>
-</div>
-</div>
-';
-}
-elseif($theday == 'Wednesday')
-{
-echo '
-<div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
-<div class="col-sm-8" id="clinicb" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
-<option value="" disabled selected required>---Select---</option>';
-$stmt = $conn->prepare("select * from type where type = 'Clinic'");
-$stmt->execute();
-foreach($stmt as $r){
-$id_type = $r['id_type'];
-$stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and day = 'Wednesday'");
-$stmt->execute();
-foreach($stmt as $ro){
-$schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
-$stmt->execute();
-foreach($stmt as $row){
-$time_id = $row['time_id'];
-$time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
-$stmt->execute();
-foreach($stmt as $rows1);
- $time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
-$stmt->execute();
-foreach($stmt as $rows);
-$doctor_id = $rows['doctor_id'];
-$time_id1 = $rows['time_id'];
-$date1 = $rows['date'];
-$status = $rows['status'];
-if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
-echo'<option value="'.$time.'" hidden>'.$time.'</option>';
-}
-else{
-echo'<option value="'.$time.'">'.$time.'</option>';
-}
-}
-}
-}
-echo'
-</select>
-</div>
-</div>
-';
-}
-elseif($theday == 'Thursday')
-{
-echo '
-<div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
-<div class="col-sm-8" id="clinicb" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
-<option value="" disabled selected required>---Select---</option>';
-$stmt = $conn->prepare("select * from type where type = 'Clinic'");
-$stmt->execute();
-foreach($stmt as $r){
-$id_type = $r['id_type'];
-$stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and day = 'Thursday'");
-$stmt->execute();
-foreach($stmt as $ro){
-$schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
-$stmt->execute();
-foreach($stmt as $row){
-$time_id = $row['time_id'];
-$time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
-$stmt->execute();
-foreach($stmt as $rows1);
- $time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
-$stmt->execute();
-foreach($stmt as $rows);
-$doctor_id = $rows['doctor_id'];
-$time_id1 = $rows['time_id'];
-$date1 = $rows['date'];
-$status = $rows['status'];
-if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
-echo'<option value="'.$time.'" hidden>'.$time.'</option>';
-}
-else{
-echo'<option value="'.$time.'">'.$time.'</option>';
-}
-}
-}
-}
-echo'
-</select>
-</div>
-</div>
-';
-}
-elseif($theday == 'Friday')
-{
-echo '
-<div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
-<div class="col-sm-8" id="clinicb" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
-<option value="" disabled selected required>---Select---</option>';
-$stmt = $conn->prepare("select * from type where type = 'Clinic'");
-$stmt->execute();
-foreach($stmt as $r){
-$id_type = $r['id_type'];
-$stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and day = 'Friday'");
-$stmt->execute();
-foreach($stmt as $ro){
-$schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
-$stmt->execute();
-foreach($stmt as $row){
-$time_id = $row['time_id'];
-$time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
-$stmt->execute();
-foreach($stmt as $rows1);
- $time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
-$stmt->execute();
-foreach($stmt as $rows);
-$doctor_id = $rows['doctor_id'];
-$time_id1 = $rows['time_id'];
-$date1 = $rows['date'];
-$status = $rows['status'];
-if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
-echo'<option value="'.$time.'" hidden>'.$time.'</option>';
-}
-else{
-echo'<option value="'.$time.'">'.$time.'</option>';
-}
-}
-}
-}
-echo'
-</select>
-</div>
-</div>
-';
-}
-elseif($theday == 'Saturday')
-{
-echo '
-<div id="time" class="form-group">
-<input type="hidden" name="s_price" value="250.00">
-<input type="text" value="0" name="id_services" id="clinicc" style="display:none; background-color:white; border:0px; color:white" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinica" style="display:none">Time</label>
-<div class="col-sm-8" id="clinicb" style="display:none">
-<select class="form-control" id="time" name="time_reservation" style="margin-top:-20px;">
-<option value="" disabled selected required>---Select---</option>';
-$stmt = $conn->prepare("select * from type where type = 'Clinic'");
-$stmt->execute();
-foreach($stmt as $r){
-$id_type = $r['id_type'];
-$stmt = $conn->prepare("select * from schedule where id_type = '$id_type' and day = 'Saturday'");
-$stmt->execute();
-foreach($stmt as $ro){
-$schedule_id = $ro['schedule_id'];
-$stmt = $conn->prepare("select * from time where schedule_id='$schedule_id'");
-$stmt->execute();
-foreach($stmt as $row){
-$time_id = $row['time_id'];
-$time = $row['time_reservation'];
-$stmt = $conn->prepare("select * from reservation where thedate='$date' and time_reservation = '$time'");
-$stmt->execute();
-foreach($stmt as $rows1);
- $time1 = $rows1['time_reservation'];
-$date2 = $rows1['thedate'];
-$stmt = $conn->prepare("select * from doctor where time_id = '$time_id'");
-$stmt->execute();
-foreach($stmt as $rows);
-$doctor_id = $rows['doctor_id'];
-$time_id1 = $rows['time_id'];
-$date1 = $rows['date'];
-$status = $rows['status'];
-if($date == $date2 && $time1 == $time || $time_id1 == $time_id && $date1 == $date && $status == 'Not Available'){
-echo'<option value="'.$time.'" hidden>'.$time.'</option>';
-}
-else{
-echo'<option value="'.$time.'">'.$time.'</option>';
-}
-}
-}
-}
-echo'
-</select>
-</div>
-</div>
-';
-}
-?>
-
-<div class="form-group">
-<label for="edit_name" class="col-sm-3 control-label" id="groominga" style="display:none; margin-top:-15px;">GROOMING SERVICES</label>
-<div class="col-sm-8" id="groomingb" style="display:none; margin-top:-13px;">
-<select class="form-control" name="id_services" onChange="onSelect3(this.value)">
+<label for="edit_name" class="col-sm-3 control-label" id="grooming1" style="display:none; margin-top:-15px;">GROOMING SERVICES</label>
+<div class="col-sm-8" id="grooming2" style="display:none; margin-top:-15px;">
+<select class="form-control" name="id_services" onChange="onSelect(this.value)">
 <option value="" disabled selected required>---Select---</option>
 <?php 
 $conn = $pdo->open();
@@ -1497,56 +998,283 @@ $pdo->close();
 </select>
 </div>
 </div>
-<div id="g_time1">
+<div id="g_time">
 </div>
 <script>
- function onSelect3(str){
+ function onSelect(str){
  	var a = new XMLHttpRequest
 	a.onreadystatechange=function(){
-		document.getElementById("g_time1").innerHTML=this.responseText;
+		document.getElementById("g_time").innerHTML=this.responseText;
 	}
 	a.open('GET', "g_time1.php?id_services1="+str,true);
 	a.send();
  }
 </script>
+<div id="g_time0">
+</div>
+<script>
+ function onSelect9(str){
+ 	var a = new XMLHttpRequest
+	a.onreadystatechange=function(){
+		document.getElementById("g_time0").innerHTML=this.responseText;
+	}
+	a.open('GET', "g_time0.php?id_services10="+str,true);
+	a.send();
+ }
+</script>
+<div class="form-group">
+<label for="edit_name" class="col-sm-3 control-label" id="boarding1" style="display:none; margin-top:-30px;">BOARDING SERVICES</label>
+<div class="col-sm-8" id="boarding2" style="display:none; margin-top:-30px; float: right; margin-right: 110px;">
+<select class="form-control" name="id_services" onChange="onSelect2(this.value)">
+<option value="" disabled selected required>---Select---</option>
+<?php 
+$conn = $pdo->open();
+try{
+$stmt = $conn->prepare("select * from category where category = 'Boarding'");
+$stmt->execute();
+foreach($stmt as $row1){
+$id_category = $row1['id_category'];
+$stmt = $conn->prepare("SELECT * FROM services WHERE id_category = '$id_category' and deleted_date = '0000-00-00'");
+$stmt->execute();
+foreach($stmt as $row){
+$id_services2 = $row['id_services'];
+$name = $row['name'];
+echo "
+<option value='$id_services2'>".$name."</option>
+";
+}
+}
+}
+catch(PDOException $e){
+echo "There is some problem in connection: " . $e->getMessage();
+}
+$pdo->close();
+?>
+</select>
+</div>
+</div>
+<div id="g_time2">
+</div>
+<script>
+ function onSelect2(str){
+ 	var a = new XMLHttpRequest
+	a.onreadystatechange=function(){
+		document.getElementById("g_time2").innerHTML=this.responseText;
+	}
+	a.open('GET', "g_time2.php?id_services2="+str,true);
+	a.send();
+ }
+</script>
+<div id="g_time20">
+</div>
+<script>
+ function onSelect8(str){
+ 	var a = new XMLHttpRequest
+	a.onreadystatechange=function(){
+		document.getElementById("g_time20").innerHTML=this.responseText;
+	}
+	a.open('GET', "g_time20.php?id_services20="+str,true);
+	a.send();
+ }
+</script>
+
+
+<div id="details1">
+</div>
+<script>
+ function onSelect3(str){
+ 	var a = new XMLHttpRequest
+	a.onreadystatechange=function(){
+		document.getElementById("details1").innerHTML=this.responseText;
+	}
+	a.open('GET', "details1.php?id_pet="+str,true);
+	a.send();
+ }
+</script>
+<button class="btn btn-primary btn-sm btn-flat" id="btn_addorder1" style="margin-left:8px"><i class="fa fa-plus"></i> Add Pet</button>
+<button class='btn btn-success btn-sm pet btn-flat' data-id='".$crows['id_cust']."' style='float: right;' id='cntct4'><i class='fa fa-send'></i> Submit</button>
+</form>
+<!-- NEW CUSTOMER -->
+
+
+</form>
 
 
 <script>
-function show1(aval) {
-if (aval == "Clinic1") {
-clinica.style.display='inline-block';
-clinicb.style.display='inline-block';
-clinicc.style.display='inline-block';
-groominga.style.display='none';
-groomingb.style.display='none';
+function show(aval) {
+if (aval == "New") {
+new1.style.display='inline-block';
+new2.style.display='inline-block';
+new3.style.display='inline-block';
+new4.style.display='inline-block';
+new5.style.display='inline-block';
+new6.style.display='inline-block';
+new7.style.display='inline-block';
+new8.style.display='inline-block';
+new9.style.display='inline-block';
+new10.style.display='inline-block';
+new11.style.display='inline-block';
+new12.style.display='inline-block';
+new13.style.display='inline-block';
+new14.style.display='inline-block';
+new15.style.display='inline-block';
+new16.style.display='inline-block';
+new17.style.display='inline-block';
+new18.style.display='inline-block';
+new19.style.display='inline-block';
+new20.style.display='inline-block';
+new21.style.display='inline-block';
+new22.style.display='inline-block';
+new23.style.display='inline-block';
+old1.style.display='none';
+old2.style.display='none';
+old3.style.display='none';
+cntct.style.display='none';
+cntct1.style.display='none';
+cntct2.style.display='none';
+cntct3.style.display='none';
 Form.fileURL.focus();
 } 
-else if (aval == "Boarding1") {
-clinica.style.display='none';
-clinicb.style.display='none';
-clinicc.style.display='none';
-groominga.style.display='none';
-groomingb.style.display='none';
-Form.fileURL.focus();
-} 
-else if (aval == "Grooming1") {
-clinica.style.display='none';
-clinicb.style.display='none';
-clinicc.style.display='none';
-groominga.style.display='inline-block';
-groomingb.style.display='inline-block';
+else if (aval == "Old") {
+new1.style.display='none';
+new2.style.display='none';
+new3.style.display='none';
+new4.style.display='none';
+new5.style.display='none';
+new6.style.display='none';
+new7.style.display='none';
+new8.style.display='none';
+new9.style.display='none';
+new10.style.display='none';
+new11.style.display='none';
+new12.style.display='none';
+new13.style.display='none';
+new14.style.display='none';
+new15.style.display='none';
+new16.style.display='none';
+new17.style.display='none';
+new18.style.display='none';
+new19.style.display='none';
+new20.style.display='none';
+new21.style.display='none';
+new22.style.display='none';
+new23.style.display='none';
+clinic1.style.display='none';
+clinic2.style.display='none'
+boarding1.style.display='none';
+boarding2.style.display='none';
+grooming1.style.display='none';
+grooming2.style.display='none';
+old1.style.display='inline-block';
+old2.style.display='inline-block';
+old3.style.display='inline-block';
+cntct.style.display='inline-block';
+cntct1.style.display='inline-block';
+cntct2.style.display='inline-block	';
+cntct3.style.display='inline-block';
+gtime2.style.display='none';
+gtime22.style.display='none';
+gtime.style.display='none';
+gtime1.style.display='none';
 Form.fileURL.focus();
 } 
 }
 </script>
 
-<button type="submit" class="btn btn-success btn-flat" name="add" style="width:100%"><i class="fa fa-send"></i> Submit</button>
-</div>
-</form>
-</div>
-</div>
-</div>
+<script>
+function show1(aval) {
+if (aval == "Clinic") {
+clinic1.style.display='inline-block';
+clinic2.style.display='inline-block';
+grooming1.style.display='none';
+grooming2.style.display='none';
+boarding1.style.display='none';
+boarding2.style.display='none';
+gtime.style.display='none';
+gtime1.style.display='none';
+gtime2.style.display='none';
+gtime22.style.display='none';
 
+Form.fileURL.focus();
+} 
+if (aval == "Boarding") {
+clinic1.style.display='none';
+clinic2.style.display='none';
+boarding1.style.display='inline-block';
+boarding2.style.display='inline-block';
+gtime20.style.display='inline-block';
+gtime220.style.display='inline-block';
+grooming1.style.display='none';
+grooming2.style.display='none';
+gtime.style.display='none';
+gtime1.style.display='none';
+Form.fileURL.focus();
+} 
+if (aval == "Grooming") {
+clinic1.style.display='none';
+clinic2.style.display='none';
+boarding1.style.display='none';
+boarding2.style.display='none';
+gtime2.style.display='none';
+gtime22.style.display='none';
+grooming1.style.display='inline-block';
+grooming2.style.display='inline-block';
+gtime.style.display='inline-block';
+gtime1.style.display='inline-block';
+Form.fileURL.focus();
+} 
+}
+</script>
+
+<script>
+function show9(aval) {
+if (aval == "Clinic1") {
+clinic11.style.display='inline-block';
+clinic21.style.display='inline-block';
+grooming11.style.display='none';
+grooming21.style.display='none';
+boarding11.style.display='none';
+boarding21.style.display='none';
+gtime0.style.display='none';
+gtime10.style.display='none';
+gtime20.style.display='none';
+gtime220.style.display='none';
+
+Form.fileURL.focus();
+} 
+if (aval == "Boarding1") {
+clinic11.style.display='none';
+clinic21.style.display='none';
+boarding11.style.display='inline-block';
+boarding21.style.display='inline-block';
+gtime20.style.display='inline-block';
+gtime220.style.display='inline-block';
+grooming11.style.display='none';
+grooming21.style.display='none';
+gtime0.style.display='none';
+gtime10.style.display='none';
+Form.fileURL.focus();
+} 
+if (aval == "Grooming1") {
+clinic11.style.display='none';
+clinic21.style.display='none';
+boarding11.style.display='none';
+boarding21.style.display='none';
+gtime20.style.display='none';
+gtime220.style.display='none';
+grooming11.style.display='inline-block';
+grooming21.style.display='inline-block';
+gtime0.style.display='inline-block';
+gtime10.style.display='inline-block';
+Form.fileURL.focus();
+} 
+}
+</script>
+</div>
+</div>
+</div>
+<!-- SERVICES -->
+</div>
 </div>
 
 <!-- SCRIPT FOR TAB CONTAINER -->

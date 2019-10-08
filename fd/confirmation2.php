@@ -7,18 +7,18 @@ if(isset($_POST['reservation_id'])){
 $reservation_id = $_POST['reservation_id'];
 
 $conn = $pdo->open();
-$stmt = $conn->prepare("SELECT * FROM online_reservation2 where reservation_id = $reservation_id");
+$stmt = $conn->prepare("SELECT * FROM reservation where reservation_id = $reservation_id");
 $stmt->execute();
 foreach($stmt as $row){
 $user_pets_id  = $row['user_pets_id'];
 $id_services = $row['id_services'];
 $thedate = $row['thedate'];
-$time_reservation = $row['time_in'];
+$time_reservation = $row['time_reservation'];
 	$stmt = $conn->prepare("SELECT * FROM services where id_services = '$id_services'");
 	$stmt->execute();
 	foreach($stmt as $row2){
 				}
-				if($service_id == "0"){
+				if($id_services == "0"){
 					$name = ' Veterinary Health Care';
 				}
 				else{
@@ -30,7 +30,7 @@ $time_reservation = $row['time_in'];
 		$id_cust  = $trow['id_cust'];
 		$id_pet  = $trow['id_pet'];
 		}
-			$stmt = $conn->prepare("SELECT * FROM customer where id_cust = '$id_cust'");
+			$stmt = $conn->prepare("SELECT * FROM users where id_cust = '$id_cust'");
 			$stmt->execute();
 			foreach($stmt as $trows){
 			$firstname  = $trows['firstname'];
@@ -50,7 +50,7 @@ $st = $_POST['status'];
 if($st=="Confirm")
 {
 try{
-$stmt = $conn->prepare("UPDATE online_reservation2 SET status='$st' where reservation_id = $reservation_id");
+$stmt = $conn->prepare("UPDATE reservation SET status='$st' where reservation_id = $reservation_id");
 $stmt->execute(['status'=>$st]);
 $message = "
 <h2>SEE YOU SOON!</h2>
@@ -113,9 +113,10 @@ $pdo->close();
 $st1 = $_POST['status'];
 if($st1=="Decline")
 {
+	$decline_remarks = $_POST['decline_remarks'];
 try{
-$stmt = $conn->prepare("UPDATE online_reservation2 SET status='$st1' where reservation_id = $reservation_id");
-$stmt->execute(['status'=>$st]);
+$stmt = $conn->prepare("UPDATE reservation SET status='$st1', decline_remarks=:remark  where reservation_id = $reservation_id");
+$stmt->execute(['remark'=>$decline_remarks]);
 $message = "
 <h2>WE'RE SORRY!</h2>
 <p>Hey ".$firstname."! Your reservation request for your pet ".$pet_name." has been declined. We look forward for your next appointment request.</p>
@@ -178,7 +179,7 @@ $st2 = $_POST['status'];
 if($st2=="Reschedule")
 {
 try{
-$stmt = $conn->prepare("UPDATE online_reservation2 SET status='$st1' where reservation_id = $reservation_id");
+$stmt = $conn->prepare("UPDATE reservation SET status='$st1' where reservation_id = $reservation_id");
 $stmt->execute(['status'=>$st]);
 $message = "
 <h2>RESCHEDULE APPOINTMENT!</h2>
