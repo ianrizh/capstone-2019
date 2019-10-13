@@ -98,13 +98,6 @@ $pdo->close();
 <input type="file" id="photo" name="photo" required>
 </div>
 </div>
-
-<p><b>Description</b></p>
-<div class="form-group">
-<div class="col-sm-12">
-<textarea id="editor2" name="details" rows="10" cols="80"></textarea>
-</div>
-</div>
 </div>
 <div class="modal-footer">
 <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>

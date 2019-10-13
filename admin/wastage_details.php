@@ -13,7 +13,7 @@ $stmt = $conn->prepare("SELECT * FROM products WHERE name='$name'");
 $stmt->execute();
 foreach($stmt as $crow){
 $id_products = $crow['id_products'];
-$stmt = $conn->prepare("SELECT * FROM stocks_expired WHERE id_products='$id_products'");
+$stmt = $conn->prepare("SELECT * FROM stocks_expired WHERE id_products='$id_products' AND stocks != 0 and expired_flag != '1'");
 $stmt->execute();
 foreach($stmt as $crows){
 $id_stocks_expired = $crows['id_stocks_expired'];

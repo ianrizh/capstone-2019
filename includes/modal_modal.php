@@ -9,19 +9,36 @@
                 Date: <span id="pay_date"></span>
                 <span class="pull-right">TRANSACTION NO: <span id="transid1"></span></span> 
               </p>
-              <table class="table table-bordered">
+              <table class="table table-bordered" id="tblservice">
                 <thead>
-                  <th>SERVICE NAME</th>
-                  <th>QUANTITY OF PRODUCTS USED</th>
-                  <th>TOTAL OF PRODUCTS USED</th>
-                  <th>SUBTOTAL</th>
+                  <tr>
+                    <th>SERVICE NAME</th>
+                    <th>SERVICE TYPE</th>
+                    <th>SERVICE PRICE</th>
+                  </tr>
                 </thead>
-                <tbody id="detail1">
+                <tbody>
+                  <tr>
+                    <td id='td_servicename'></td>
+                    <td id='td_servicetype'></td>
+                    <td id='td_serviceprice'></td>
+                  </tr>
+                </tbody>
+                <!--tbody id="detail1">
                   <tr>
                     <td colspan="3" align="right"><b>TOTAL</b></td>
                     <td><span id="total1"></span></td>
                   </tr>
-                </tbody>
+                </tbody-->
+              </table>
+              <table class="table table-bordered" id='tblservice_products'>
+                <thead>
+                  <tr>
+                    <th>PRODUCT USED</th>
+                    <th>QUANTITY</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
               </table>
             </div>
             <div class="modal-footer">

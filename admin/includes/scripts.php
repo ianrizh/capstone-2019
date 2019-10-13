@@ -50,6 +50,7 @@ $(function(){
 <script>
   $(function () {
     $('#example1').DataTable({
+      "order": [],
       responsive: true
     })
 

@@ -8,7 +8,7 @@
 		$price = $_POST['price'];	
 		$stocks = $_POST['stocks'];
 		$expired_date = $_POST['expired_date'];
-		$batch_number = $_POST['batch_number'];
+		$batch_number = $_POST['batch_number1'];
 		$reason = $_POST['reason'];
 		$qty = $_POST['qty'];
 

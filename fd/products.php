@@ -83,7 +83,6 @@
                   <th>PHOTO</th>
                   <th>NAME</th>
                   <th>PRICE</th>
-                  <th>TOOLS</th>
                 </thead>
                 <tbody>
                   <?php
@@ -98,13 +97,10 @@
                         echo "
                           <tr>
                             <td width='50'>
-                              <img src='".$image."' height='50px' width='50px'>
+                              <img src='".$image."' height='100px' width='100px'>
                             </td>
                             <td>".$row['name']."</td>
                             <td>&#8369; ".number_format($row['price'], 2)."</td>
-                            <td>
-                              <button class='btn btn-info btn-sm edit btn-flat' data-id='".$row['id_products']."'><i class='fa fa-eye'></i> View Product</button>
-                            </td>
                           </tr>
                         ";
                       }

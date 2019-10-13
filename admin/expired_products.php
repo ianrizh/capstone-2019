@@ -101,8 +101,7 @@ $(function(){
 	// var id_stocks_expired = $(this).data('id');
 	// getRow(id_stocks_expired);
 	// });
-
-	$('.view').click(function(){
+	$('#example1').on('click','.view',function(){
 		var productid = $(this).data('id');
 		$.ajax({
 			url			 : 'expired_products_batch.php',

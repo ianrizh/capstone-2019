@@ -69,6 +69,7 @@ window.location.href='wastage.php';
                   <th>PRODUCT NAME</th>
           <th>CATEGORY</th>
           <th>PRICE</th>
+          <th>BATCH NUMBER</th>
           <th>EXPIRATION DATE</th>
           <th>QUANTITY</th>
           <th>REASON</th>
@@ -86,6 +87,7 @@ window.location.href='wastage.php';
                             <td>".$row['name']."</td>
               <td>".$row['category']."</td>
               <td>&#8369; ".number_format($row['price'],2)."</td>
+              <td>".$row['batch_number']."</td>
               <td>".date('M. d, Y', strtotime($row['expired_date']))."</td>
               <td>".$row['qty']."</td>
               <td>".$row['reason']."</td>

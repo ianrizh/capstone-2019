@@ -100,7 +100,7 @@
                         $image = (!empty($row['photo'])) ? '../images/'.$row['photo'] : '../images/noimage.jpg';
                         echo "
                           <tr>
-						    <td><input type='checkbox'></td>
+						                <td><input name='checkbox[]' type='checkbox' value='".$row['id_products']."'></td>
                             <td width='50'>
                               <img src='".$image."' height='50px' width='50px'>
                             </td>

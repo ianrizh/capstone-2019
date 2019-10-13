@@ -8,6 +8,7 @@ foreach($stmt as $row){
 $id_products = $row['id_products'];
 $stocks = $row['stocks'];
 $expired_date = $row['expired_date'];
+$batch_number = $row['batch_number'];
 $stmt = $conn->prepare("select * from products where id_products = '$id_products'");
 $stmt->execute();
 foreach($stmt as  $row1){
@@ -22,6 +23,7 @@ echo '
 <label for="edit_name" class="col-sm-4 control-label">CATEGORY</label>
 
 <div class="col-sm-8">
+<input type="text" hidden  name="batch_number1" value="'.$batch_number.'">
 <input type="text" class="form-control category" name="category" value="'.$category.'" readonly style="background-color:white; border:0px" >
 </div>
 </div>
@@ -60,11 +62,7 @@ echo '
 <label for="edit_name" class="col-sm-4 control-label">REASON</label>
 
 <div class="col-sm-8">
-<select id="reason" name="reason" class="form-control" required>
-<option value="" disabled selected required>---Select---</option>
-<option value="Product Used in Grooming">Product Used in Grooming</option>
-
-</select>
+<textarea class="form-control" name="reason"></textarea>
 </div>
 </div>
 ';

@@ -141,67 +141,47 @@ $pname = $row6['name'];
 </thead>
 <tbody>
 <?php
-$conn = $pdo->open();
-$stmt=$conn->prepare("select * from reservation where user_pets_id=:user_pets_id and status = 'Process Done'");
-$stmt->execute(['user_pets_id' => $bill]);
-foreach($stmt as $row7){
-$user_pets_id1 = $row7['user_pets_id'];
-$products_used1 = $row7['products_used'];
-$qty1 = $row7['qty'];
-$prod_price1 = $row7['prod_price'];
-$reservation_id1 = $row7['reservation_id'];
-$id_services1 = $row7['id_services'];
-$date1 = $row7['thedate'];
-$time1 = $row7['time_reservation'];
-$total1 = $row7['total'];
-$stmt=$conn->prepare("select * from user_pets where user_pets_id='$user_pets_id1'");
-$stmt->execute();
-foreach($stmt as $row8){
-$id_cust1 = $row8['id_cust'];
-$id_pet1 = $row8['id_pet'];
-$stmt=$conn->prepare("select * from users where id_cust='$id_cust1'");
-$stmt->execute();
-foreach($stmt as $row9){
-$fullname1 = $row9['firstname'] ." ". $row9['lastname'];
-$home1 = $row9['home'];
-$contact1 = $row9['contact'];
-$stmt=$conn->prepare("select * from pets where id_pet='$id_pet1'");
-$stmt->execute();
-foreach($stmt as $row10){
-$pet_name1 = $row10['pet_name'];
-$stmt = $conn->prepare("select * from services where id_services='$id_services1'");
-$stmt->execute();
-foreach($stmt as $row11){
-}
-if($id_services1 == "0"){
-$name1 = ' Veterinary Health Care';
-$price1 = ' 250.00';
-}
-else{
-$name1 = $row11['name'];
-$price1 = $row11['price'];
-}
-echo "
-<tr>
-<td>";
-if($id_services1 == "0"){
-echo "VHC_0".$reservation_id1;
-}
-else{
-echo "GMMNG_0".$reservation_id;
-}
-echo "</td>
-<td>".$pet_name1."</td>
-<td>".$name1."</td>
-<td>".date('M. d, Y', strtotime($date1))." <br>".$time1."</td>
-<td>&#8369; ".number_format($price1,2)."</td>
-</tr> ";
-}
-}
-}
-}
-$pdo->close();
+	$stmt = $conn->prepare("
+		SELECT
+			r.reservation_id,
+			r.type_id,
+			r.thedate,
+			r.time_reservation,
+			IF(r.id_services=0, 'Veterinary Health Care', s.name) as service_name,
+			p.pet_name as pet_name,
+			r.s_price as service_price
+		FROM
+			reservation r
+		LEFT JOIN user_pets up
+			ON r.user_pets_id = up.user_pets_id
+		LEFT JOIN pets p
+			ON up.id_pet = p.id_pet
+		LEFT JOIN services s
+			ON r.id_services = s.id_services
+		WHERE
+			status = 'Process Done'
+			AND reservation_id = :bill
+	");
+	$stmt->execute(['bill' => $bill]);
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+	if($row['type_id'] == 1) //Boarding
+		$transaction_number = 'BRDNG_' . str_pad($row['reservation_id'], 3, '0', STR_PAD_LEFT);
+	else if($row['type_id'] == 2) //Check-up
+		$transaction_number = 'VHC_' . str_pad($row['reservation_id'], 3, '0', STR_PAD_LEFT);
+	else if($row['type_id'] == 3) //Grooming
+		$transaction_number = 'GRMMNG_' . str_pad($row['reservation_id'], 3, '0', STR_PAD_LEFT);
 ?>
+<tr>
+	<td><?= $transaction_number ?></td>
+	<td><?= $row['pet_name'] ?></td>
+	<td><?= $row['service_name'] ?></td>
+	<td>
+		<?= date('M. d, Y',strtotime($row['thedate'])) ?><br>
+		<?= $row['time_reservation'] ?>
+	</td>
+	<td>&#8369; <?= $row['service_price'] ?></td>
+</tr>
 </tbody>
 </table>
 <div class="form-group">

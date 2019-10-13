@@ -128,20 +128,23 @@ $('#addnew').on('change','#expdate',function(){
     $('input',newrow).val('');
   });
 
-  $('.btn_deleterow').click(function(){
-    var row = $(this).closest('tr');
-    var tbody = $('#tbl_stock > tbody');
-    if($('tr',tbody).length > 1)
-      row.remove();
-    else
-    {
-      $('input',row).val('');
-    }
-  });
+  // $('.btn_deleterow').click(function(){
+  //   var row = $(this).closest('tr');
+  //   var tbody = $('#tbl_stock > tbody');
+  //   if($('tr',tbody).length > 1)
+  //     row.remove();
+  //   else
+  //   {
+  //     $('input',row).val('');
+  //   }
+  // });
 
   $(function () {
+
     $('#example1').DataTable({
-      responsive: true
+      "order": [],
+      responsive: true,
+
     })
     $('#example2').DataTable({
       'paging'      : true,
@@ -151,6 +154,12 @@ $('#addnew').on('change','#expdate',function(){
       'info'        : true,
       'autoWidth'   : false
     })
+
+    $('.order_quantity',$('#tab_orders')).number(true,0);
+    $('.order_price',$('#tab_orders')).number(true,2);
+    $('.order_amount',$('#tab_orders')).number(true,2);
+    $('#order_cash',$('#tab_orders')).number(true,2);
+    $('#order_total',$('#tab_orders')).number(true,2);
 
     $('#btn_addorder').click(function(){
       var row = $('#tbl_orders > tbody > tr').last();
@@ -162,7 +171,7 @@ $('#addnew').on('change','#expdate',function(){
 
     $('.btn_deleterow').click(function(){
       var row = $(this).closest('tr');
-      var tbody = $('#tbl_orders > tbody');
+      var tbody = $(this).closest('tbody');
       if($('tr',tbody).length > 1)
         row.remove();
       else
@@ -489,8 +498,8 @@ $('#addnew').on('change','#expdate',function(){
   });
   $('#paybill').click(function(){
     var reservation_id = $('#reservation_id').val(),
-        total = parseFloat($('#total').val()),
-        amount_paid = parseFloat($('#amount_paid').val());
+        total = parseFloat(($('#total').val()).replace(',','')),
+        amount_paid = parseFloat(($('#amount_paid').val()).replace(',',''));
         
     if(amount_paid < total)
     {
@@ -579,7 +588,7 @@ $('#addnew').on('change','#expdate',function(){
     if(document.getElementById('grooming_products_toggle').checked) {
       $('tbody tr',$('#grooming_table')).each(function(){
         var productid = $('.grooming_product',$(this)).val();
-        a_product.push($('option[value="'+productid+'"]',$('.grooming_product')).text());
+        a_product.push($('option[value="'+productid+'"]',$('.grooming_product',$(this))).text());
         a_productid.push(productid);
         a_quantity.push($('.grooming_quantity',$(this)).val());
         a_price.push($('.grooming_price',$(this)).val());
@@ -614,6 +623,7 @@ $('#addnew').on('change','#expdate',function(){
               +list+
               "</div>\
           ");
+          $('#grooming_submit').prop('disabled','').html('<i class="fa fa-check"></i> Submit');
         }
         else
         {
@@ -641,7 +651,7 @@ $('#addnew').on('change','#expdate',function(){
             complete: function(){
               $('#findings').modal('hide');
               $('#btn_confirmorder').prop('disabled',false).text('Submit');
-              // window.location = '../admin/reservations.php';
+              window.location = '../fd/reservations.php';
             }
           });
         }
@@ -650,7 +660,7 @@ $('#addnew').on('change','#expdate',function(){
         alert('An error has occured.');
       },
       complete  : function(){
-        $('#grooming_submit').prop('disabled','').html('<i class="fa fa-check"></i> Submit');
+        // $('#grooming_submit').prop('disabled','').html('<i class="fa fa-check"></i> Submit');
       }
     });
   });

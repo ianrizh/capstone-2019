@@ -70,12 +70,6 @@ $pdo->close();
 </div>
 </div>
 
-<p><b>Description</b></p>
-<div class="form-group">
-<div class="col-sm-12">
-<textarea id="editor1" name="details" rows="10" cols="80" autocomplete="off" required></textarea>
-</div>
-</div>
 </div>
 <div class="modal-footer">
 <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>

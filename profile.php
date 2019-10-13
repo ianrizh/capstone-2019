@@ -73,13 +73,13 @@ unset($_SESSION['success']);
 <br>
 <label for="password" class="col-sm-3 control-label">Current Password</label>
 <div class="col-sm-9">
-<input type="password" class="form-control" id="password" name="curr_password" value="<?php echo $user['password']; ?>" readonly>
+<input type="password" class="form-control" id="password" name="curr_password" min="6" maxlength="12" autocomplete="off" autofocus required>
 </div>
 </div>
 <div class="form-group">
 <label for="password" class="col-sm-3 control-label">New Password</label>
 <div class="col-sm-9">
-<input type="password" class="form-control" id="password" name="password" min="6" maxlength="12" autocomplete="off" autofocus required>
+<input type="password" class="form-control" id="password" name="password" min="6" maxlength="12" autocomplete="off" required>
 </div>
 </div>
 <div class="form-group">

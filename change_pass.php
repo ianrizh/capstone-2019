@@ -18,7 +18,7 @@
 				$conn = $pdo->open();
 
 			try{
-				$stmt = $conn->prepare("UPDATE customer SET password=:password WHERE id_cust=:id_cust");
+				$stmt = $conn->prepare("UPDATE users SET password=:password WHERE id_cust=:id_cust");
 				$stmt->execute(['password'=>$password, 'id_cust'=>$user['id_cust']]);
 
 				$_SESSION['success'] = 'Password updated successfully';

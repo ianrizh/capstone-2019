@@ -7,7 +7,6 @@
 </div>
 <div class="modal-body">
 <form class="form-horizontal" method="POST" action="adjustment_add.php">
-<input type="hidden" class="batch_number" name="batch_number">
 <div class="form-group">
 <label for="edit_name" class="col-sm-4 control-label">PRODUCT</label>
 
@@ -16,16 +15,20 @@
 <option value="" disabled selected required>---Select---</option>
 <?php 
 $conn = $pdo->open();
-
-$stmt = $conn->prepare("SELECT * FROM products WHERE deleted_date = '0000-00-00'");
+$stmt = $conn->prepare("select distinct id_products from stocks_expired where expired_flag !='1'");
 $stmt->execute();
-
 foreach($stmt as $crow){
+$id_products = $crow['id_products'];
+$stmt = $conn->prepare("select * from products where id_products = '$id_products'");
+$stmt->execute();
+foreach($stmt as $row){
+$id_p = $row['id_products'];
+$name = $row['name'];
 echo "
-<option value='".$crow['id_products']."'>".$crow['name']."</option>
+<option value='".$id_p."'>".$name."</option>
 ";
 }
-
+}
 $pdo->close();
 ?>
 </select>

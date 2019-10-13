@@ -89,53 +89,41 @@ $date=date('Y-m-d');
 </thead>
 <tbody>
 <?php
-$stmt = $conn->prepare("select * from reservation where status = 'Paid' and reservation_id = :bill");
-$stmt->execute(['bill' => $bill]);
-foreach($stmt as $r){
-$reservation_id = $r['reservation_id'];
-$user_pets_id = $r['user_pets_id'];
-$id_services = $r['id_services'];
-$s_price = $r['s_price'];
-$total = $r['total'];
-$amount_paid = $r['amount_paid'];
-$_change = $r['_change'];
-$stmt = $conn->prepare("select * from user_pets where user_pets_id = '$user_pets_id'");
-$stmt->execute();
-foreach($stmt as $q){
-$id_pet = $q['id_pet'];
-$stmt = $conn->prepare("select * from pets where id_pet = '$id_pet'");
-$stmt->execute();
-foreach($stmt as $w){
-$pet_name = $w['pet_name'];
-$stmt = $conn->prepare("select * from services where id_services = '$id_services'");
-$stmt ->execute();
-foreach($stmt as $e){
-$service = $e['name'];
-}
-echo "
-<tr>
-<td>";
-if($id_services == "0"){
-echo "VHC_0".$reservation_id;
-}
-else{
-echo "BRDNG_0".$reservation_id;
-}
-echo "</td><td>";
-if($id_services == "0"){
-echo "Veterinary Health Care";
-}
-else{
-echo $service;
-}
-echo "</td>
-<td>".$pet_name."</td>
-<td>&#8369; ".number_format($s_price,2)."</td>
-</tr> ";
-}
-}
-}
+	$stmt = $conn->prepare("
+		SELECT
+			r.reservation_id,
+			r.type_id,
+			IF(r.id_services=0, 'Veterinary Health Care', s.name) as service_name,
+			p.pet_name as pet_name,
+			r.s_price as service_price
+		FROM
+			reservation r
+		LEFT JOIN user_pets up
+			ON r.user_pets_id = up.user_pets_id
+		LEFT JOIN pets p
+			ON up.id_pet = p.id_pet
+		LEFT JOIN services s
+			ON r.id_services = s.id_services
+		WHERE
+			status = 'Paid'
+			AND reservation_id = :bill
+	");
+	$stmt->execute(['bill' => $bill]);
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+	if($row['type_id'] == 1) //Boarding
+		$transaction_number = 'BRDNG_' . str_pad($row['reservation_id'], 3, '0', STR_PAD_LEFT);
+	else if($row['type_id'] == 2) //Check-up
+		$transaction_number = 'VHC_' . str_pad($row['reservation_id'], 3, '0', STR_PAD_LEFT);
+	else if($row['type_id'] == 3) //Grooming
+		$transaction_number = 'GRMMNG_' . str_pad($row['reservation_id'], 3, '0', STR_PAD_LEFT);
 ?>
+<tr>
+	<td><?= $transaction_number ?></td>
+	<td><?= $row['service_name'] ?></td>
+	<td><?= $row['pet_name'] ?></td>
+	<td>&#8369; <?= $row['service_price'] ?></td>
+</tr>
 </tbody>
 </table>
 

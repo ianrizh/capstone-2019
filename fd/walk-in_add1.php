@@ -2,14 +2,15 @@
 <?php
 include 'includes/session.php';
 
-if(isset($_POST['add'])){
-$user_pets_id = $_POST['user_pets_id'];
+if(isset($_POST)){
+$id_cust	= $_POST['id_cust'];
+$user_pets_id	= $_POST['user_pets_id'];
 $id_services = $_POST['id_services'];
-$time_reservation= $_POST['time_reservation'];
-$status = $_POST['status'];
+$s_price = $_POST['s_price'];
 date_default_timezone_set('Asia/Manila');
 $thedate=date('Y-m-d');
-$s_price = $_POST['s_price'];
+$time_reservation = $_POST['time_reservation'];
+
 if($id_services == '0'){
 $theday=date('l',strtotime($thedate));
 if($theday == 'Sunday')
@@ -35,7 +36,7 @@ $starttime="13:30";
 $endtime="14:00";
 }
 elseif($time_reservation=="02:00 p.m - 02:30 p.m"){
-	
+
 $starttime="14:00";
 $endtime="14:30";
 }
@@ -66,6 +67,7 @@ $endtime="17:00";
 }
 }
 else{
+{
 if($time_reservation=="10:00 a.m - 10:30 a.m"){
 $starttime="10:00";
 $endtime="10:30";
@@ -78,7 +80,6 @@ elseif($time_reservation=="11:00 a.m - 11:30 a.m"){
 $starttime="11:00";
 $endtime="11:30";
 }
-
 elseif($time_reservation=="11:30 a.m - 12:00 p.m"){
 $starttime="11:30";
 $endtime="12:30";
@@ -149,6 +150,7 @@ elseif($time_reservation=="06:30 p.m - 07:00 p.m"){
 
 $starttime="18:30";
 $endtime="19:00";
+}
 }
 }
 }
@@ -225,30 +227,35 @@ $endtime= '19:00';
 }
 }
 $conn = $pdo->open();
-$stmt = $conn->prepare("SELECT *,COUNT(*) AS numrows  FROM reservation WHERE user_pets_id = :user_pets_id and id_services = :id_services and thedate=:thedate and  end_time > :starttime and start_time < :endtime OR user_pets_id = :user_pets_id  and thedate=:thedate and  end_time > :starttime and start_time < :endtime ");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'starttime'=>$starttime,'endtime'=>$endtime]);
+$stmt = $conn->prepare("SELECT *,COUNT(*) AS numrows  FROM reservation WHERE user_pets_id = user_pets_id and id_services = id_services and thedate=:thedate and  end_time > :starttime and start_time < :endtime ");
+$stmt->execute(['thedate'=>$thedate,'starttime'=>$starttime,'endtime'=>$endtime]);
 $row = $stmt->fetch();
-$stmt = $conn->prepare("SELECT *,COUNT(*) AS numrows2  FROM reservation WHERE user_pets_id = :user_pets_id  and thedate=:thedate and  end_time > :starttime and start_time < :endtime ");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'thedate'=>$thedate,'starttime'=>$starttime,'endtime'=>$endtime]);
-$row2 = $stmt->fetch();
-if($row['numrows'] >= 2 || $row2['numrows2'] > 0 ){
+
+if($row['numrows'] > 0){
 $_SESSION['error'] = 'The chosen date and time is already taken by other customer.';
 }
 else{
 try{
+if($id_services == '0'){
 date_default_timezone_set('Asia/Manila');
 $thedate=date('Y-m-d');
-$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,status,s_price,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:status,:s_price,:starttime,:endtime,:r_type)");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'status'=>'Pending','s_price'=>$s_price,'starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
+$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,s_price,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:s_price,:status,:starttime,:endtime,:r_type)");
+$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'s_price'=>$s_price,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
 $_SESSION['success'] = 'Reservation successful';
+}
+else{
+date_default_timezone_set('Asia/Manila');
+$thedate=date('Y-m-d');
+$stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,s_price,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:s_price,:status,:starttime,:endtime,:r_type)");
+$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'s_price'=>$s_price,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
+$_SESSION['success'] = 'Reservation successful';
+}
 }
 catch(PDOException $e){
 $_SESSION['error'] = $e->getMessage();
 }
-}
+//}
 $pdo->close();
-header('location: orders.php');
+//header('location: orders.php');
 }
 ?>
-
-

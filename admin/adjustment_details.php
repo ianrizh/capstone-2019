@@ -7,13 +7,13 @@ echo '
 <label for="edit_name" class="col-sm-4 control-label">BATCH NUMBER</label>
 
 <div class="col-sm-8">
-<select class="form-control" id="product" name="batch_number" autocomplete="off" onChange="onSelect1(this.value)" required>
+<select class="form-control" id="batch_number" name="batch_number" autocomplete="off" onChange="onSelect1(this.value)" required>
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("SELECT * FROM products WHERE name='$name'");
 $stmt->execute();
 foreach($stmt as $crow){
 $id_products = $crow['id_products'];
-$stmt = $conn->prepare("SELECT * FROM stocks_expired WHERE id_products='$id_products'");
+$stmt = $conn->prepare("SELECT * FROM stocks_expired WHERE id_products='$id_products' AND stocks != 0 and expired_flag != '1'");
 $stmt->execute();
 foreach($stmt as $crows){
 $id_stocks_expired = $crows['id_stocks_expired'];

@@ -7,7 +7,6 @@
 		$name = $_POST['name'];
 		$id_category = $_POST['id_category'];
 		$price = $_POST['price'];
-		$details = $_POST['details'];
 		$filename = $_FILES['photo']['name'];
 		
 		$conn = $pdo->open();
@@ -24,8 +23,8 @@
 		}
 		
 		try{
-			$stmt = $conn->prepare("UPDATE products SET name=:name, id_category=:id_category, price=:price, details=:details, photo=:photo WHERE id_products=:id_products");
-			$stmt->execute(['name'=>$name, 'id_category'=>$id_category, 'price'=>$price, 'details'=>$details, 'photo'=>$new_filename, 'id_products'=>$id_products]);
+			$stmt = $conn->prepare("UPDATE products SET name=:name, id_category=:id_category, price=:price,  photo=:photo WHERE id_products=:id_products");
+			$stmt->execute(['name'=>$name, 'id_category'=>$id_category, 'price'=>$price, 'photo'=>$new_filename, 'id_products'=>$id_products]);
 			$_SESSION['success'] = 'Product updated successfully';
 		}
 		catch(PDOException $e){

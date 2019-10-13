@@ -42,11 +42,21 @@ unset($_SESSION['success']);
 <div class="row">
 <div class="col-xs-12">
 <div class="box">
-<!--<div class="box-header with-border">
-<a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat" id="addproduct"><i class="fa fa-plus"></i> New Product</a>
-</div>-->
-<div class="box-body">
-	<table id="example1" class="table table-bordered">
+	<div class="box-header with-border">
+<a class = "btn btn-success btn-print btn-flat" href = "#" onclick = "printContent('details')"><i class ="glyphicon glyphicon-print"></i> Print</a>
+<script>
+function printContent(el)
+{
+var restorepage=document.body.innerHTML;
+var printcontent=document.getElementById(el).innerHTML;
+document.body.innerHTML=printcontent;
+window.print();
+document.body.innerHTML=restorepage;
+window.location.href='stocks.php';
+}
+</script>
+<div class="box-body" id="details">
+	<table class="table table-bordered">
 		<thead>
 			<!--th width="15"></th-->
 			<th>PRODUCT NAME</th>
@@ -100,6 +110,7 @@ unset($_SESSION['success']);
 			?>
 		</tbody>
 	</table>
+</div>
 </div>
 </div>
 </div>

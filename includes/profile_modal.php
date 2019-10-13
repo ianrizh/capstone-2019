@@ -8,7 +8,7 @@
             <div class="modal-body">
               <p>
                 Date: <span id="date"></span>
-                <span class="pull-right">ORDER ID: ORDER_0<span id="transid"></span></span> 
+                <span class="pull-right">ORDER ID: <span id="transid"></span></span> 
               </p>
               <table class="table table-bordered">
                 <thead>

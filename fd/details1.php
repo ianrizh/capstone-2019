@@ -10,27 +10,34 @@ foreach($stmt as $crows){
 $pet_type = $crows['pet_type'];
 $pet_breed = $crows['pet_breed'];
 $pet_gender = $crows['pet_gender'];
+$stmt = $conn->prepare("select * from user_pets where id_pet = '$id_pet'");
+$stmt->execute();
+foreach($stmt as $z){
+	$user_pets_id = $z['user_pets_id'];
 
 echo "
+<form class='form-control' method='post' action='walk-in_add1.php'>
+<input type='hidden' name='user_pets_id' value='".$user_pets_id."'>
 <div id='details' class='form-group'>
-<label for='edit_name' class='col-sm-3 control-label'>PET TYPE</label>
+<label for='edit_name' class='col-sm-3 control-label' style='text-align:right; margin-top:15px;'>PET TYPE</label>
 <div class='col-sm-8'>
-<input class='form-control' type='text' value='".$pet_type."' readonly>
-</div>
-</div>
-<div id='details' class='form-group'>
-<label for='edit_name' class='col-sm-3 control-label'>PET BREED</label>
-<div class='col-sm-8'>
-<input class='form-control' type='text' value='".$pet_breed."' readonly>
+<input class='form-control' type='text' value='".$pet_type."' style='margin-top:15px;' readonly>
 </div>
 </div>
 <div id='details' class='form-group'>
-<label for='edit_name' class='col-sm-3 control-label'>PET GENDER</label>
+<label for='edit_name' class='col-sm-3 control-label' style='text-align:right; margin-top:15px;'>PET BREED</label>
 <div class='col-sm-8'>
-<input class='form-control' type='text' value='".$pet_gender."' readonly>
+<input class='form-control' type='text' value='".$pet_breed."' style='margin-top:15px;' readonly>
+</div>
+</div>
+<div id='details' class='form-group'>
+<label for='edit_name' class='col-sm-3 control-label' style='text-align:right; margin-top:15px;'>PET GENDER</label>
+<div class='col-sm-8' style='margin-bottom: 30px;'>
+<input class='form-control' type='text' value='".$pet_gender."' style='margin-top:15px;' readonly>
 </div>
 </div>
 ";
+}
 }
 }
 ?>
@@ -38,18 +45,19 @@ echo "
 <h3 class='box-title' style='color:#36bbbe;'><b><i class='fa fa-calendar'></i> TRANSACTION DETAILS</b></h3>
 </div>
 <div class="form-group">
-<label for="name" class="col-sm-3 control-label">DATE</label>
-<div class="col-sm-8">
+<label for="name" class="col-sm-3 control-label" style="text-align: right">DATE</label>
+<div class="col-sm-8" style="margin-bottom: 15px;">
 <?php
 date_default_timezone_set('Asia/Manila');
 $date=date('Y-m-d');
 ?>
+<input type="hidden" name="thedate" id="thedate" value="<?php echo $date ?>">
 <input type="text" class="form-control" name="thedate" value="<?php echo date('M. d, Y', strtotime($date)); ?>" readonly>
 </div>
 </div>
 <div class="form-group">
-<label for="name" class="col-sm-3 control-label">SERVICE TYPE</label>
-<div class="col-sm-8">
+<label for="name" class="col-sm-3 control-label" style="text-align: right">SERVICE TYPE</label>
+<div class="col-sm-8" style="margin-bottom: 15px;">
 <select id="type" class="form-control" required onChange="java_script_:show9(this.options[this.selectedIndex].value)"  required>
 <option value="" disabled selected required>---Select---</option>
 <option value="Clinic1">Veterinary Health Care</option>
@@ -68,9 +76,9 @@ if($theday == 'Sunday')
 echo '
 <div id="time" class="form-group">
 <input type="hidden" value="0" name="id_services" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none">TIME</label>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none; text-align:right">TIME</label>
 <div class="col-sm-8" id="clinic21" style="display:none">
-<select class="form-control" id="time" name="time_reservation">
+<select class="form-control" id="time_reservation" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -117,9 +125,9 @@ elseif($theday == 'Monday')
 echo '
 <div id="time" class="form-group">
 <input type="hidden" value="0" name="id_services" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none">TIME</label>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none; text-align:right">TIME</label>
 <div class="col-sm-8" id="clinic21" style="display:none">
-<select class="form-control" id="time" name="time_reservation">
+<select class="form-control" id="time_reservation" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -166,9 +174,9 @@ elseif($theday == 'Tuesday')
 echo '
 <div id="time" class="form-group">
 <input type="hidden" value="0" name="id_services" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none">TIME</label>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none; text-align:right">TIME</label>
 <div class="col-sm-8" id="clinic21" style="display:none">
-<select class="form-control" id="time" name="time_reservation">
+<select class="form-control" id="time_reservation" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -215,9 +223,9 @@ elseif($theday == 'Wednesday')
 echo '
 <div id="time" class="form-group">
 <input type="hidden" value="0" name="id_services" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none">TIME</label>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none; text-align:right">TIME</label>
 <div class="col-sm-8" id="clinic21" style="display:none">
-<select class="form-control" id="time" name="time_reservation">
+<select class="form-control" id="time_reservation" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -264,9 +272,9 @@ elseif($theday == 'Thursday')
 echo '
 <div id="time" class="form-group">
 <input type="hidden" value="0" name="id_services" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none">TIME</label>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none; text-align:right">TIME</label>
 <div class="col-sm-8" id="clinic21" style="display:none">
-<select class="form-control" id="time" name="time_reservation">
+<select class="form-control" id="time_reservation" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -313,9 +321,9 @@ elseif($theday == 'Friday')
 echo '
 <div id="time" class="form-group">
 <input type="hidden" value="0" name="id_services" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none">TIME</label>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none; text-align:right">TIME</label>
 <div class="col-sm-8" id="clinic21" style="display:none">
-<select class="form-control" id="time" name="time_reservation">
+<select class="form-control" id="time_reservation" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -362,9 +370,9 @@ elseif($theday == 'Saturday')
 echo '
 <div id="time" class="form-group">
 <input type="hidden" value="0" name="id_services" readonly>
-<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none">TIME</label>
+<label for="edit_name" class="col-sm-3 control-label" id="clinic11" style="display:none; text-align:right">TIME</label>
 <div class="col-sm-8" id="clinic21" style="display:none">
-<select class="form-control" id="time" name="time_reservation">
+<select class="form-control" id="time_reservation" name="time_reservation">
 <option value="" disabled selected required>---Select---</option>';
 $stmt = $conn->prepare("select * from type where type = 'Clinic'");
 $stmt->execute();
@@ -505,4 +513,5 @@ $pdo->close();
 	a.open('GET', "details1.php?id_pet="+str,true);
 	a.send();
  }
-</script>
+</script>	
+<?php echo "</form>"; ?>

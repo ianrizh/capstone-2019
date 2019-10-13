@@ -47,22 +47,50 @@
 $conn = $pdo->open();
 
 try{
-$stmt = $conn->prepare("SELECT * FROM order_main group by order_id");
-$stmt->execute();
-foreach($stmt as $row){
-$order_id = $row['order_id'];
-$order_date = $row['order_date'];
-$total = $row['total'];
-echo "
-<tr>
-<td class='hidden'></td>
-<td>".date('M d, Y', strtotime($order_date))."</td>
-<td>ORDER_0".$order_id."</td>
-<td>&#8369; ".number_format($total, 2)."</td>
-<td><button type='button' class='btn btn-info btn-sm btn-flat transact' data-id='".$order_id."'><i class='fa fa-search'></i> View</button></td>
-</tr>
-";
-}
+	$stmt = $conn->prepare("SELECT * FROM order_main");
+	$stmt->execute();
+	foreach($stmt as $row) {
+		$order_id = $row['order_id'];
+		$order_date = $row['order_date'];
+		$total = $row['total'];
+		echo "
+			<tr>
+				<td class='hidden'></td>
+				<td>".date('M d, Y', strtotime($order_date))."</td>
+				<td>ORDER_0".$order_id."</td>
+				<td>&#8369; ".number_format($total, 2)."</td>
+				<td><button type='button' class='btn btn-info btn-sm btn-flat transact' data-id='".$order_id."' data-type='1'><i class='fa fa-search'></i> View</button></td>
+			</tr>
+		";
+	}
+
+	$stmt = $conn->prepare("
+		SELECT r.reservation_id,r.type_id,r.thedate,rp.total FROM reservation r
+		LEFT JOIN (SELECT reservation_id,SUM(amount) AS total FROM products_used GROUP BY reservation_id) rp
+			ON r.reservation_id = rp.reservation_id
+		WHERE r.s_price != r.total
+	");
+	$stmt->execute();
+	foreach($stmt as $row) {
+		if($row['type_id'] == 1) //Boarding
+			$order_id = 'BRDNG_' . str_pad($row['reservation_id'], 3, '0', STR_PAD_LEFT);
+		else if($row['type_id'] == 2) //Check-up
+			$order_id = 'VHC_' . str_pad($row['reservation_id'], 3, '0', STR_PAD_LEFT);
+		else if($row['type_id'] == 3) //Grooming
+			$order_id = 'GRMMNG_' . str_pad($row['reservation_id'], 3, '0', STR_PAD_LEFT);
+
+		$order_date = $row['thedate'];
+		$total = $row['total'];
+		echo "
+			<tr>
+				<td class='hidden'></td>
+				<td>".date('M d, Y', strtotime($order_date))."</td>
+				<td>".$order_id."</td>
+				<td>&#8369; ".number_format($total, 2)."</td>
+				<td><button type='button' class='btn btn-info btn-sm btn-flat transact' data-id='".$row['reservation_id']."' data-type='2'><i class='fa fa-search'></i> View</button></td>
+			</tr>
+		";
+	}
 }
 catch(PDOException $e){
 echo $e->getMessage();
@@ -134,11 +162,12 @@ $(function(){
 $(document).on('click', '.transact', function(e){
 e.preventDefault();
 $('#transaction').modal('show');
-var order_id = $(this).data('id');
+var order_id = $(this).data('id'),
+	order_type = $(this).data('type');
 $.ajax({
 type: 'POST',
 url: 'transact.php',
-data: {order_id:order_id},
+data: {order_id:order_id, order_type:order_type},
 dataType: 'json',
 success:function(response){
 $('#date').html(response.date);

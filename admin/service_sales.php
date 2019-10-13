@@ -53,7 +53,7 @@ $stmt->execute();
 foreach($stmt as $row){
 $reservation_id = $row['reservation_id'];
 $pay_date = $row['pay_date'];
-$total = $row['total'];
+$total = $row['s_price'];
 $id_services = $row['id_services'];
 $r_type = $row['r_type'];
 $stmt = $conn->prepare("SELECT * FROM services where deleted_date = '0000-00-00' and id_services = '$id_services'");
@@ -154,27 +154,52 @@ $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format(
 </script>
 <script>
 $(function(){
-$(document).on('click', '.service', function(e){
-e.preventDefault();
-$('#service').modal('show');
-var reservation_id = $(this).data('id');
-$.ajax({
-type: 'POST',
-url: 'transact1.php',
-data: {reservation_id:reservation_id},
-dataType: 'json',
-success:function(response){
-$('#pay_date').html(response.pay_date);
-$('#transid1').html(response.transaction);
-$('#detail1').prepend(response.list);
-$('#total1').html(response.total);
-}
-});
-});
+	$(document).on('click', '.service', function(e){
+		e.preventDefault();
+		var modal = $('#service');
+		var reservation_id = $(this).data('id');
+		
+		modal.modal('show');
 
-$("#service").on("hidden.bs.modal", function () {
-$('.prepend_items').remove();
-});
+		$.ajax({
+			type: 'POST',
+			url: 'transact1.php',
+			data: {reservation_id:reservation_id},
+			dataType: 'json',
+			success:function(response){
+				console.log(response);
+				$('#pay_date',modal).text(response.pay_date);
+				$('#transid1',modal).text(response.transaction_id);
+				$('#td_servicename',modal).text(response.service_name);
+				$('#td_servicetype',modal).text(response.service_type);
+				$('#td_serviceprice',modal).text(response.service_price);
+
+				$('#tblservice_products tbody',modal).empty();
+
+				if(response.product_list.length > 0) {
+					$(response.product_list).each(function(){
+						$('#tblservice_products tbody',modal).append(
+							'<tr>\
+								<td>' + this.product + '</td>\
+								<td>' + this.qty + '</td>\
+							</tr>'
+						);
+					});
+				}
+				else {
+					$('#tblservice_products tbody',modal).append(
+						'<tr>\
+							<td colspan="2"> No products added... </td>\
+						</tr>'
+					);
+				}
+			}
+		});
+	});
+
+	$("#service").on("hidden.bs.modal", function () {
+		$('.prepend_items').remove();
+	});
 });
 </script>
 </body>

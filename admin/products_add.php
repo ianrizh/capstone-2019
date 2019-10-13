@@ -5,7 +5,6 @@
 		$name = $_POST['name'];
 		$id_category = $_POST['id_category'];
 		$price = $_POST['price'];
-		$details = $_POST['details'];
 		$filename = $_FILES['photo']['name'];	
 
 		$conn = $pdo->open();
@@ -28,8 +27,8 @@
 			}
 
 			try{
-				$stmt = $conn->prepare("INSERT INTO products (id_category, name, details, price, photo) VALUES (:id_category, :name, :details, :price, :photo)");
-				$stmt->execute(['id_category'=>$id_category, 'name'=>$name, 'details'=>$details, 'price'=>$price, 'photo'=>$new_filename]);
+				$stmt = $conn->prepare("INSERT INTO products (id_category, name, price, photo) VALUES (:id_category, :name, :price, :photo)");
+				$stmt->execute(['id_category'=>$id_category, 'name'=>$name, 'price'=>$price, 'photo'=>$new_filename]);
 				$_SESSION['success'] = 'Product added successfully';
 
 			}

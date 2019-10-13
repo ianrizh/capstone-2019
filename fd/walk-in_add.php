@@ -2,21 +2,17 @@
 <?php
 include 'includes/session.php';
 
-if(isset($_POST['add'])){
-$firstname = $_POST['firstname'];
-$lastname = $_POST['lastname'];
-$contact = $_POST['contact'];
-$email = $_POST['email'];
-$pet_name = $_POST['pet_name'];
-$pet_type = $_POST['pet_type'];
-$pet_breed = $_POST['pet_breed'];
-$pet_gender = $_POST['pet_gender'];
+if(isset($_POST)){
+$id_cust	= $_POST['id_cust'];
+$a_pet_name = $_POST['a_pet_name'];
+$a_pet_type	= $_POST['a_pet_type'];
+$a_pet_breed = $_POST['a_pet_breed'];
+$a_pet_gender = $_POST['a_pet_gender'];
 $id_services = $_POST['id_services'];
-$time_reservation= $_POST['time_reservation'];
-$status = $_POST['status'];
 $s_price = $_POST['s_price'];
 date_default_timezone_set('Asia/Manila');
 $thedate=date('Y-m-d');
+$time_reservation = $_POST['time_reservation'];
 
 if($id_services == '0'){
 $theday=date('l',strtotime($thedate));
@@ -87,7 +83,6 @@ elseif($time_reservation=="11:00 a.m - 11:30 a.m"){
 $starttime="11:00";
 $endtime="11:30";
 }
-
 elseif($time_reservation=="11:30 a.m - 12:00 p.m"){
 $starttime="11:30";
 $endtime="12:30";
@@ -243,10 +238,12 @@ if($row['numrows'] > 0){
 $_SESSION['error'] = 'The chosen date and time is already taken by other customer.';
 }
 else{*/
+	for($i=0; $i<count($a_pet_name); $i++){
+		$pet_name = $a_pet_name[$i];
+		$pet_type = $a_pet_type[$i];
+		$pet_breed = $a_pet_breed[$i];
+		$pet_gender = $a_pet_gender[$i];
 try{
-$stmt = $conn->prepare("INSERT INTO users (firstname, lastname, contact, email) VALUES (:firstname, :lastname, :contact, :email)");
-$stmt->execute(['firstname'=>$firstname, 'lastname'=>$lastname, 'contact'=>$contact, 'email'=>$email]);
-$id_cust = $conn->lastInsertId();
 $stmt = $conn->prepare("INSERT INTO pets (id_cust, pet_name, pet_type, pet_breed, pet_gender) VALUES (:id_cust, :pet_name, :pet_type, :pet_breed, :pet_gender)");
 $stmt->execute(['id_cust'=>$id_cust, 'pet_name'=>$pet_name, 'pet_type'=>$pet_type, 'pet_breed'=>$pet_breed, 'pet_gender'=>$pet_gender]);
 $id_pet = $conn->lastInsertId();
@@ -257,7 +254,7 @@ if($id_services == '0'){
 date_default_timezone_set('Asia/Manila');
 $thedate=date('Y-m-d');
 $stmt = $conn->prepare("INSERT INTO reservation (user_pets_id,id_services,thedate,time_reservation,s_price,status,start_time,end_time,r_type) VALUES (:user_pets_id,:id_services,:thedate,:time_reservation,:s_price,:status,:starttime,:endtime,:r_type)");
-$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'s_price'=>$s_price,'status'=>'Waiting','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
+$stmt->execute(['user_pets_id'=>$user_pets_id,'id_services'=>$id_services,'thedate'=>$thedate,'time_reservation'=>$time_reservation,'s_price'=>$s_price,'status'=>'Pending','starttime'=>$starttime,'endtime'=>$endtime,'r_type'=>'Walkin']);
 $_SESSION['success'] = 'Reservation successful';
 }
 else{
@@ -271,8 +268,9 @@ $_SESSION['success'] = 'Reservation successful';
 catch(PDOException $e){
 $_SESSION['error'] = $e->getMessage();
 }
+}
 //}
 $pdo->close();
-header('location: orders.php');
+//header('location: orders.php');
 }
 ?>

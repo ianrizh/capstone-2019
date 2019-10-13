@@ -6,24 +6,26 @@ $stmt = $conn->prepare("SELECT * FROM users WHERE id_cust='$id_cust'");
 $stmt->execute();
 foreach($stmt as $crows){
 $contact = $crows['contact'];
-$email = $crows['email'];
+$fullname = $crows['firstname'] ." ". $crows['lastname'];
 
 echo "
 <div id='details' class='form-group'>
-<label for='edit_name' class='col-sm-3 control-label' id='cntct'>CONTACT NUMBER</label>
+<label for='edit_name' class='col-sm-3 control-label' id='cntct' style='text-align:right; margin-top:15px'>CONTACT NUMBER</label>
 <div class='col-sm-8'>
-<input class='form-control' type='text' value='".$contact."' readonly id='cntct1'>
+<input class='form-control' type='text' value='".$contact."' readonly id='cntct1' style='margin-top:15px'>
 </div>
 </div>
 <div id='details' class='form-group'>
-<label for='edit_name' class='col-sm-3 control-label' id='cntct2'>EMAIL ADDRESS</label>
+<label for='edit_name' class='col-sm-3 control-label' id='cntct2' style='text-align:right; margin-top:15px'>CUSTOMER NAME</label>
 <div class='col-sm-8'>
-<input class='form-control' type='text' value='".$email."' readonly id='cntct3'>
+<input class='form-control' type='text' value='".$fullname."' readonly id='cntct3' style='margin-top:15px'>
 </div>
 </div>
 ";
 
-echo '
+echo "<a href='next1.php?id_cust=".$id_cust."' class='btn btn-success btn-sm btn-flat' style='width:100%; margin-top:30px;'><i class='fa fa-arrow-right'></i> Next</a>";
+
+/*echo '
 <div class="box-header">
 <h3 class="box-title" style="color:#36bbbe;""><b><i class="fa fa-paw"></i> PET DETAILS</b></h3>
 </div>
@@ -71,8 +73,7 @@ $pdo->close();
 	a.open('GET', "details1.php?id_pet="+str,true);
 	a.send();
  }
-</script>
-<?php
+</script>*/
 }
 }
 ?>

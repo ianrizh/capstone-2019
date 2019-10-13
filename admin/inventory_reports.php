@@ -77,7 +77,7 @@ window.location.href='inventory_reports.php';
             $output = '';
 
 		try{
-			$stmt = $conn->prepare("SELECT * FROM category");
+			$stmt = $conn->prepare("SELECT * FROM category where type != 'Services' and deleted_date = '0000-00-00' order by category asc");
 			$stmt->execute();
 			foreach($stmt as $categ)
 			{
